@@ -35,7 +35,7 @@ describe SilentAuctions do
     it 'should not allow descriptions longer than 500' do
       auction = SilentAuctions.new(:title => "my title")
       auction.description = "A" * 501
-      auction.valid?.should == falsegit
+      auction.valid?.should == false
       
       auction.description = "A" * 500
       auction.valid?.should == true
