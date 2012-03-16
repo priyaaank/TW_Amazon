@@ -1,10 +1,10 @@
 Feature: find out who wins
 
 Scenario: see winning bid
-          given an open auction
+          When an open auction
           Then I cannot see the winning bid
 
-          Given	a closed auction
+          When a closed auction
 		  Then I can see the winning bid
           Given	the following bids
  	      | Bids |
