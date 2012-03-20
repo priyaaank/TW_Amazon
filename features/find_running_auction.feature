@@ -11,12 +11,12 @@ Scenario: define running auction
 	
 Scenario: view all active auctions
 	given there are valid auctions:
-	| title | description | minimum price | open |
-	| 3 | 3 | 300.00 | 2 * yes, 1 * no |
+	| title | description | open |
+	| 3 | 3 | 2 * yes, 1 * no |
 	when i view all auctions
 	then I can see the following auctions:
-	| title | description | minimum price |
-	| 3 | 3 | 300.00 | 2 * yes |
+	| title | description | 
+	| 3 | 3 | 2 * yes |
 	
 Scenario: no auctions to see
 	given there are no valid auctions
