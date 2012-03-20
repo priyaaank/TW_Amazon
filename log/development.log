@@ -1,40 +1,8 @@
-
-
-Started GET "/assets/rails.png" for 127.0.0.1 at 2012-03-14 15:19:04 +1100
-Served asset /rails.png - 200 OK (4ms)
-  [1m[36m (0.1ms)[0m  [1mselect sqlite_version(*)[0m
-  [1m[35m (2.8ms)[0m  CREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) 
-  [1m[36m (0.0ms)[0m  [1mPRAGMA index_list("schema_migrations")[0m
-  [1m[35m (1.6ms)[0m  CREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")
   [1m[36m (0.1ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
 Migrating to CreateSilentAuctions (20120314053016)
-  [1m[35m (0.0ms)[0m  begin transaction
-  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
-  [1m[36m (0.1ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
-Migrating to CreateSilentAuctions (20120314053016)
-  [1m[35m (0.0ms)[0m  select sqlite_version(*)
-  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
-  [1m[35m (0.0ms)[0m  rollback transaction
-  [1m[36m (0.1ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
-Migrating to CreateSilentAuctions (20120314053016)
-  [1m[35m (0.0ms)[0m  select sqlite_version(*)
-  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
-  [1m[35m (0.5ms)[0m  CREATE TABLE "silent_auctions" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "description" text, "open" boolean DEFAULT 't', "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
-  [1m[36m (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ('20120314053016')[0m
-  [1m[35m (2.3ms)[0m  commit transaction
-  [1m[36m (0.2ms)[0m  [1mselect sqlite_version(*)[0m
-  [1m[35m (0.1ms)[0m  SELECT "schema_migrations"."version" FROM "schema_migrations" 
-  [1m[36m (0.0ms)[0m  [1mPRAGMA index_list("silent_auctions")[0m
-  [1m[36m (0.1ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
-Migrating to CreateSilentAuctions (20120314053016)
-  [1m[35m (0.2ms)[0m  select sqlite_version(*)
+Migrating to DeviseCreateUsers (20120320030608)
+  [1m[35m (0.3ms)[0m  select sqlite_version(*)
   [1m[36m (0.1ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
   [1m[35m (0.0ms)[0m  PRAGMA index_list("silent_auctions")
-  [1m[36m (0.1ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
-  [1m[35m (0.2ms)[0m  select sqlite_version(*)
-  [1m[36m (2.7ms)[0m  [1mCREATE TABLE "silent_auctions" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "description" text, "open" boolean DEFAULT 't', "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
-  [1m[35m (1.2ms)[0m  CREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) 
-  [1m[36m (0.0ms)[0m  [1mPRAGMA index_list("schema_migrations")[0m
-  [1m[35m (1.1ms)[0m  CREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")
-  [1m[36m (0.1ms)[0m  [1mSELECT version FROM "schema_migrations"[0m
-  [1m[35m (1.4ms)[0m  INSERT INTO "schema_migrations" (version) VALUES ('20120314053016')
+  [1m[36m (0.0ms)[0m  [1mPRAGMA index_list("users")[0m
+  [1m[35m (0.0ms)[0m  PRAGMA index_info('index_users_on_username')

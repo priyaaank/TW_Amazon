@@ -30,3 +30,24 @@ RSpec.configure do |config|
   # rspec-rails.
   config.infer_base_class_for_anonymous_controllers = false
 end
+
+
+
+def requires property
+  valid_user.delete(property.to_sym)
+  user = User.new(valid_user)
+
+  user.valid?.should == false
+  user[property.to_sym] = "set"
+  user.valid?.should == true
+end
+
+def has_limit property, limit
+  overlimit = limit + 1
+
+  user = User.new(valid_user)
+  user[property.to_sym] = "a" * overlimit
+  user.valid?.should == false
+  user[property.to_sym] = "a" * limit
+  user.valid?.should == true
+end
