@@ -21,5 +21,8 @@ group :development, :test do
   gem 'cucumber-rails'
   gem 'rspec-rails'
   gem 'awesome_print'
+  gem 'machinist'
+  gem 'faker'
+  gem 'blueprints'
 end
 
