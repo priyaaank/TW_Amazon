@@ -143,3 +143,19 @@
   [1m[35m (0.4ms)[0m  rollback transaction
   [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
   [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.4ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (5.4ms)[0m  [1mINSERT INTO "silent_auctions" ("created_at", "description", "open", "title", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["created_at", Wed, 21 Mar 2012 01:17:19 UTC +00:00], ["description", "Ut qui iusto quia et neque ea. Debitis fuga qui fugit sit. Vero repudiandae perferendis recusandae."], ["open", true], ["title", "Dolorem consequuntur voluptas qui quaerat aperiam cupiditate saepe."], ["updated_at", Wed, 21 Mar 2012 01:17:19 UTC +00:00]]
+  [1m[35m (0.0ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36mSilentAuctions Load (0.1ms)[0m  [1mSELECT "silent_auctions".* FROM "silent_auctions" WHERE "silent_auctions"."id" = ? LIMIT 1[0m  [["id", 1]]
+  [1m[35m (0.4ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.6ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (5.1ms)[0m  [1mINSERT INTO "silent_auctions" ("created_at", "description", "open", "title", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["created_at", Wed, 21 Mar 2012 01:37:08 UTC +00:00], ["description", "Minima est inventore. Vel et architecto eligendi ut. Aut fugiat quia sit quod quia unde. Voluptas iure dolore saepe eos."], ["open", true], ["title", "Dolor soluta tempora laboriosam distinctio aut inventore rerum."], ["updated_at", Wed, 21 Mar 2012 01:37:08 UTC +00:00]]
+  [1m[35m (0.0ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36mSilentAuctions Load (0.1ms)[0m  [1mSELECT "silent_auctions".* FROM "silent_auctions" WHERE "silent_auctions"."id" = ? LIMIT 1[0m  [["id", 1]]
+  [1m[35m (0.5ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
