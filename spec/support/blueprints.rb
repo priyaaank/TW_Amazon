@@ -1,6 +1,6 @@
 require 'machinist/active_record'
 
-SilentAuctions.blueprint do
+SilentAuction.blueprint do
   title {Faker::Lorem.sentence}
   description {Faker::Lorem.paragraph}
 end
