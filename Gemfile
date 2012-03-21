@@ -31,5 +31,6 @@ group :development, :test do
   gem "less-rails"
   gem 'simple_form'
   gem "haml"
+  gem "haml-rails"
 end
 
