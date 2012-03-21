@@ -4,4 +4,4 @@ require File.expand_path(File.dirname(__FILE__) + "../../../spec/support/bluepri
 Dir[File.dirname(__FILE__) + '/../components/*.rb'].each {|file| require file}
 
 World(SystemUnderTest)
-World(SilentAuction)
+World(SilentAuctionModule)

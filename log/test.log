@@ -143,19 +143,113 @@
   [1m[35m (0.4ms)[0m  rollback transaction
   [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
   [1m[35m (0.0ms)[0m  rollback transaction
-  [1m[36m (0.4ms)[0m  [1mbegin transaction[0m
+  [1m[36m (1.2ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.7ms)[0m  SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mROLLBACK TO SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.5ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
   [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
-  [1m[36mSQL (5.4ms)[0m  [1mINSERT INTO "silent_auctions" ("created_at", "description", "open", "title", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["created_at", Wed, 21 Mar 2012 01:17:19 UTC +00:00], ["description", "Ut qui iusto quia et neque ea. Debitis fuga qui fugit sit. Vero repudiandae perferendis recusandae."], ["open", true], ["title", "Dolorem consequuntur voluptas qui quaerat aperiam cupiditate saepe."], ["updated_at", Wed, 21 Mar 2012 01:17:19 UTC +00:00]]
-  [1m[35m (0.0ms)[0m  RELEASE SAVEPOINT active_record_1
-  [1m[36mSilentAuctions Load (0.1ms)[0m  [1mSELECT "silent_auctions".* FROM "silent_auctions" WHERE "silent_auctions"."id" = ? LIMIT 1[0m  [["id", 1]]
+  [1m[36m (0.1ms)[0m  [1mROLLBACK TO SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.5ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mROLLBACK TO SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (9.7ms)[0m  [1mINSERT INTO "silent_auctions" ("created_at", "description", "open", "title", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["created_at", Wed, 21 Mar 2012 00:49:57 UTC +00:00], ["description", "Tempore voluptatem excepturi unde ab aut optio officiis. Est officia quo deleniti ex fugit. Deleniti dolor repellendus. Earum tempora error eum. Eaque repudiandae rerum adipisci alias quae eius."], ["open", true], ["title", "Culpa eligendi et iusto qui."], ["updated_at", Wed, 21 Mar 2012 00:49:57 UTC +00:00]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36mSilentAuction Load (0.2ms)[0m  [1mSELECT "silent_auctions".* FROM "silent_auctions" WHERE "silent_auctions"."id" = ? LIMIT 1[0m  [["id", 1]]
+  [1m[35m (0.8ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (6.5ms)[0m  [1mINSERT INTO "silent_auctions" ("created_at", "description", "open", "title", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["created_at", Wed, 21 Mar 2012 00:50:13 UTC +00:00], ["description", "my description"], ["open", true], ["title", "my title"], ["updated_at", Wed, 21 Mar 2012 00:50:13 UTC +00:00]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.3ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36m (0.1ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.1ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.1ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.9ms)[0m  INSERT INTO "users" ("created_at", "current_sign_in_at", "current_sign_in_ip", "email", "encrypted_password", "last_sign_in_at", "last_sign_in_ip", "sign_in_count", "updated_at", "username") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  [["created_at", Wed, 21 Mar 2012 00:50:13 UTC +00:00], ["current_sign_in_at", nil], ["current_sign_in_ip", nil], ["email", nil], ["encrypted_password", nil], ["last_sign_in_at", nil], ["last_sign_in_ip", nil], ["sign_in_count", 0], ["updated_at", Wed, 21 Mar 2012 00:50:13 UTC +00:00], ["username", "cool_user"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.2ms)[0m  SELECT COUNT(*) FROM "users" WHERE "users"."username" = 'cool_user'
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE "users"."username" = 'cool_user' LIMIT 1[0m
   [1m[35m (0.4ms)[0m  rollback transaction
-  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
-  [1m[35m (0.0ms)[0m  rollback transaction
-  [1m[36m (0.6ms)[0m  [1mbegin transaction[0m
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (1.2ms)[0m  SELECT COUNT(*) FROM "users" WHERE "users"."username" = 'cool_user'
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.7ms)[0m  INSERT INTO "users" ("created_at", "current_sign_in_at", "current_sign_in_ip", "email", "encrypted_password", "last_sign_in_at", "last_sign_in_ip", "sign_in_count", "updated_at", "username") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  [["created_at", Wed, 21 Mar 2012 00:50:13 UTC +00:00], ["current_sign_in_at", nil], ["current_sign_in_ip", nil], ["email", nil], ["encrypted_password", nil], ["last_sign_in_at", nil], ["last_sign_in_ip", nil], ["sign_in_count", 0], ["updated_at", Wed, 21 Mar 2012 00:50:13 UTC +00:00], ["username", "cool_user"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.4ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
   [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
-  [1m[36mSQL (5.1ms)[0m  [1mINSERT INTO "silent_auctions" ("created_at", "description", "open", "title", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["created_at", Wed, 21 Mar 2012 01:37:08 UTC +00:00], ["description", "Minima est inventore. Vel et architecto eligendi ut. Aut fugiat quia sit quod quia unde. Voluptas iure dolore saepe eos."], ["open", true], ["title", "Dolor soluta tempora laboriosam distinctio aut inventore rerum."], ["updated_at", Wed, 21 Mar 2012 01:37:08 UTC +00:00]]
-  [1m[35m (0.0ms)[0m  RELEASE SAVEPOINT active_record_1
-  [1m[36mSilentAuctions Load (0.1ms)[0m  [1mSELECT "silent_auctions".* FROM "silent_auctions" WHERE "silent_auctions"."id" = ? LIMIT 1[0m  [["id", 1]]
-  [1m[35m (0.5ms)[0m  rollback transaction
-  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
-  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36mSQL (6.9ms)[0m  [1mINSERT INTO "silent_auctions" ("created_at", "description", "open", "title", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["created_at", Wed, 21 Mar 2012 00:53:25 UTC +00:00], ["description", "Temporibus aut ut. Est eum et vel possimus labore iste. Dolor magnam iusto dolorem eligendi nihil praesentium. Error fugiat nihil ipsam. Nihil unde laborum quod id perspiciatis."], ["open", true], ["title", "Non dolor recusandae molestiae vero sit optio illo voluptatem."], ["updated_at", Wed, 21 Mar 2012 00:53:25 UTC +00:00]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36mSilentAuction Load (0.2ms)[0m  [1mSELECT "silent_auctions".* FROM "silent_auctions" WHERE "silent_auctions"."id" = ? LIMIT 1[0m  [["id", 1]]
+  [1m[35m (1.6ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (10.0ms)[0m  [1mINSERT INTO "silent_auctions" ("created_at", "description", "open", "title", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["created_at", Wed, 21 Mar 2012 03:45:15 UTC +00:00], ["description", "Architecto voluptatem autem. Quia veritatis quasi hic magni adipisci. Et eius occaecati. Dolores veniam fuga voluptatem. Est excepturi ipsam impedit nobis inventore voluptates."], ["open", true], ["title", "Pariatur sed accusantium repellat corrupti."], ["updated_at", Wed, 21 Mar 2012 03:45:15 UTC +00:00]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36mSilentAuction Load (0.2ms)[0m  [1mSELECT "silent_auctions".* FROM "silent_auctions" WHERE "silent_auctions"."id" = ? LIMIT 1[0m  [["id", 1]]
+  [1m[35m (0.3ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (8.2ms)[0m  [1mINSERT INTO "silent_auctions" ("created_at", "description", "open", "title", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["created_at", Wed, 21 Mar 2012 03:45:48 UTC +00:00], ["description", "Et tenetur quasi illo pariatur et. Repellat minus tenetur. Quidem et voluptatibus quis asperiores est."], ["open", true], ["title", "Nulla eius qui praesentium et est."], ["updated_at", Wed, 21 Mar 2012 03:45:48 UTC +00:00]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36mSilentAuction Load (0.3ms)[0m  [1mSELECT "silent_auctions".* FROM "silent_auctions" WHERE "silent_auctions"."id" = ? LIMIT 1[0m  [["id", 1]]
+  [1m[35m (1.6ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction

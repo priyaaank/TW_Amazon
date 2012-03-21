@@ -1,6 +1,6 @@
-module SilentAuction
+module SilentAuctionModule
   def create_silent_auction
-    add :silent_auction, SilentAuctions.make!
+    add :silent_auctions, SilentAuction.make!
   end
 
   def verify_silent_auction_has_title silent_auction
