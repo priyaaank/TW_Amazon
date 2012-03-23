@@ -15,17 +15,33 @@ describe SilentAuctionsController do
   end
 
   describe "POST create" do
-    it 'should create a new silent auction and give notice on successful save' do
-      post :create, :silent_auction => {"title" => 'a', "description" => 'b'}
-      SilentAuction.should_receive(:save).and_return(true)
-      flash[:notice].should_not be_nil
+    before do
+      @mock_auction = mock('SilentAuction')
+      SilentAuction.should_receive(:new).and_return(@mock_auction)
     end
 
-    it 'should not create an invalid silent auction' do
-      post :create, :silent_auction => {"title" => '', "description" => 'b'}
-      SilentAuction.should_receive(:save).and_return(false)
-      flash[:notice].should be_nil
+    context 'given valid auction details' do
+      it 'creates a new silent auction' do
+        @mock_auction.should_receive(:save).and_return(true)
+        post :create, :silent_auction => {:title => 'a', :description => 'b'}
+        #flash[:notice].should_not be_nil
+      end
+
+      it 'displays confirmation message with auction title on successful save'
+
+      it 're-render #new form if select "Save and create another"'
+
+      it 'redirect to listing page if select "Save and return to listing"'
     end
+
+    context 'given invalid auction details' do
+      it 'not create a new silent auction and re-render #new form' do
+        @mock_auction.should_receive(:save).and_return(false)
+        post :create, :silent_auction => {:title => '', :description => 'b'}
+      end
+    end
+
   end
 
 end
+
