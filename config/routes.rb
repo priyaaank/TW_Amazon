@@ -1,8 +1,8 @@
 TWAmazon::Application.routes.draw do
 
-  match '/' => 'silent_auctions#index'
+  match '/' => 'silent_auctions#new'
 
-  resources :silent_auctions
+  resources :silent_auctions, :only => [:create, :new]
 
   devise_for :users, :controllers => { :omniauth_callbacks => "sessions"}
 end
