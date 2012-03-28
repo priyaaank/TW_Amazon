@@ -8,15 +8,16 @@ end
 # REAL USER ACTIONS
 When /^I create a silent auction with the following:$/ do |table|
   table.hashes.each do | hash |
-    {'title' => 'sample title', 'description' => 'this is my description'}
+    create_silent_auction_from_hash hash
   end
  end
-
 
 # VALIDATE HOWEVER WE MUST
 Then /^a valid silent auction is created with the following:$/ do |table|
   table.hashes.each do | hash |
-      {'title' => 'sample title', 'description' => 'this is my description', 'open' => true }
+      hash["open"] = (hash["open"] == "yes") ? true : false
+
+      SilentAuction.where(hash).count.should == 1
   end
 end
 
