@@ -1,6 +1,13 @@
 .DS_Store
 .idea/*
 tmp/*
-log/*
-*.sqlite3
-*.log
+db/*.sqlite3
+log/*.log
+tmp/**/*
+log/development.log
+
+log/test.log
+
+db/development.sqlite3
+
+db/test.sqlite3
