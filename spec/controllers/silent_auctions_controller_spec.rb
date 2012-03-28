@@ -28,34 +28,36 @@ describe SilentAuctionsController do
 
   end
 
-  describe "POST 'create'" do
+  describe "POST, 'create'" do
 
     before(:each) do
-      @mock_auction = mock('SilentAuction')
-      SilentAuction.should_receive(:new).and_return(@mock_auction)
-      #@invalidAttr = {:title => '', :description => ''}
-      #@validAttr = {:title => 'a', :description => 'b'}
+      @mock_auction = mock_model(SilentAuction, :title => 'a', :description => 'b').as_new_record
+      SilentAuction.stub!(:new).and_return @mock_auction
     end
 
     context 'given valid auction details' do
 
-      it 'should create a new silent auction' do
-        @mock_auction.should_receive(:save).and_return(true)
-        post :create, :silent_auction => {:title => 'a', :description => 'b'}
+      before(:each) do
+        @mock_auction.stub!(:save).and_return(true)
+      end
+
+      it 'should save new silent auction' do
+        post :create
+        @mock_auction.save.should eql true
       end
 
       it 'should display confirmation message with auction title on successful save' do
-        post :create, :silent_auction => @validAttr
-        flash[:success].should include? @mock_auction.title
+        post :create
+        flash[:success].should include(@mock_auction.title)
       end
 
       it 'should redirect to #new form if select "Save and create another"' do
-        post :create, :silent_auction => @validAttr.merge(:continue => true)
+        post :create, :continue => true
         response.should redirect_to(new_silent_auction_path)
       end
 
       it 'should redirect to listing page if select "Save and return to listing"'  do
-        post :create, :silent_auction => @validAttr.merge(:done => true)
+        post :create, :done => true
         response.should redirect_to(silent_auctions_path)
       end
 
@@ -63,13 +65,17 @@ describe SilentAuctionsController do
 
     context 'given invalid auction details' do
 
+      before(:each) do
+        @mock_auction.stub!(:title).and_return('')
+        @mock_auction.stub!(:save).and_return(false)
+        post :create
+      end
+
       it 'should not create a new silent auction' do
-        @mock_auction.should_receive(:save).and_return(false)
-        post :create, :silent_auction => @invalidAttr
+        @mock_auction.save.should eql false
       end
 
       it "should re-render the 'new' page" do
-        post :create, :silent_auction => @invalidAttr
         response.should render_template('new')
       end
 
