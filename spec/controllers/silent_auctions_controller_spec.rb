@@ -48,7 +48,7 @@ describe SilentAuctionsController do
 
       it 'should display confirmation message with auction title on successful save' do
         post :create
-        flash[:success].should include(@mock_auction.title)
+        flash[:notice].should include(@mock_auction.title)
       end
 
       it 'should redirect to #new form if select "Save and create another"' do

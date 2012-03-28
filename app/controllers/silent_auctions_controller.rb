@@ -31,7 +31,7 @@ class SilentAuctionsController < ApplicationController
     @silent_auction = SilentAuction.new(params[:silent_auction])
     respond_to do |format|
       if @silent_auction.save
-        flash[:success] = "New auction for <b>#{@silent_auction.title}</b> was successfully created!".html_safe
+        flash[:notice] = "New auction for <b>#{@silent_auction.title}</b> was successfully created!".html_safe
 
         if(params['continue'])
           format.html { redirect_to new_silent_auction_path }
