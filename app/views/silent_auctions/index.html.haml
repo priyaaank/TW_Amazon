@@ -1,3 +1,8 @@
+- flash.each do |name, msg|
+  %div{:class => "alert alert-#{ name == :notice ? 'success' : 'error' }"}
+    %a.close{"data-dismiss" => "alert"} x
+    = msg
+
 %h1{:style => 'margin-bottom:20px;'}
   %span{:style => 'display:inline-block; margin-right:20px'} Silent Auctions Listing
   = link_to 'Create NEW Auction', new_silent_auction_path, :class => 'btn btn-primary'
