@@ -200,6 +200,7 @@ PLATFORMS
 DEPENDENCIES
   awesome_print
   blueprints
+  capybara
   coffee-rails (~> 3.2.1)
   cucumber-rails
   database_cleaner

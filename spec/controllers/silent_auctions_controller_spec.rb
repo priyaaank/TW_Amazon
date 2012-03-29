@@ -1,17 +1,13 @@
 require 'spec_helper'
 
 describe SilentAuctionsController do
-  #render_views
+  render_views
 
   describe "GET 'index'" do
     it 'should return http success' do
       get :index
       response.should be_success
     end
-
-    it 'should list all auctions'
-
-    it 'should order auctions by created date, with recent ones first'
 
   end
 
@@ -25,6 +21,26 @@ describe SilentAuctionsController do
       get :new
       response.should be_success
     end
+
+    it 'should have a title field' do
+      get :new
+      response.body.should have_selector("input", :type => 'text', :name => "silent_auction['title']")
+    end
+
+    it 'should have a description textarea' do
+      get :new
+      response.body.should have_selector("textarea", :name => "silent_auction['description']")
+    end
+
+    #it 'should have a "Save and continue" button' do
+    #  get :new
+    #  response.body.should have_selector("input", :type => 'submit', :name => 'continue')
+    #end
+    #
+    #it 'should have a "Save and return" button' do
+    #  get :new
+    #  response.body.should have_selector("input", :type => 'submit', :name => 'done')
+    #end
 
   end
 
@@ -48,7 +64,7 @@ describe SilentAuctionsController do
 
       it 'should display confirmation message with auction title on successful save' do
         post :create
-        flash[:notice].should include(@mock_auction.title)
+        flash[:success].should include(@mock_auction.title)
       end
 
       it 'should redirect to #new form if select "Save and create another"' do
@@ -80,8 +96,34 @@ describe SilentAuctionsController do
       end
 
     end
-
   end
 
+    #describe 'create new auction process' do
+    #
+    #  describe 'failure' do
+    #    it 'should not create a new silent auction' do
+    #      lambda do
+    #        visit new_silent_auction_path
+    #        fill_in "title", :with => ""
+    #        fill_in "description", :with => ""
+    #        click_button 'continue'
+    #        response.should render_template('silent_auctions/new')
+    #      end.should_not change(SilentAuction, :count)
+    #    end
+    #  end
+    #
+    #  describe 'success' do
+    #    it 'should create a new silent auction' do
+    #      lambda do
+    #        visit new_silent_auction_path
+    #        fill_in "title", :with => "title"
+    #        fill_in "description", :with => "description"
+    #        click_button 'continue'
+    #        response.should render_template('silent_auctions/new')
+    #      end.should change(SilentAuction, :count).by[1]
+    #    end
+    #  end
+    #
+    #end
 end
 

@@ -12,4 +12,6 @@ Scenario: create silent auction
 	Then a valid silent auction is created with the following:
 	| title | description | open |
 	| sample title | this is my description | yes |
+
+
 	
