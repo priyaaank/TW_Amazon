@@ -5,9 +5,9 @@ Scenario: define running auction
 	When the auction is open
 	Then the auction is running
 	
-Scenario: define a not running auction	
+Scenario: define an auction that is not running	
 	Given a valid silent auction
-	Then the auction is closed
+	When the auction is closed
 	Then the auction is not running
 	
 Scenario: view all active auctions

@@ -6,7 +6,7 @@ Then /^the auction is running$/ do
   pending # express the regexp above with the code you wish you had
 end
 
-Then /^the auction is closed$/ do
+When /^the auction is closed$/ do
   pending # express the regexp above with the code you wish you had
 end
 
@@ -23,8 +23,23 @@ When /^I view all auctions$/ do
   pending # express the regexp above with the code you wish you had
 end
 
-Then /^I can see the following auctions:$/ do |table|
-  # table is a Cucumber::Ast::Table
+Then /^I can see all the auctions sorted in open and closed order$/ do
+  pending # express the regexp above with the code you wish you had
+end
+
+Then /^then sorted in alphabetical order$/ do
+  pending # express the regexp above with the code you wish you had
+end
+
+Given /^there are valid auctions$/ do
+  pending # express the regexp above with the code you wish you had
+end
+
+When /^I view all the auctions$/ do
+  pending # express the regexp above with the code you wish you had
+end
+
+Then /^I can see the auctions sorted in alphabetical order$/ do
   pending # express the regexp above with the code you wish you had
 end
 
