@@ -1,24 +1,32 @@
 Feature: find running auction
 
 Scenario: define running auction
-	given a valid silent auction
-	when the auction is open
-	then the auction is running
+	Given a valid silent auction
+	When the auction is open
+	Then the auction is running
 	
-	given a valid silent auction
-	then the auction is closed
-	then the auction is not running
+Scenario: define an auction that is not running	
+	Given a valid silent auction
+	When the auction is closed
+	Then the auction is not running
 	
 Scenario: view all active auctions
-	given there are valid auctions:
+	Given there are valid auctions with the following:
 	| title | description | open |
-	| 3 | 3 | 2 * yes, 1 * no |
-	when i view all auctions
-	then I can see the following auctions:
-	| title | description | 
-	| 3 | 3 | 2 * yes |
+	| test title 1 | test description 1 | yes |
+	| test title 2 | test description 2 | yes |
+	| test title 3 | test description 3 | no |
+	
+	When I view all auctions
+	Then I can see all the auctions sorted in open and closed order
+	And then sorted in alphabetical order
+	
+Scenario: sort auctions
+	Given there are valid auctions
+	When I view all the auctions
+	Then I can see the auctions sorted in alphabetical order
 	
 Scenario: no auctions to see
-	given there are no valid auctions
-	when  view all auctions
-	then I am told that no auctions are currently going
+	Given there are no valid auctions
+	When I view all auctions
+	Then I am told that no auctions are currently going
