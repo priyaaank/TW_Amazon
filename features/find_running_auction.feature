@@ -18,12 +18,13 @@ Scenario: view all active auctions
 	| test title 3 | test description 3 | no |
 	
 	When I view all auctions
-	Then I can see all the auctions sorted in open and closed order
-	And then sorted in alphabetical order
+	Then I can see all the auctions
+    And the auctions are sorted in open and closed order
+	And then sorted by most recent first
 	
 Scenario: sort auctions
 	Given there are valid auctions
-	When I view all the auctions
+	When I view all auctions
 	Then I can see the auctions sorted in alphabetical order
 	
 Scenario: no auctions to see
