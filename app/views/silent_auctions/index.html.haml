@@ -19,6 +19,8 @@
           %td
             %p{:style => 'font-weight:bold; font-size:1.2em'}= auction.title
             %p= auction.description
+          %td
+            %p= auction.open ? 'OPEN' : 'CLOSED'
 
 %h3{:style => 'margin-bottom:10px;'} CLOSED AUCTIONS
 - if @closed_auctions.empty?
@@ -32,3 +34,5 @@
           %td
             %p{:style => 'font-weight:bold; font-size:1.2em'}= auction.title
             %p= auction.description
+          %td
+            %p= auction.open ? 'OPEN' : 'CLOSED'

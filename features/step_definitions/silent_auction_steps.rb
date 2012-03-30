@@ -26,15 +26,12 @@ When /^I create a silent auction with the following:$/ do |table|
 end
 
 When /^the auction is open$/ do
-  pending # express the regexp above with the code you wish you had
-end
+  get(:silent_auctions).open = true
 
-Then /^the auction is running$/ do
-  pending # express the regexp above with the code you wish you had
 end
 
 When /^the auction is closed$/ do
-  pending # express the regexp above with the code you wish you had
+  get(:silent_auctions).open = false
 end
 
 When /^I view all auctions$/ do
@@ -58,8 +55,13 @@ Then /^it will have a description$/ do
   verify_silent_auction_has_description get(:silent_auctions)
 end
 
+
+Then /^the auction is running$/ do
+  get(:silent_auctions).open?.should == true
+end
+
 Then /^the auction is not running$/ do
-  pending # express the regexp above with the code you wish you had
+  get(:silent_auctions).open?.should == false
 end
 
 
