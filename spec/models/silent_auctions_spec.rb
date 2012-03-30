@@ -41,4 +41,6 @@ describe SilentAuction do
       auction.valid?.should == true
     end
   end
+
+
 end

@@ -2,7 +2,9 @@ class SilentAuctionsController < ApplicationController
 
   # GET /silent_auctions
   def index
-    @silent_auctions = SilentAuction.find(:all, :order => "created_at desc")
+    @running_auctions = SilentAuction.where(:open => true).order("created_at DESC")
+
+    @closed_auctions = SilentAuction.where(:open => false).order("created_at DESC")
 
     respond_to do |format|
       format.html # index.html.haml
@@ -16,7 +18,6 @@ class SilentAuctionsController < ApplicationController
 
   def new
     @silent_auction = SilentAuction.new
-
     respond_to do |format|
       format.html # new.html.haml
     end
@@ -31,7 +32,7 @@ class SilentAuctionsController < ApplicationController
     @silent_auction = SilentAuction.new(params[:silent_auction])
     respond_to do |format|
       if @silent_auction.save
-        flash[:notice] = "New auction for <b>#{@silent_auction.title}</b> was successfully created!".html_safe
+        flash[:success] = "New auction for <b>#{@silent_auction.title}</b> was successfully created!".html_safe
 
         if(params['continue'])
           format.html { redirect_to new_silent_auction_path }

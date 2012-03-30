@@ -1,5 +1,5 @@
 - flash.each do |name, msg|
-  %div{:class => "alert alert-#{ name == :notice ? 'success' : 'error' }"}
+  %div{:class => "alert alert-#{ name == :success ? 'success' : 'error' }"}
     %a.close{"data-dismiss" => "alert"} x
     = msg
 
@@ -7,15 +7,28 @@
   %span{:style => 'display:inline-block; margin-right:20px'} Silent Auctions Listing
   = link_to 'Create NEW Auction', new_silent_auction_path, :class => 'btn btn-primary'
 
-- if @silent_auctions.empty?
+%h3{:style => 'margin-bottom:10px;'} RUNNING AUCTIONS
+- if @running_auctions.empty?
   .empty_collection
-    %em There is no auction
+    %em There are no running auctions
 - else
   %table{:class => 'table table-striped'}
     %tbody
-      - @silent_auctions.each do |auction|
+      - @running_auctions.each do |auction|
         %tr
           %td
             %p{:style => 'font-weight:bold; font-size:1.2em'}= auction.title
             %p= auction.description
 
+%h3{:style => 'margin-bottom:10px;'} CLOSED AUCTIONS
+- if @closed_auctions.empty?
+  .empty_collection
+    %em There are no closed auctions
+- else
+  %table{:class => 'table table-striped'}
+    %tbody
+      - @closed_auctions.each do |auction|
+        %tr
+          %td
+            %p{:style => 'font-weight:bold; font-size:1.2em'}= auction.title
+            %p= auction.description

@@ -1,17 +1,12 @@
 require 'spec_helper'
 
 describe SilentAuctionsController do
-  #render_views
 
   describe "GET 'index'" do
     it 'should return http success' do
       get :index
       response.should be_success
     end
-
-    it 'should list all auctions'
-
-    it 'should order auctions by created date, with recent ones first'
 
   end
 
@@ -25,7 +20,6 @@ describe SilentAuctionsController do
       get :new
       response.should be_success
     end
-
   end
 
   describe "POST, 'create'" do
@@ -48,7 +42,7 @@ describe SilentAuctionsController do
 
       it 'should display confirmation message with auction title on successful save' do
         post :create
-        flash[:notice].should include(@mock_auction.title)
+        flash[:success].should include(@mock_auction.title)
       end
 
       it 'should redirect to #new form if select "Save and create another"' do
@@ -80,8 +74,6 @@ describe SilentAuctionsController do
       end
 
     end
-
   end
-
 end
 

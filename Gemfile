@@ -22,6 +22,7 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'cucumber-rails'
   gem 'rspec-rails'
+  gem 'capybara'
   gem 'awesome_print'
   gem 'machinist'
   gem 'faker'
