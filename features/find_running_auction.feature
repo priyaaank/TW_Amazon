@@ -23,7 +23,7 @@ Scenario: view all active auctions
 	
 Scenario: sort auctions
 	Given there are valid auctions
-	When I view all the auctions
+	When I view all auctions
 	Then I can see the auctions sorted in alphabetical order
 	
 Scenario: no auctions to see

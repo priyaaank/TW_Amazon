@@ -13,3 +13,13 @@ Scenario: create silent auction
 	| title | description | open |
 	| sample title | this is my description | yes |
 	
+	
+Feature: navigation	
+	when creating a silent auction
+	and I save and return
+	then I should be on the 'create silent auction' page
+	
+	when creating a silent auction
+	and I save and exit
+	then I should be on the 'listings' page
+	
