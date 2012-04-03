@@ -3,11 +3,56 @@ require 'spec_helper'
 describe SilentAuctionsController do
 
   describe "GET 'index'" do
+
     it 'should return http success' do
       get :index
       response.should be_success
     end
 
+    it 'should render the index template' do
+      get :index
+      response.should render_template 'index'
+    end
+
+    describe 'list all running auctions' do
+
+      before(:each) do
+        @running_auction1 = mock_model(SilentAuction, :title => 'a', :description => 'b')
+        @running_auction2 = mock_model(SilentAuction, :title => 'c', :description => 'd')
+        SilentAuction.stub_chain(:running, :order).and_return([@running_auction2, @running_auction1])
+        get :index
+      end
+
+      it 'should assign the running auctions to the view' do
+        assigns[:running_auctions].should include(@running_auction1)
+        assigns[:running_auctions].should include(@running_auction2)
+      end
+
+      it 'should sort running auctions by created date/time, most recent first' do
+        hash = Hash[assigns[:running_auctions].map.with_index{|*ki| ki}]
+        hash[@running_auction1].should be > hash[@running_auction2]
+      end
+    end
+
+    describe 'list all closed auctions' do
+
+      before(:each) do
+        @closed_auction1 = mock_model(SilentAuction, :title => 'a', :description => 'b', :open => false)
+        @closed_auction2 = mock_model(SilentAuction, :title => 'c', :description => 'd', :open => false)
+        SilentAuction.stub_chain(:closed, :order).and_return([@closed_auction2, @closed_auction1])
+        get :index
+      end
+
+      it 'should assign the closed auctions to the view' do
+        assigns[:closed_auctions].should include(@closed_auction1)
+        assigns[:closed_auctions].should include(@closed_auction2)
+      end
+
+      it 'should sort closed auctions by created date/time, most recent first' do
+        hash = Hash[assigns[:closed_auctions].map.with_index{|*ki| ki}]
+        hash[@closed_auction1].should be > hash[@closed_auction2]
+      end
+    end
   end
 
   describe "GET 'new'" do

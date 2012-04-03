@@ -3,36 +3,32 @@
     %a.close{"data-dismiss" => "alert"} x
     = msg
 
-%h1{:style => 'margin-bottom:20px;'}
-  %span{:style => 'display:inline-block; margin-right:20px'} Silent Auctions Listing
+%h1
+  %span Silent Auctions Listing
   = link_to 'Create NEW Auction', new_silent_auction_path, :class => 'btn btn-primary'
 
-%h3{:style => 'margin-bottom:10px;'} RUNNING AUCTIONS
+%h3 Running Auctions
 - if @running_auctions.empty?
   .empty_collection
-    %em There are no running auctions
+    %p.emptyMsg There is no running auction.
 - else
-  %table{:class => 'table table-striped'}
+  %table{:class => 'table table-simpleBordered'}
     %tbody
       - @running_auctions.each do |auction|
         %tr
           %td
-            %p{:style => 'font-weight:bold; font-size:1.2em'}= auction.title
-            %p= auction.description
-          %td
-            %p= auction.open ? 'OPEN' : 'CLOSED'
+            %p.itemTitle= auction.title
+            %p.itemDescription= auction.description
 
-%h3{:style => 'margin-bottom:10px;'} CLOSED AUCTIONS
+%h3 Closed Auctions
 - if @closed_auctions.empty?
   .empty_collection
-    %em There are no closed auctions
+    %p.emptyMsg There is no closed auction.
 - else
-  %table{:class => 'table table-striped'}
+  %table{:class => 'table table-simpleBordered'}
     %tbody
       - @closed_auctions.each do |auction|
         %tr
           %td
-            %p{:style => 'font-weight:bold; font-size:1.2em'}= auction.title
-            %p= auction.description
-          %td
-            %p= auction.open ? 'OPEN' : 'CLOSED'
+            %p.itemTitle= auction.title
+            %p.itemDescription= auction.description

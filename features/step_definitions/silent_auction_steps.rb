@@ -6,16 +6,19 @@ end
 
 Given /^there are valid auctions with the following:$/ do |table|
   table.hashes.each do | hash |
-    create_silent_auction_from_hash hash
+    visit new_silent_auction_path
+    fill_in("silent_auction[title]", :with => hash['title'])
+    fill_in("silent_auction[description]", :with => hash['description'])
+    click_button "submit_done"
   end
 end
 
-Given /^there are valid auctions$/ do
-  pending # express the regexp above with the code you wish you had
+Given /^there are no valid running auctions$/ do
+  SilentAuction.running.destroy_all
 end
 
-Given /^there are no valid auctions$/ do
-  pending # express the regexp above with the code you wish you had
+Given /^there are no valid closed auctions$/ do
+  SilentAuction.closed.destroy_all
 end
 
 # REAL USER ACTIONS
@@ -27,7 +30,6 @@ end
 
 When /^the auction is open$/ do
   get(:silent_auctions).open = true
-
 end
 
 When /^the auction is closed$/ do
@@ -35,6 +37,14 @@ When /^the auction is closed$/ do
 end
 
 When /^I view all auctions$/ do
+  visit silent_auctions_path
+end
+
+When /^I view all running auctions$/ do
+  visit silent_auctions_path
+end
+
+When /^I view all closed auctions$/ do
   visit silent_auctions_path
 end
 
@@ -55,7 +65,6 @@ Then /^it will have a description$/ do
   verify_silent_auction_has_description get(:silent_auctions)
 end
 
-
 Then /^the auction is running$/ do
   get(:silent_auctions).open?.should == true
 end
@@ -64,7 +73,22 @@ Then /^the auction is not running$/ do
   get(:silent_auctions).open?.should == false
 end
 
-
-Then /^I am told that no auctions are currently going$/ do
+Then /^I can see all the running auctions$/ do
   pending # express the regexp above with the code you wish you had
+end
+
+Then /^I can see all the closed auctions$/ do
+  pending # express the regexp above with the code you wish you had
+end
+
+Then /^the auctions are sorted by most recent first$/ do
+  pending # express the regexp above with the code you wish you had
+end
+
+Then /^I am told that no auctions are currently running$/ do
+  page.should have_content('There is no running auction')
+end
+
+Then /^I am told that no closed auctions exist$/ do
+  page.should have_content('There is no closed auction')
 end
