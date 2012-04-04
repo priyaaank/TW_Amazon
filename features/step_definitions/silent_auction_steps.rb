@@ -6,10 +6,7 @@ end
 
 Given /^there are valid auctions with the following:$/ do |table|
   table.hashes.each do | hash |
-    visit new_silent_auction_path
-    fill_in("silent_auction[title]", :with => hash['title'])
-    fill_in("silent_auction[description]", :with => hash['description'])
-    click_button "submit_done"
+    SilentAuction.create!(:title => hash['title'], :description => hash['description'], :open => (hash['open'] == 'yes'? true : false))
   end
 end
 
@@ -74,11 +71,15 @@ Then /^the auction is not running$/ do
 end
 
 Then /^I can see all the running auctions$/ do
-  pending # express the regexp above with the code you wish you had
+  within_table('runningAuctions') do
+
+  end
 end
 
 Then /^I can see all the closed auctions$/ do
-  pending # express the regexp above with the code you wish you had
+  within_table('closedAuctions') do
+
+  end
 end
 
 Then /^the auctions are sorted by most recent first$/ do
