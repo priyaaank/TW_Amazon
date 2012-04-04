@@ -12,7 +12,7 @@
   .empty_collection
     %p.emptyMsg There is no running auction.
 - else
-  %table{:class => 'table table-simpleBordered'}
+  %table{:class => 'table table-simpleBordered', :id => 'runningAuctions'}
     %tbody
       - @running_auctions.each do |auction|
         %tr
@@ -25,7 +25,7 @@
   .empty_collection
     %p.emptyMsg There is no closed auction.
 - else
-  %table{:class => 'table table-simpleBordered'}
+  %table{:class => 'table table-simpleBordered', :id => 'closedAuctions'}
     %tbody
       - @closed_auctions.each do |auction|
         %tr

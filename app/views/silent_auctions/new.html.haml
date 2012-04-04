@@ -10,5 +10,6 @@
   = f.input :description, :as => :text, :label => 'Description', :input_html => { :rows => 10 }
 
   .form-actions
+    = link_to "Back to Listing", silent_auctions_path, :class => 'btn'
     = submit_tag "Save and create another auction", :name => "continue", :id => 'submit_continue', :class => 'btn btn-primary'
     = submit_tag "Create auction and go back to listing", :name => "done", :id => 'submit_done', :class => 'btn btn-primary'

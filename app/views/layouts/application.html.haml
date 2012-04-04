@@ -10,7 +10,16 @@
   .navbar
     .navbar-inner
       .container
-        %a(title='TWAmazon Home'){:href => silent_auctions_path, :class => 'brand'} TWAmazon
+        %a(title='TWAmazon Home'){:href => "/", :class => 'brand'} TWAmazon
+        %ul.nav
+          %li.dropdown
+            %a{:href => "#", :class => "dropdown-toggle", "data-toggle" => "dropdown"}
+              Silent Auctions
+              %b.caret
+            %ul{:class => "dropdown-menu"}
+              %li
+                %a{:href => silent_auctions_path} Silent Auctions Listing
+                %a{:href => new_silent_auction_path} Create New Auction
   .container
     = yield
 
