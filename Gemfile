@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.2'
+gem "heroku"
 gem 'jquery-rails'
 
 #CAS OAUTH gems
@@ -24,6 +25,7 @@ end
 
 group :production, :staging do
   gem "pg"
+  gem 'thin'
 end
 
 group :development, :test do
