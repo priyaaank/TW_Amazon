@@ -4,6 +4,16 @@ gem 'rails', '3.2.2'
 gem "heroku"
 gem 'jquery-rails'
 
+gem 'coffee-rails', '~> 3.2.1'
+
+gem 'simple_form'
+
+# UI gems
+gem "less-rails"
+gem "haml"
+gem "haml-rails"
+gem "twitter-bootstrap-rails"
+
 #CAS OAUTH gems
 gem 'devise'
 gem 'omniauth-cas'
@@ -12,15 +22,8 @@ gem 'omniauth-cas'
 # in production environments by default.
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
-  gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
 
-  # UI gems
-  gem "less-rails"
-  gem 'simple_form'
-  gem "haml"
-  gem "haml-rails"
-  gem "twitter-bootstrap-rails"
 end
 
 group :production, :staging do
