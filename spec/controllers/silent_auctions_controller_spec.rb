@@ -17,8 +17,8 @@ describe SilentAuctionsController do
     describe 'list all running auctions' do
 
       before(:each) do
-        @running_auction1 = mock_model(SilentAuction, :title => 'a', :description => 'b')
-        @running_auction2 = mock_model(SilentAuction, :title => 'c', :description => 'd')
+        @running_auction1 = mock_model(SilentAuction, :title => 'a', :description => 'b', :created_at => Time.now)
+        @running_auction2 = mock_model(SilentAuction, :title => 'c', :description => 'd', :created_at => Time.now + 1)
         SilentAuction.stub_chain(:running, :order).and_return([@running_auction2, @running_auction1])
         get :index
       end
@@ -29,8 +29,10 @@ describe SilentAuctionsController do
       end
 
       it 'should sort running auctions by created date/time, most recent first' do
-        hash = Hash[assigns[:running_auctions].map.with_index{|*ki| ki}]
-        hash[@running_auction1].should be > hash[@running_auction2]
+        auctionNo =  assigns[:running_auctions].count
+        auction1 = assigns[:running_auctions][auctionNo-2]
+        auction2 = assigns[:running_auctions][auctionNo-1]
+        auction2.created_at.should be < auction1.created_at
       end
     end
 
@@ -49,8 +51,10 @@ describe SilentAuctionsController do
       end
 
       it 'should sort closed auctions by created date/time, most recent first' do
-        hash = Hash[assigns[:closed_auctions].map.with_index{|*ki| ki}]
-        hash[@closed_auction1].should be > hash[@closed_auction2]
+        auctionNo =  assigns[:closed_auctions].count
+        auction1 = assigns[:closed_auctions][auctionNo-2]
+        auction2 = assigns[:closed_auctions][auctionNo-1]
+        auction2.created_at.should be < auction1.created_at
       end
     end
   end

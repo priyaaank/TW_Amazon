@@ -15,7 +15,7 @@
   %table{:class => 'table table-simpleBordered', :id => 'runningAuctions'}
     %tbody
       - @running_auctions.each do |auction|
-        %tr
+        %tr{:class => 'auction'}
           %td
             %p.itemTitle= auction.title
             %p.itemDescription= auction.description
@@ -28,7 +28,7 @@
   %table{:class => 'table table-simpleBordered', :id => 'closedAuctions'}
     %tbody
       - @closed_auctions.each do |auction|
-        %tr
+        %tr{:class => 'auction'}
           %td
             %p.itemTitle= auction.title
             %p.itemDescription= auction.description

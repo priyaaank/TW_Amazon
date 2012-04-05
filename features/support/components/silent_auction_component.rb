@@ -1,13 +1,10 @@
 module SilentAuctionModule
   def create_silent_auction
     add :silent_auctions, SilentAuction.make!
+    #ap get(:silent_auctions)
   end
 
   def create_silent_auction_from_hash hash
-    visit new_silent_auction_path
-    fill_in("silent_auction[title]", :with => hash['title'])
-    fill_in("silent_auction[description]", :with => hash['description'])
-    click_button "submit_done"
 
     #add :silent_auctions, SilentAuction.make!(hash)
   end
