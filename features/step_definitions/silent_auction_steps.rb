@@ -1,12 +1,21 @@
 # DO WHAT WE CAN TO MAKE IT TRUE
 Given /^a valid silent auction$/ do
   create_silent_auction
-  #ap get(:silent_auctions)
 end
 
 Given /^there are valid auctions with the following:$/ do |table|
   table.hashes.each do | hash |
-    SilentAuction.create!(:title => hash['title'], :description => hash['description'], :open => (hash['open'] == 'yes'? true : false))
+    hash["open"] = (hash["open"] == "yes") ? true : false
+    SilentAuction.make!(:title => hash['title'], :description => hash['description'], :open => hash['open'])
+  end
+end
+
+Given /^there are valid running and closed silent auctions$/ do
+  5.times do
+    SilentAuction.make!
+  end
+  3.times do
+    SilentAuction.make!(:open => false)
   end
 end
 
@@ -21,7 +30,10 @@ end
 # REAL USER ACTIONS
 When /^I create a silent auction with the following:$/ do |table|
   table.hashes.each do | hash |
-    create_silent_auction_from_hash hash
+    visit new_silent_auction_path
+    fill_in("silent_auction[title]", :with => hash['title'])
+    fill_in("silent_auction[description]", :with => hash['description'])
+    click_button "submit_done"
   end
 end
 
@@ -49,7 +61,6 @@ end
 Then /^a valid silent auction is created with the following:$/ do |table|
   table.hashes.each do | hash |
       hash["open"] = (hash["open"] == "yes") ? true : false
-
       SilentAuction.where(hash).count.should == 1
   end
 end
@@ -70,20 +81,33 @@ Then /^the auction is not running$/ do
   get(:silent_auctions).open?.should == false
 end
 
-Then /^I can see all the running auctions$/ do
+Then /^I can see all auctions$/ do
+  page.find(:css,"tr.auction", :count => SilentAuction.count)
+end
+
+Then /^I can see running auctions and closed auctions separately$/ do
+  page.should have_css('table#runningAuctions')
+  page.should have_css('table#closedAuctions')
+end
+
+Then /^I can see all running auctions sorted by most recent first:$/ do |table|
   within_table('runningAuctions') do
+    page.find(:css,"tr.auction", :count => SilentAuction.running.count)
 
+    expected_order = table.raw.map {|titleRow| titleRow[0]}
+    actual_order = page.all('p.itemTitle').collect(&:text)
+    actual_order.should == expected_order
   end
 end
 
-Then /^I can see all the closed auctions$/ do
+Then /^I can see all closed auctions sorted by most recent first:$/ do |table|
   within_table('closedAuctions') do
+    page.find(:css,"tr.auction", :count => SilentAuction.closed.count)
 
+    expected_order = table.raw.map {|titleRow| titleRow[0]}
+    actual_order = page.all('p.itemTitle').collect(&:text)
+    actual_order.should == expected_order
   end
-end
-
-Then /^the auctions are sorted by most recent first$/ do
-  pending # express the regexp above with the code you wish you had
 end
 
 Then /^I am told that no auctions are currently running$/ do

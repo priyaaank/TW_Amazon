@@ -62,6 +62,13 @@ module TWAmazon
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
+    # Stop Heroku from pre-compiling assets, necessary to remove error when deploying with Rails 3.2.2
     config.assets.initialize_on_precompile = false
+
+    # Use Machinist to automatically add a blueprint to blueprints file whenever a model is generated
+    config.generators do |g|
+      g.fixture_replacement :machinist
+    end
+
   end
 end

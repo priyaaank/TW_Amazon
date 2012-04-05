@@ -8,7 +8,7 @@ Scenario: create silent auction
 Scenario: create silent auction
   	When I create a silent auction
   	And choose to save and return
-  	Then I should be on the 'listings' page
+  	Then I should be on 'listings' page
 
 Scenario: create silent auction
 	When I am in the 'create silent auction' page
