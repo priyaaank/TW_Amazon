@@ -12,10 +12,18 @@ When /^choose to save and return$/ do
   click_button 'submit_done'  # using button id
 end
 
-Then /^I should be on the 'create silent auction' page$/ do
-  current_path.should == '/silent_auctions/new'
+When /^I am in the 'create silent auction' page$/ do
+  visit new_silent_auction_path
 end
 
-Then /^I should be on the 'listings' page$/ do
-  current_path.should == '/silent_auctions'
+When /^choose to cancel creating a new auction$/ do
+  click_link "Back to Listing"
+end
+
+Then /^I should be on the 'create silent auction' page$/ do
+  current_path.should == new_silent_auction_path
+end
+
+Then /^I should (?:be on|go back to) 'listings' page$/ do
+  current_path.should == silent_auctions_path
 end
