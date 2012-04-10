@@ -22,6 +22,11 @@ class User < ActiveRecord::Base
 
   def self.is_admin?(uid)
     admins = ["dgower", "mlam"]
-    admins.include?(uid)
+    #admins = ["dgower"]
+    if admins.include?(uid)
+      true
+    else
+      false
+    end
   end
 end
