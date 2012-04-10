@@ -1,4 +1,5 @@
 class SilentAuctionsController < ApplicationController
+  before_filter :authenticate_user!
 
   # GET /silent_auctions
   def index
@@ -6,7 +7,7 @@ class SilentAuctionsController < ApplicationController
     @closed_auctions = SilentAuction.closed.order("created_at DESC")
 
     respond_to do |format|
-      format.html # index.html.haml
+      format.html # new.html.haml
     end
   end
 

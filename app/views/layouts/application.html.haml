@@ -6,21 +6,38 @@
   = javascript_include_tag "application"
   = csrf_meta_tags
 
-%body{:style => 'padding-bottom:50px'}
+%body
   .navbar
     .navbar-inner
       .container
-        %a(title='TWAmazon Home'){:href => "/", :class => 'brand'} TWAmazon
-        %ul.nav
-          %li.dropdown
-            %a{:href => "#", :class => "dropdown-toggle", "data-toggle" => "dropdown"}
-              Silent Auctions
-              %b.caret
-            %ul{:class => "dropdown-menu"}
-              %li
-                %a{:href => silent_auctions_path} Silent Auctions Listing
-                %a{:href => new_silent_auction_path} Create New Auction
+        - if user_signed_in?
+          %a(title='TWAmazon Home'){:href => "/", :class => 'brand'} TWAmazon
+          %ul.nav
+            %li.dropdown
+              %a{:href => "#", :class => "dropdown-toggle", "data-toggle" => "dropdown"}
+                Silent Auctions
+                %b.caret
+              %ul{:class => "dropdown-menu"}
+                %li
+                  %a{:href => silent_auctions_path} Silent Auctions Listing
+                  %a{:href => new_silent_auction_path} Create New Auction
+          %div{:class => "nav pull-right"}
+            %span{:class=>"label label-inverse loginStatus"}
+              %i{:class => "icon-user icon-white"}
+              Logged in as:
+              %span{:style => "color:#FFD406"}
+                = current_user.username
+            - if current_user.isAdmin
+              %span{:class => "label label-important loginStatus"} ADMIN
+            =link_to "Logout", destroy_user_session_path, :class => "btn", :style => "font-weight:bold; height:18px"
+            =link_to "Logout from CAS", destroy_cas_session_path, :class => "btn btn-danger", :style => "font-weight:bold; height:18px"
+        - else
+          %a{:class => "brand"} &nbsp;
   .container
+    - flash.each do |name, msg|
+      %div{:class => "alert alert-#{ name == :success ? 'success' : 'error' }"}
+        %a.close{"data-dismiss" => "alert"} x
+        = msg
     = yield
 
 
