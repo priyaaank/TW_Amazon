@@ -20,7 +20,6 @@ class SessionsController < Devise::OmniauthCallbacksController
 
   def destroy_cas
     if user_signed_in?
-      flash[:success] = I18n.t "devise.sessions.signed_out"
       sign_out current_user
       redirect_to "http://cas.thoughtworks.com/cas/logout"
     end
