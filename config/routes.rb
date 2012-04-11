@@ -1,6 +1,6 @@
 TWAmazon::Application.routes.draw do
 
-  #root :to => 'SilentAuctions#index'
+  root :to => 'SilentAuctions#index'
 
   resources :silent_auctions, :only => [:create, :new, :index]
 
@@ -10,10 +10,9 @@ TWAmazon::Application.routes.draw do
   devise_for :users, :controllers => { :omniauth_callbacks => "sessions"}
 
   devise_scope :user do
-    match "/" => "sessions#new"
-    get 'sign_in', :to => 'sessions#new', :as => :new_user_session
-    get 'sign_out', :to => 'sessions#destroy', :as => :destroy_user_session
-    get 'sign_out_cas', :to => 'sessions#destroy_cas', :as => :destroy_cas_session
+    get '/login', :to => 'sessions#new', :as => :new_user_session
+    get '/logout', :to => 'sessions#destroy', :as => :destroy_user_session
+    get '/cas_logout', :to => 'sessions#cas_logout', :as => :cas_logout
   end
 
 end

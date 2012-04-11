@@ -1,27 +1,11 @@
 class SessionsController < Devise::OmniauthCallbacksController
-  #before_filter :authenticate_user!
+  before_filter :authenticate_user!
 
   def new
-    respond_to do |format|
-      if user_signed_in?
-        format.html {redirect_to silent_auctions_path}
-      else
-        format.html # new.html.haml
-      end
-    end
-  end
-
-  def destroy
     if user_signed_in?
-      flash[:success] = I18n.t "devise.sessions.signed_out"
-      sign_out_and_redirect current_user
-    end
-  end
-
-  def destroy_cas
-    if user_signed_in?
-      sign_out current_user
-      redirect_to "http://cas.thoughtworks.com/cas/logout"
+      redirect_to root_path
+    else
+      redirect_to user_omniauth_authorize_path(:cas)
     end
   end
 
@@ -32,8 +16,23 @@ class SessionsController < Devise::OmniauthCallbacksController
       flash[:success] = I18n.t "devise.omniauth_callbacks.success", :kind => "Thoughtworks CAS"
       sign_in_and_redirect @user, :event => :authentication
     end
+  end
 
-    #sign_in_and_redirect :user, user
+  def destroy
+    if user_signed_in?
+      sign_out_and_redirect current_user
+    else
+      redirect_to user_omniauth_authorize_path(:cas)
+    end
+  end
+
+  def cas_logout
+    redirect_to "http://cas.thoughtworks.com/cas/logout"
+  end
+
+  # Overwriting the sign_out redirect path method
+  def after_sign_out_path_for(resource_or_scope)
+    cas_logout_path
   end
 
   protected
