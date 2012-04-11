@@ -1,5 +1,5 @@
 # DO WHAT WE CAN TO MAKE IT TRUE
-Given /^a valid silent auction$/ do
+Given /^a (?:valid|open) silent auction$/ do
   create_silent_auction
 end
 
@@ -116,4 +116,7 @@ end
 
 Then /^I am told that no closed auctions exist$/ do
   page.should have_content('There is no closed auction')
+end
+Given /^an open silent auction$/ do
+  pending
 end
