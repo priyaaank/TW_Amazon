@@ -1,5 +1,8 @@
 class SilentAuctionsController < ApplicationController
+  include ApplicationHelper
+
   before_filter :authenticate_user!
+  before_filter :authorize_admin, :except => :index
 
   # GET /silent_auctions
   def index

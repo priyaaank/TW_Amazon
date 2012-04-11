@@ -28,9 +28,8 @@
               %span{:style => "color:#FFD406"}
                 = current_user.username
             - if current_user.isAdmin
-              %span{:class => "label label-important loginStatus"} ADMIN
-            =link_to "Logout", destroy_user_session_path, :class => "btn", :style => "font-weight:bold; height:18px"
-            =link_to "Logout from CAS", destroy_cas_session_path, :class => "btn btn-danger", :style => "font-weight:bold; height:18px"
+              %span{:class => "label label-inverse loginStatus"} [ ADMIN ]
+            =link_to "Logout from CAS", destroy_user_session_path, :class => "btn btn-danger", :style => "font-weight:bold; height:18px"
         - else
           %a{:class => "brand"} &nbsp;
   .container
