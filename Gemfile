@@ -26,6 +26,10 @@ group :production, :staging do
   gem 'thin'
 end
 
+group :development, :test do
+  gem 'rspec-rails'
+end
+
 group :development do
   gem 'sqlite3'
 end
@@ -33,7 +37,6 @@ end
 group :test do
   gem 'database_cleaner'
   gem 'cucumber-rails'
-  gem 'rspec-rails'
   gem 'simplecov'
   gem 'capybara'
   gem 'awesome_print'

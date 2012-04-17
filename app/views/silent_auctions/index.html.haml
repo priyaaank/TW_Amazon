@@ -1,6 +1,6 @@
 %h1
   %span Silent Auctions Listing
-  - if current_user.isAdmin?
+  - if current_user.admin?
     = link_to 'Create NEW Auction', new_silent_auction_path, :class => 'btn btn-primary'
 
 %h3 Running Auctions

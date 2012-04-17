@@ -1,11 +1,15 @@
 module ApplicationHelper
 
+  def test_mode?
+    true
+  end
+
   def authorize_admin
     store_location
 
-    unless current_user.isAdmin?
+    unless current_user.admin?
       flash[:error] = "<h4 class='alert-heading'>Unauthorized Access!</h4>Sorry, You don't have permission to access <b>#{session[:requested_page]}</b>".html_safe
-      redirect_back_or root_path
+      redirect_back_or index_path
       false
     end
   end

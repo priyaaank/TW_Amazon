@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe SessionsController do
+describe TestSessionsController do
   describe '"GET" cas' do
     describe 'when the auth cannot be created' do
       it 'should redirect to the CAS login page'
