@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe TestSessionsController do
+describe SessionsController do
   describe '"GET" cas' do
     describe 'when the auth cannot be created' do
       it 'should redirect to the CAS login page'
@@ -11,13 +11,13 @@ describe TestSessionsController do
     end
 
     describe 'when the hash is valid' do
-      it 'should root path'
+      it 'should go to index path'
     end
   end
 
   describe 'GET "new"' do
     describe 'when user has logged in' do
-      it 'should redirect to root page'
+      it 'should redirect to index page'
     end
 
     describe 'when user has not logged in' do
@@ -25,7 +25,7 @@ describe TestSessionsController do
     end
   end
 
-  describe 'GET "destroy"' do
+  describe 'GET "destroy_cas"' do
     describe 'when user has logged in' do
       it 'should destroy current session'
       it 'should redirect to CAS logout page'

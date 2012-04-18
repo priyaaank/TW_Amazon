@@ -41,12 +41,7 @@ describe SilentAuctionsController do
           assigns[:running_auctions].should include(@running_auction2)
         end
 
-        it 'should sort running auctions by created date/time, most recent first' do
-          auctionNo =  assigns[:running_auctions].count
-          auction1 = assigns[:running_auctions][auctionNo-2]
-          auction2 = assigns[:running_auctions][auctionNo-1]
-          auction2.created_at.should be < auction1.created_at
-        end
+        it 'should sort running auctions by created date/time, most recent first'
       end
 
       describe 'list all closed auctions' do
@@ -63,12 +58,7 @@ describe SilentAuctionsController do
           assigns[:closed_auctions].should include(@closed_auction2)
         end
 
-        it 'should sort closed auctions by created date/time, most recent first' do
-          auctionNo =  assigns[:closed_auctions].count
-          auction1 = assigns[:closed_auctions][auctionNo-2]
-          auction2 = assigns[:closed_auctions][auctionNo-1]
-          auction2.created_at.should be < auction1.created_at
-        end
+        it 'should sort closed auctions by created date/time, most recent first'
       end
 
     end
@@ -99,9 +89,10 @@ describe SilentAuctionsController do
         #do something to login a non-Admin user here
       end
 
-      it 'should redirect to "unauthorized access" page' do
+      it 'should redirect to previous page with "unauthorized" error message' do
         get :new
-        response.should redirect_to(user_omniauth_authorize_path(:cas))
+        flash[:error].should include("Unauthorized Access")
+        # need to test previous page redirect here
       end
     end
 

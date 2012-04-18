@@ -2,6 +2,7 @@ module ApplicationHelper
 
   def test_mode?
     true
+    #false
   end
 
   def authorize_admin

@@ -72,7 +72,7 @@ module TWAmazon
 
     # Exclude password from log
     # instruction from: http://railsapps.github.com/tutorial-rails-devise-rspec-cucumber.html
-    #config.filter_parameters += [:password, :password_confirmation]
+    config.filter_parameters += [:password, :password_confirmation]
 
   end
 end

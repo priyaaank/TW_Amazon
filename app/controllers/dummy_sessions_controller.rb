@@ -16,10 +16,6 @@ class DummySessionsController < Devise::SessionsController
     end
   end
 
-  def create
-    super
-  end
-
   def destroy
     if user_signed_in?
       flash[:success] = I18n.t "devise.sessions.signed_out"
