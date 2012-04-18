@@ -6,6 +6,7 @@ class SilentAuctionsController < ApplicationController
 
   # GET /silent_auctions
   def index
+    @title = "Silent Auctions Listing"
     @running_auctions = SilentAuction.running.order("created_at DESC")
     @closed_auctions = SilentAuction.closed.order("created_at DESC")
 
@@ -20,6 +21,7 @@ class SilentAuctionsController < ApplicationController
   # which creates a new unsaved record and renders the form.
 
   def new
+    @title = "Create new auction"
     @silent_auction = SilentAuction.new
     respond_to do |format|
       format.html # new.html.haml

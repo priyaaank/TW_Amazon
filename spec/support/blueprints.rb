@@ -7,10 +7,10 @@ end
 
 User.blueprint(:user) do
   name  { Faker::Internet.user_name }
-  isAdmin {false}
+  admin {false}
 end
 
 User.blueprint(:admin) do
   name  { Faker::Internet.user_name }
-  isAdmin { true }
+  admin { true }
 end

@@ -1,0 +1,2 @@
+module DummySessionsHelper
+end
