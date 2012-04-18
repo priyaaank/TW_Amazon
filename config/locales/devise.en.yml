@@ -12,12 +12,15 @@ en:
         other: "%{count} errors prohibited this %{resource} from being saved:"
 
   devise:
+    dummy_sessions:
+      user:
+        signed_in: 'Login successfully'
     failure:
       already_authenticated: 'You are already signed in.'
       unauthenticated: 'You need to sign in to use the application.'
       unconfirmed: 'You have to confirm your account before continuing.'
       locked: 'Your account is locked.'
-      invalid: 'Invalid password. Please try again.'
+      invalid: 'Invalid username or password. Please try again.'
       invalid_token: 'Invalid authentication token.'
       timeout: 'Your session expired, please sign in again to continue.'
       inactive: 'Your account was not activated yet.'

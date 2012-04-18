@@ -32,7 +32,7 @@
                   %span{:style => "color:#FFD406"}
                     = current_user.username
                   - if current_user.admin?
-                    %span{:class => "label label-inverse loginStatus"} [ ADMIN ]
+                    %span{:class => "loginStatus"} [ ADMIN ]
                   %b.caret
               %ul{:class => "dropdown-menu"}
                 - if test_mode?

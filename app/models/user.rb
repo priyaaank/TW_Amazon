@@ -1,12 +1,11 @@
 class User < ActiveRecord::Base
-  devise :omniauthable, :database_authenticatable
-
-         attr_accessible :username, :admin
-
-  #set accessible for test accounts
-  attr_accessible :email, :password, :password_confirmation
-
+  devise :omniauthable
+  attr_accessible :username, :admin
   validates :username, :presence => true, :length => { :maximum => 255 }
+
+  # for dummy users
+  devise :database_authenticatable
+  attr_accessible :email, :password, :password_confirmation
 
   # Devise method used to create user from CAS uid
   def self.find_or_create_from_auth_hash(auth_hash, signed_in_resource=nil)
@@ -29,9 +28,9 @@ class User < ActiveRecord::Base
     end
   end
 
-  def valid_password?(password)
-    true
-  end
-
-
+  # This is commented out when still need test mode, which need password validation
+  # for CAS, no need for password validation within system so should add this method
+  #def valid_password?(password)
+  #  true
+  #end
 end

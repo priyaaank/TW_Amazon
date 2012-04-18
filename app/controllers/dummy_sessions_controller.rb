@@ -22,6 +22,7 @@ class DummySessionsController < Devise::SessionsController
 
   def destroy
     if user_signed_in?
+      flash[:success] = I18n.t "devise.sessions.signed_out"
       sign_out_and_redirect current_user
     else
       redirect_to root_path

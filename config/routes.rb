@@ -17,11 +17,11 @@ TWAmazon::Application.routes.draw do
              :path_names => { :sign_in => 'login', :sign_out => 'logout'}
 
   devise_scope :user do
-    get '/login_cas', :to => "sessions#new", :as => :new_user_session
+    get '/login', :to => "sessions#new", :as => :new_user_session
     get '/logout_cas', :to => 'sessions#destroy_cas', :as => :destroy_cas_user_session
 
     # for dummy user accounts
-    get '/users/login', :to => 'dummy_sessions#new', :as => :new_test_user_session
+    get '/users/login', :to => 'dummy_sessions#new', :as => :new_dummy_session
     get '/users/logout', :to => 'dummy_sessions#destroy', :as => :destroy_user_session
   end
 

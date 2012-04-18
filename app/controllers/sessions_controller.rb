@@ -2,7 +2,7 @@ class SessionsController < Devise::OmniauthCallbacksController
   include ApplicationHelper
 
   before_filter :authenticate_user!
-  before_filter :loginRedirect, :only => [:new, :new_test]
+  before_filter :loginRedirect, :only => [:new]
 
   def loginRedirect
     if user_signed_in?
@@ -13,6 +13,7 @@ class SessionsController < Devise::OmniauthCallbacksController
   def new
     # provide homepage with two login options (CAS or dummy) if app is still running in test mode
     if test_mode?
+      flash[:error] = I18n.t "devise.failure.unauthenticated"
       redirect_to root_path
     else
       # in real application (non-test-mode) redirect users directly to CAS login page
@@ -41,6 +42,10 @@ class SessionsController < Devise::OmniauthCallbacksController
   end
 
   # Overwriting the sign_out redirect path method
+  def after_sign_in_path_for(resource_or_scope)
+    index_path
+  end
+
   def after_sign_out_path_for(resource_or_scope)
     "http://cas.thoughtworks.com/cas/logout"
   end
