@@ -7,10 +7,11 @@ class SilentAuctionsController < ApplicationController
   # GET /silent_auctions
   def index
     @title = "Silent Auctions Listing"
-    @running_auctions = SilentAuction.running.order("created_at DESC")
-    @closed_auctions = SilentAuction.closed.order("created_at DESC")
+    @running_auctions = SilentAuction.running.recent.includes(:bids)
+    @closed_auctions = SilentAuction.closed.recent.includes(:bids)
 
     respond_to do |format|
+      format.js # ensure the controller can accept javascript call
       format.html # new.html.haml
     end
   end
@@ -51,4 +52,14 @@ class SilentAuctionsController < ApplicationController
     end
   end
 
+  # POST to close auction
+  def close
+    @silent_auction = SilentAuction.find(params['auction_id'])
+    if @silent_auction.bids.empty?
+      flash[:error] = "Auction with no bid cannot be closed"
+    else
+      @silent_auction.open = false
+      flash[:success] = "Auction for <b>#{@silent_auction.title}</b> has been closed".html_safe
+    end
+  end
 end

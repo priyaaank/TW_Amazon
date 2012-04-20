@@ -11,10 +11,30 @@
   %table{:class => 'table table-simpleBordered', :id => 'runningAuctions'}
     %tbody
       - @running_auctions.each do |auction|
-        %tr{:class => 'auction'}
-          %td
+        %tr{:class => 'auction', :id => "silentAuction_#{auction.id}"}
+          %td{:style => "width:80%"}
             %p.itemTitle= auction.title
             %p.itemDescription= auction.description
+          - if current_user.admin?
+            %td
+              %p= pluralize(auction.bids.count, "bid")
+            %td
+              = link_to "CLOSE", "#", :class => "btn"
+          - else
+            %td
+              - bid = user_bid_for_auction(auction)
+              - if bid != nil
+                - if bid.active?
+                  %p= "Your bid: <b>#{number_to_currency(bid.amount)}</b>".html_safe
+                  = link_to "Withdraw Bid", { :controller => "bids", :action => "cancel" }, :class => "btn btn-danger"
+                - else
+                  %p= "Your bid: <span class='delBid'>#{number_to_currency(bid.amount)}</span>".html_safe
+                  %span{:class => 'label label-important'} = "WITHDRAWN"
+              - else
+                = simple_form_for (Bid.new), :html => { :class => 'form-inline' } do |f|
+                  = f.input :amount, :label => "Your Bid", :input_html => {:class => "smallInput"}
+                  = f.hidden_field :silent_auction_id, :value => auction.id
+                  = submit_tag "Place Bid", :class => 'btn btn-primary'
 
 %h3 Closed Auctions
 - if @closed_auctions.empty?
@@ -24,7 +44,7 @@
   %table{:class => 'table table-simpleBordered', :id => 'closedAuctions'}
     %tbody
       - @closed_auctions.each do |auction|
-        %tr{:class => 'auction'}
+        %tr{:class => 'auction', :id => "silentAuction_#{auction.id}"}
           %td
             %p.itemTitle= auction.title
             %p.itemDescription= auction.description

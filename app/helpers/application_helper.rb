@@ -1,8 +1,7 @@
 module ApplicationHelper
 
   def test_mode?
-    true
-    #false
+    Rails.application.config.test_mode
   end
 
   def authorize_admin

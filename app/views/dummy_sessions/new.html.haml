@@ -1,6 +1,6 @@
 %div{:style => "margin:0 auto; width:450px;"}
   %h1{:style => "text-align:center"} Login with Test Account
-  = simple_form_for(@user, :as => "user", :url => user_session_path, :html => { :class => 'form-horizontal' }) do |f|
+  = simple_form_for(@user, :as => "user", :url => user_session_path, :html => { :class => 'form-horizontal form-bordered' }) do |f|
     = f.input :username, :collection =>  @test_username, :prompt => "Select a test user", :label => "Username"
     = f.input :password, :required => true, :label => 'Password'
 

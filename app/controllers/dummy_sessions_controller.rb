@@ -1,19 +1,14 @@
 class DummySessionsController < Devise::SessionsController
-  include ApplicationHelper
 
   def new
-    if test_mode?
-      @title = "Login with Test Account"
-      @test_username = []
-      @test_users = User.where("encrypted_password is NOT NULL")
+    @title = "Login with Test Account"
+    @test_username = []
+    @test_users = User.where("encrypted_password is NOT NULL")
 
-      @test_users.each do |user|
-        @test_username.push(user.username)
-      end
-      super
-    else
-      redirect_to user_omniauth_authorize_path(:cas)
+    @test_users.each do |user|
+      @test_username.push(user.username)
     end
+    super
   end
 
   def destroy
