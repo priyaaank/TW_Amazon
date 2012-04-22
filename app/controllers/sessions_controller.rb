@@ -11,6 +11,7 @@ class SessionsController < Devise::OmniauthCallbacksController
   end
 
   def new
+    session[:return_to] ||= request.referer
     # provide homepage with two login options (CAS or dummy) if app is still running in test mode
     if test_mode?
       flash[:error] = I18n.t "devise.failure.unauthenticated"
