@@ -1,10 +1,7 @@
 Feature: find out who wins
-
-Scenario: cannot see the winning bid
-	Given an open auction
-	Then I cannot see the winning bid
 	
-Scenario: can see the winning bid	
+Scenario: can see the winning bid
+    Given an open silent auction
 	Given the following <bids> have been placed
 	| bids |
 	| 1 |
