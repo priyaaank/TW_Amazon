@@ -25,9 +25,9 @@
                 %span{:class => 'badge badge-error', :style => "font-weight:bold; font-size:1em"}
                   = "0 bids"
             %td{:style => "width:10%"}
-              = link_to "CLOSE", close_silent_auction_path(auction), :method => 'put', :confirm => "Auction cannot be re-opened after closed. Continue?", :class => "btn btn-inverse"
-              %span{:style => "display:block; height:10px"}
-              = link_to "Delete", "#", :class => "btn"
+              - if bidCount > 0
+                = link_to "CLOSE", close_silent_auction_path(auction), :method => 'put', :confirm => "Auction cannot be re-opened after closed. Continue?", :class => "btn btn-inverse"
+                %span{:style => "display:block; height:10px"}
           - else
             %td
               - bid = user_bid_for_auction(auction)
@@ -60,5 +60,4 @@
             %p.itemWinner= "Winner: <span style='color:green'>#{wonBid.user.username}@thoughtworks.com</span>".html_safe
           %td{:style => "width:10%"}
             %p= "Won Bid: <span style='color:green; font-weight:bold'>#{number_to_currency(wonBid.amount)}</b>".html_safe
-          %td{:style => "width:10%"}
-            = link_to "Delete", "#", :class => "btn"
+          %td{:style => "width:10%"} &nbsp;
