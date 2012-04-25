@@ -74,5 +74,8 @@ module TWAmazon
     # instruction from: http://railsapps.github.com/tutorial-rails-devise-rspec-cucumber.html
     config.filter_parameters += [:password, :password_confirmation]
 
+    # Config for test mode
+    config.test_mode = true
+
   end
 end

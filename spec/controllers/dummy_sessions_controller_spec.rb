@@ -13,7 +13,7 @@ describe DummySessionsController do
   end
 
   describe 'GET "destroy"' do
-
+    it 'should go back to homepage after sign out'
   end
 
 end

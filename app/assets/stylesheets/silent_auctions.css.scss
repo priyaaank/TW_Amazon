@@ -23,5 +23,7 @@
   background: -o-linear-gradient(top, #6A6A6A, #1F1F1F);
 }
 
-p.emptyMsg {background:#fff; border:1px solid #dddddd; font-size:14px; padding:20px 10px; font-style: italic; color:#666;}
-p.itemTitle {font-weight:bold; font-size:1.2em; }
+.emptyMsg {background:#fff; border:1px solid #dddddd; font-size:14px; padding:20px 10px; font-style: italic; color:#666;}
+.itemTitle {font-weight:bold; font-size:1.2em; }
+.delBid {text-decoration: line-through; font-weight:bold;}
+.itemWinner {font-weight:bold;}

@@ -32,7 +32,7 @@ describe SilentAuctionsController do
         before(:each) do
           @running_auction1 = mock_model(SilentAuction, :title => 'a', :description => 'b', :created_at => Time.now)
           @running_auction2 = mock_model(SilentAuction, :title => 'c', :description => 'd', :created_at => Time.now + 1)
-          SilentAuction.stub_chain(:running, :order).and_return([@running_auction2, @running_auction1])
+          SilentAuction.stub_chain(:running, :recent).and_return([@running_auction2, @running_auction1])
           get :index
         end
 
@@ -49,7 +49,7 @@ describe SilentAuctionsController do
         before(:each) do
           @closed_auction1 = mock_model(SilentAuction, :title => 'a', :description => 'b', :open => false)
           @closed_auction2 = mock_model(SilentAuction, :title => 'c', :description => 'd', :open => false)
-          SilentAuction.stub_chain(:closed, :order).and_return([@closed_auction2, @closed_auction1])
+          SilentAuction.stub_chain(:closed, :recent).and_return([@closed_auction2, @closed_auction1])
           get :index
         end
 

@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  has_many :bids, :inverse_of => :user
+
   devise :omniauthable
   attr_accessible :username, :admin
   validates :username, :presence => true, :length => { :maximum => 255 }

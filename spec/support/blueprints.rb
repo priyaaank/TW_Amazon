@@ -14,3 +14,6 @@ User.blueprint(:admin) do
   name  { Faker::Internet.user_name }
   admin { true }
 end
+Bid.blueprint do
+  # Attributes here
+end
