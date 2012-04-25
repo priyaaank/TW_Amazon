@@ -52,14 +52,19 @@ class SilentAuctionsController < ApplicationController
     end
   end
 
-  # POST to close auction
+  # PUT to close auction
   def close
-    @silent_auction = SilentAuction.find(params['auction_id'])
-    if @silent_auction.bids.empty?
-      flash[:error] = "Auction with no bid cannot be closed"
+    @silent_auction = SilentAuction.find(params[:id])
+    if @silent_auction.bids.active.empty?
+      flash[:error] = "Auction with no active bid cannot be closed"
     else
       @silent_auction.open = false
-      flash[:success] = "Auction for <b>#{@silent_auction.title}</b> has been closed".html_safe
+      if @silent_auction.save
+        flash[:success] = "Auction for <b>#{@silent_auction.title}</b> has been closed".html_safe
+      else
+        flash[:error] = "Error! Auction not closed."
+      end
     end
+    redirect_to silent_auctions_path
   end
 end

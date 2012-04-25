@@ -7,8 +7,9 @@ class SilentAuction < ActiveRecord::Base
             :uniqueness => {:message => "Duplicate title not allowed"}
   validates :description, :presence => { :message => "Description is required" }, :length => { :maximum => 500, :message => "Description is too long (Maximum 500 characters)" }
 
+  attr_accessible :title, :description, :open
+
   scope :running, where(:open => true)
   scope :closed, where(:open => false)
   scope :recent, order('created_at desc')
-
 end

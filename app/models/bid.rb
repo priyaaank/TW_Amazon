@@ -6,15 +6,7 @@ class Bid < ActiveRecord::Base
 
   attr_accessible :amount, :active, :silent_auction_id
 
+  scope :active, where(:active => true)
+  scope :highFirst, order('amount DESC')
 
-  #attr_accessor :accessible
-  #
-  #private
-  #def mass_assignment_authorizer(role = :default)
-  #  if accessible == :all
-  #    self.class.protected_attributes
-  #  else
-  #    super + (accessible || [])
-  #  end
-  #end
 end

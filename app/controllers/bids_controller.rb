@@ -15,13 +15,15 @@ class BidsController < ApplicationController
     redirect_to index_path
   end
 
-  def cancel(bid)
-    bid.active = false
-    if bid.save
+  def update
+    @bid = Bid.find(params[:id])
+    @bid.active = false
+    if @bid.save
       flash[:success] = "Bid cancelled successfully"
     else
       flash[:error] = "Error! Bid not cancelled"
     end
+    redirect_to index_path
   end
 
 end
