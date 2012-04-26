@@ -14,7 +14,7 @@
         %tr{:class => 'auction', :id => "silentAuction_#{auction.id}"}
           %td{:style => "width:80%"}
             %p.itemTitle= auction.title
-            %p.itemDescription= auction.description
+            %p.itemDescription= line_break(auction.description)
           - if current_user.admin?
             %td{:style => "width:10%"}
               - bidCount = auction.bids.active.count

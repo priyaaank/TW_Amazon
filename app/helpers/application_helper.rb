@@ -4,6 +4,10 @@ module ApplicationHelper
     Rails.application.config.test_mode
   end
 
+  def line_break(string)
+    string.gsub("\n", '<br/>')
+  end
+
   def authorize_admin
     store_location
 
