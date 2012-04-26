@@ -7,7 +7,7 @@ module SilentAuctionsHelper
 
   # return winner name
   def won_bid_for_auction(auction)
-    winBid = auction.bids.active.highFirst.first
+    winBid = auction.bids.active.highFirst.earlier.first
   end
 
 end

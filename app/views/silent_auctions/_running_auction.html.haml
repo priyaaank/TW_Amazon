@@ -1,0 +1,8 @@
+%tr{:class => 'auction', :id => "silentAuction_#{auction.id}"}
+  %td{:style => "width:80%"}
+    %p.itemTitle= auction.title
+    = simple_format(auction.description, :class => 'itemDescription')
+  - if current_user.admin?
+    = render :partial => "admin_auction_view", :locals => {:auction => auction}
+  - else
+    = render :partial => "bids/user_bid_view", :locals => {:auction => auction}

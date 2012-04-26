@@ -11,5 +11,17 @@ require 'spec_helper'
 #   end
 # end
 describe SilentAuctionsHelper do
-  pending "add some examples to (or delete) #{__FILE__}"
+
+  describe 'user_bid_for_auction' do
+
+  end
+
+  describe 'won_bid_for_auction' do
+
+    it 'should return the highest bid'
+
+    it 'should return the earlier bid if two highest bids have same amount'
+
+  end
+
 end

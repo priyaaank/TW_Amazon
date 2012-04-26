@@ -1,0 +1,13 @@
+%tr{:class => 'auction', :id => "silentAuction_#{auction.id}"}
+  - wonBid = won_bid_for_auction(auction)
+  %td{:style => "width:80%"}
+    %p.itemTitle= auction.title
+    = simple_format(auction.description, :class => 'itemDescription')
+    = simple_format("Winner: <span class='highlight'>#{wonBid.user.username}@thoughtworks.com</span>", :class => 'itemWinner')
+  %td{:style => "width:10%"}
+    = simple_format("Won Bid: <span class='highlight'>#{number_to_currency(wonBid.amount)}</span>")
+  %td{:style => "width:10%"}
+    - if current_user.admin?
+      &nbsp;
+    - else
+      = render :partial => "bids/user_bid_view", :locals => { :auction => auction, :wonBid => wonBid }

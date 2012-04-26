@@ -1,0 +1,2 @@
+%p= simple_format("Your bid: <b>#{number_to_currency(bid.amount)}</b>")
+= link_to "Withdraw Bid", bid, :method => 'put', :confirm => "No more bid on this auction will be allowed for you after withdraw. Continue?",:class => "btn btn-danger"

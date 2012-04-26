@@ -1,0 +1,18 @@
+- bid = user_bid_for_auction(auction)
+- if auction.open?
+  %td
+    - if bid != nil
+      - if bid.active?
+        = render :partial => "bids/withdrawBidForm", :locals => { :bid => bid }
+      - else
+        = render :partial => "bids/withdrawnBid", :locals => { :bid => bid }
+    - else
+      = render :partial => "bids/newBidForm", :locals => { :auction => auction }
+- else
+  - if bid != nil
+    - if bid.id == wonBid.id
+      = simple_format("Your Bid: <span class='highlight'>#{number_to_currency(bid.amount)}</span>")
+    - else
+      = simple_format("Your Bid: <span class='error'>#{number_to_currency(bid.amount)}</span>")
+  - else
+    &nbsp;

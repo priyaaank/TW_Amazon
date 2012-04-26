@@ -35,6 +35,9 @@ class SilentAuctionsController < ApplicationController
   # and passes it to te create action within the controller which then attempts to save it to the database.
 
   def create
+    # trim title to prevent duplicates with space only differences
+    params[:silent_auction][:title] = params[:silent_auction][:title].strip
+
     @silent_auction = SilentAuction.new(params[:silent_auction])
     respond_to do |format|
       if @silent_auction.save

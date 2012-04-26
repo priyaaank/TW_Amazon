@@ -1,0 +1,11 @@
+%td{:style => "width:10%"}
+  - bidCount = auction.bids.active.count
+  - if bidCount > 0
+    %span{:style => "font-weight:bold; font-size:1em"}
+      = pluralize(auction.bids.count, "bid")
+  - else
+    %span{:class => 'badge badge-error', :style => "font-weight:bold; font-size:1em"}
+      = "0 bids"
+%td{:style => "width:10%"}
+  - if bidCount > 0
+    = link_to "CLOSE", close_silent_auction_path(auction), :method => 'put', :confirm => "Auction cannot be re-opened after closed. Continue?", :class => "btn btn-inverse"

@@ -8,5 +8,6 @@ class Bid < ActiveRecord::Base
 
   scope :active, where(:active => true)
   scope :highFirst, order('amount DESC')
+  scope :earlier, order('created_at ASC')
 
 end

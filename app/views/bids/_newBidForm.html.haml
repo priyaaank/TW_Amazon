@@ -1,0 +1,4 @@
+= simple_form_for (Bid.new), :html => { :class => 'form-inline' } do |f|
+  = f.input :amount, :label => "Your Bid", :input_html => {:class => "smallInput"}
+  = f.hidden_field :silent_auction_id, :value => auction.id
+  = submit_tag "Place Bid", :class => 'btn btn-primary'
