@@ -14,7 +14,7 @@
         %tr{:class => 'auction', :id => "silentAuction_#{auction.id}"}
           %td{:style => "width:80%"}
             %p.itemTitle= auction.title
-            %p.itemDescription= line_break(auction.description)
+            = simple_format(auction.description, :class => 'itemDescription')
           - if current_user.admin?
             %td{:style => "width:10%"}
               - bidCount = auction.bids.active.count
@@ -33,10 +33,10 @@
               - bid = user_bid_for_auction(auction)
               - if bid != nil
                 - if bid.active?
-                  %p= "Your bid: <b>#{number_to_currency(bid.amount)}</b>".html_safe
+                  %p= simple_format("Your bid: <b>#{number_to_currency(bid.amount)}</b>")
                   = link_to "Withdraw Bid", bid, :method => 'put', :confirm => "No more bid on this auction will be allowed for you after withdraw. Continue?",:class => "btn btn-danger"
                 - else
-                  %p= "Your bid: <span class='delBid'>#{number_to_currency(bid.amount)}</span>".html_safe
+                  %p= simple_format("Your bid: <span class='delBid'>#{number_to_currency(bid.amount)}</span>")
                   %span{:style => 'font-weight:bold; color:#f00'} WITHDRAWN
               - else
                 = simple_form_for (Bid.new), :html => { :class => 'form-inline' } do |f|
@@ -56,8 +56,8 @@
           - wonBid = won_bid_for_auction(auction)
           %td{:style => "width:80%"}
             %p.itemTitle= auction.title
-            %p.itemDescription= auction.description
-            %p.itemWinner= "Winner: <span style='color:green'>#{wonBid.user.username}@thoughtworks.com</span>".html_safe
+            = simple_format(auction.description, :class => 'itemDescription')
+            = simple_format("Winner: <span class='highlight'>#{wonBid.user.username}@thoughtworks.com</span>", :class => 'itemWinner')
           %td{:style => "width:10%"}
-            %p= "Won Bid: <span style='color:green; font-weight:bold'>#{number_to_currency(wonBid.amount)}</b>".html_safe
+            = simple_format("Won Bid: <span class='highlight'>#{number_to_currency(wonBid.amount)}</span>")
           %td{:style => "width:10%"} &nbsp;
