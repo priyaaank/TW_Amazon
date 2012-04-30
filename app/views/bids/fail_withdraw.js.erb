@@ -1,0 +1,7 @@
+$('.withdraw_bid').unbind('ajax:success');
+$('.withdraw_bid').bind('ajax:success', function(){
+    var parent = $(this).parent();
+    parent.find(".msg").remove();
+    parent.append("<div class='error msg'><%= errMsg %></div>");
+    $("span.success").empty();
+});

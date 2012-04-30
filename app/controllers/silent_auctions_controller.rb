@@ -62,12 +62,16 @@ class SilentAuctionsController < ApplicationController
       flash[:error] = "Auction with no active bid cannot be closed"
     else
       @silent_auction.open = false
-      if @silent_auction.save
-        flash[:success] = "Auction for <b>#{@silent_auction.title}</b> has been closed".html_safe
-      else
-        flash[:error] = "Error! Auction not closed."
+      respond_to do |format|
+        if @silent_auction.save
+          format.html { redirect_to request.referer, :notice => "Auction for <b>#{@silent_auction.title}</b> has been closed".html_safe }
+          format.js { render 'close_auction.js.erb'}
+        else
+          err_msg = "Some error occurs! Bid was not closed."
+          format.html { redirect_to request.referer, :notice => err_msg }
+          format.js { render 'fail_close_auction.js.erb', :locals => { :errMsg => err_msg } }
+        end
       end
     end
-    redirect_to silent_auctions_path
   end
 end

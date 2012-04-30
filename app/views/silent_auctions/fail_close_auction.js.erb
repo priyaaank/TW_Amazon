@@ -1,0 +1,7 @@
+$('.close_auction_btn').unbind('ajax:success');
+$('.close_auction_btn').bind('ajax:success', function(){
+    var parent = $(this).parent();
+    parent.find(".msg").remove();
+    parent.append("<div class='error msg'><%= errMsg %></div>");
+    $("span.success").empty();
+});

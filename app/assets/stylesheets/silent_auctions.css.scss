@@ -23,9 +23,30 @@
   background: -o-linear-gradient(top, #6A6A6A, #1F1F1F);
 }
 
+.bid_auction td, {
+  //background: #fdffda;
+}
+
+.table tbody tr.bid_auction:hover td, .table tbody tr.bid_auction:hover th {
+  //background: #fdffda;
+}
+
+.just_closed td, {
+  background: #f3f3f3;
+}
+
+.table tbody tr.just_closed:hover td, .table tbody tr.just_closed:hover th {
+  background: #f3f3f3;
+}
+
 .emptyMsg {background:#fff; border:1px solid #dddddd; font-size:14px; padding:20px 10px; font-style: italic; color:#666;}
 .itemTitle {font-weight:bold; font-size:1.2em; }
 .delBid {text-decoration: line-through; font-weight:bold;}
 .itemWinner {font-weight:bold;}
 .highlight {color:green; font-weight:bold;}
-.error {color:red; font-weight:bold;}
+.lost {color:red; font-weight:bold;}
+.error {color:#B94A48;}
+.msg {margin-top:5px;}
+span.success i{display:inline-block; margin-left:5px;}
+
+.bid_col p {margin-bottom:2px;}

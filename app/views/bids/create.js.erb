@@ -1,0 +1,10 @@
+$('.bid_form').unbind('ajax:success');
+$('.bid_form').bind('ajax:success', function(){
+    var parent = $(this).parent();
+    $(this).fadeOut().remove();
+    parent.append(
+            "<%= escape_javascript(render :partial => "bids/withdrawBidForm", :locals => {:bid => @bid}) %> "
+    ).fadeIn();
+    $("span.success").empty();
+    parent.find("span.success").append("<i class='icon-ok'></i>");
+});

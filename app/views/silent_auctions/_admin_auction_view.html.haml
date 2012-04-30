@@ -8,4 +8,9 @@
       = "0 bids"
 %td{:style => "width:10%"}
   - if bidCount > 0
-    = link_to "CLOSE", close_silent_auction_path(auction), :method => 'put', :confirm => "Auction cannot be re-opened after closed. Continue?", :class => "btn btn-inverse"
+    = link_to "CLOSE", close_silent_auction_path(auction),
+                        :method => 'put',
+                        :disable_with => "Closing...",
+                        :remote => true,
+                        :confirm => "Auction cannot be re-opened after closed. Continue?",
+                        :class => "btn btn-inverse btn-mini close_auction_btn"

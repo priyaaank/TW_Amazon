@@ -28,7 +28,7 @@
           %a{:class => "brand"} &nbsp;
   .container
     - flash.each do |name, msg|
-      %div{:class => "alert alert-#{ name == :success ? 'success' : 'error' }"}
+      %div{:class => "alert alert-#{ name == :success || :notice ? 'success' : 'error' }"}
         %a.close{"data-dismiss" => "alert"} x
         = msg
     = yield

@@ -23,7 +23,7 @@ puts 'SETTING UP TEST USER LOGIN'
 
 @index = 1
 
-5.times do
+10.times do
   user = User.new(:username => "User_tw_#{@index}", :admin => false, :email=> nil, :password => 'userpass', :password_confirmation => 'userpass')
   if(user.save!)
     puts 'New user created: ' << user.username

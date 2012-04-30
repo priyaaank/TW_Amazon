@@ -1,0 +1,5 @@
+$('.bid_form').unbind('ajax:success');
+$('.bid_form').bind('ajax:success', function(){
+    $(this).find(".msg").remove();
+    $(this).append("<div class='error msg'><%= errMsg %></div>");
+});
