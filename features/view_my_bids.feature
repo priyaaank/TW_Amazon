@@ -1,4 +1,4 @@
-Feature: my account
+Feature: View my bids 
 
 Scenario: View my bids
 Given that I have bid on following auctions:
