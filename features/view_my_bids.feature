@@ -1,3 +1,6 @@
+Feature: my account
+
+Scenario: View my bids
 Given that I have bid on following auctions:
 | title | description | minimum price | my bid | open |
 | Apple MacBook Pro 15" | test description 1 | 300 | 3001 | yes |
