@@ -77,5 +77,8 @@ module TWAmazon
     # Config for test mode
     config.test_mode = true
 
+    # for Rails to load script in lib folder
+    config.autoload_paths += %W(#{config.root}/lib)
+
   end
 end

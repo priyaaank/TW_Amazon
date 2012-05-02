@@ -1,4 +1,6 @@
 class SilentAuction < ActiveRecord::Base
+  before_save :strip_whitespace
+
   has_many :bids, :dependent => :destroy, :inverse_of => :silent_auction
 
   validates :title,
@@ -12,4 +14,8 @@ class SilentAuction < ActiveRecord::Base
   scope :running, where(:open => true)
   scope :closed, where(:open => false)
   scope :recent, order('created_at desc')
+
+  def strip_whitespace
+    self.title = self.title.strip
+  end
 end

@@ -28,6 +28,7 @@ end
 
 group :development, :test do
   gem 'rspec-rails'
+  gem 'ruby-debug19'
 end
 
 group :development do

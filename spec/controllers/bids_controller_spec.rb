@@ -1,8 +1,14 @@
 require 'spec_helper'
 
 describe BidsController do
+  include Devise::TestHelpers
 
   describe "POST 'create'" do
+
+    before(:each) do
+      @user = User.make!(:user)
+      sign_in @user
+    end
 
     context "given a running auction" do
 

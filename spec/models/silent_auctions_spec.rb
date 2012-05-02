@@ -8,6 +8,14 @@ describe SilentAuction do
       auction.title = "my title"
       auction.valid?.should == true
     end
+
+    it "should have a unique title" do
+      auction1 = SilentAuction.create(:title => "a", :description => "my description")
+      auction1.should be_valid
+      auction2 = SilentAuction.create(:title => "a  ", :description => "my description")
+      auction2.should_not be_valid
+      auction2.should have_at_least(1).errors_on(:title)
+    end
     
     it 'should have a description' do 
       auction = SilentAuction.new(:title => "my title")
