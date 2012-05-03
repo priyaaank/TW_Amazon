@@ -1,0 +1,10 @@
+%h3 My Auctions
+- if @bids.empty?
+  .empty_collection
+    %p.emptyMsg You currently have not participated in any auctions.
+-else
+  %table{:class => 'table table-simpleBorded', :id => 'currentBids'}
+    %tbody
+      - @bids.each do |bid|
+        - auction = bid.silent_auction
+        = render :partial => "silent_auctions/running_auction", :locals => {:auction => auction }

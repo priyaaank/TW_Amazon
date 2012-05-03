@@ -27,3 +27,11 @@ end
 Then /^I should (?:be on|go back to) 'listings' page$/ do
   current_path.should == silent_auctions_path
 end
+
+When /^I'm logged in$/ do
+  visit '/users/login/' 
+  puts page.find(:css, 'title').text
+  save_and_open_page
+  select 'admin_tw_1', :from => 'user[username]'
+  fill_in 'user[password]', :with => 'adminpass'
+end
