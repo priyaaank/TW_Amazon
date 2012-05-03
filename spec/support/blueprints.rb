@@ -19,6 +19,13 @@ User.blueprint(:admin) do
   password_confirmation {"adminpass"}
 end
 
+User.blueprint(:casUser) do
+  username  { Faker::Internet.user_name }
+  admin { false }
+  password { nil }
+  password_confirmation {nil}
+end
+
 Bid.blueprint do
   # Attributes here
 end

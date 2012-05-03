@@ -11,6 +11,10 @@ class DummySessionsController < Devise::SessionsController
     super
   end
 
+  def after_sign_in_path_for(resource)
+    index_path
+  end
+
   def destroy
     if user_signed_in?
       flash[:success] = I18n.t "devise.sessions.signed_out"

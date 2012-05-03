@@ -6,7 +6,7 @@
 %h3 Running Auctions
 - if @running_auctions.empty?
   .empty_collection
-    %p.emptyMsg There is no running auction.
+    %p.emptyMsg There are no running auctions.
 - else
   %table{:class => 'table table-simpleBordered', :id => 'runningAuctions'}
     %tbody
@@ -16,7 +16,7 @@
 %h3 Closed Auctions
 - if @closed_auctions.empty?
   .empty_collection
-    %p.emptyMsg There is no closed auction.
+    %p.emptyMsg There are no closed auctions.
 - else
   %table{:class => 'table table-simpleBordered', :id => 'closedAuctions'}
     %tbody

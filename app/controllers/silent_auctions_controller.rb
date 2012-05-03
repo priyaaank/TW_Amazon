@@ -55,17 +55,18 @@ class SilentAuctionsController < ApplicationController
   # PUT to close auction
   def close
     @silent_auction = SilentAuction.find(params[:id])
-    if @silent_auction.bids.active.empty?
+    if @silent_auction.bids.active.count == 0
       flash[:error] = "Auction with no active bid cannot be closed"
+      redirect_to silent_auction_path
     else
       @silent_auction.open = false
       respond_to do |format|
         if @silent_auction.save
-          format.html { redirect_to request.referer, :notice => "Auction for <b>#{@silent_auction.title}</b> has been closed".html_safe }
+          format.html { redirect_to silent_auction_path, :notice => "Auction for <b>#{@silent_auction.title}</b> has been closed".html_safe }
           format.js { render 'close_auction.js.erb'}
         else
           err_msg = "Some error occurs! Bid was not closed."
-          format.html { redirect_to request.referer, :notice => err_msg }
+          format.html { redirect_to silent_auction_path, :notice => err_msg }
           format.js { render 'fail_close_auction.js.erb', :locals => { :errMsg => err_msg } }
         end
       end

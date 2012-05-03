@@ -166,5 +166,42 @@ describe SilentAuctionsController do
 
     end
   end
+
+  describe "PUT 'close'" do
+    before (:each) do
+      @admin = User.make!(:admin)
+      sign_in @admin
+
+      @auction = SilentAuction.make!
+    end
+
+    it 'should not close auction with no active bid' do
+      put :close, :id => @auction.id
+      flash[:error].should eql "Auction with no active bid cannot be closed"
+      SilentAuction.find(@auction.id).open.should == true
+      response.should redirect_to(silent_auction_path)
+    end
+
+    it 'should close auction with at least one active bid' do
+      user1 = User.make!(:user)
+      user1.bids.create(:amount => 100, :silent_auction_id => @auction.id)
+      put :close, :id => @auction.id
+      SilentAuction.find(@auction.id).open.should == false
+    end
+
+    it 'should not close auction with only withdrawn bids' do
+      user1 = User.make!(:user)
+      user1.bids.create(:amount => 100, :silent_auction_id => @auction.id, :active => false)
+
+      user2 = User.make!(:user)
+      user2.bids.create(:amount => 200, :silent_auction_id => @auction.id, :active => false)
+
+      put :close, :id => @auction.id
+      SilentAuction.find(@auction.id).open.should == true
+    end
+
+    it 'should render the close auction layout after succeed'
+
+  end
 end
 
