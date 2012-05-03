@@ -19,6 +19,7 @@ TWAmazon::Application.routes.draw do
   resources :bids do
     member do
       put 'withdraw'
+      get 'withdraw' #to allow get to the page when js is disabled
     end
   end
 

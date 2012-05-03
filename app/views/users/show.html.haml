@@ -3,7 +3,7 @@
   .empty_collection
     %p.emptyMsg You currently have not participated in any auctions.
 -else
-  %table{:class => 'table table-simpleBorded', :id => 'currentBids'}
+  %table{:class => 'table table-simpleBordered', :id => 'currentBids'}
     %tbody
       - @bids.each do |bid|
         - auction = bid.silent_auction

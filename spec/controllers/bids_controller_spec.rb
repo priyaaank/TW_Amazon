@@ -57,24 +57,48 @@ describe BidsController do
       @bid = @user.bids.create(:amount => 100, :silent_auction_id => @auction.id)
     end
 
-    it 'should withdraw the bid if auction is still open' do
-      put :withdraw, :id => @bid.id
+    context 'given a running auction' do
+      it 'should withdraw the bid' do
+        put :withdraw, :id => @bid.id
+        Bid.find(@bid.id).active.should == false
+      end
 
-      Bid.find(@bid.id).active.should == false
-      flash[:success].should eql "Bid withdrawn successfully"
-
-      # NEED TO TEST RENDER JAVASCRIPT PARTIALS AND HTML REDIRECT AS WELL
+      #it 'should redirect to previous page with success message if javascript not enabled' do
+      #  request.env['HTTP_REFERER'] = "http://test.host/previous/page"
+      #  put :withdraw, :id => @bid.id
+      #  #flash[:notice].should eql "Bid withdrawn successfully"
+      #  response.should redirect_to :back
+      #end
+      #
+      #it 'should render withdrawn bid view if javascript enabled' do
+      #  put :withdraw, :id => @bid.id, :format => 'js'
+      #  response.should render_template(:partial => 'withdraw_done.js.erb')
+      #end
     end
 
-    it 'should not withdraw the bid if auction is closed' do
-      @auction.open = false
-      @auction.save
+    context 'given a closed auction' do
+      before(:each) do
+        @auction.close
+      end
 
-      put :withdraw, :id => @bid.id
-      Bid.find(@bid.id).active.should == true
-      flash[:error].should include 'Auction has been closed! Bid cannot be withdrawn anymore.'
+      it 'should not withdraw the bid if auction is closed' do
+        put :withdraw, :id => @bid.id
+        Bid.find(@bid.id).active.should == true
+      end
 
-      # NEED TO TEST RENDER JAVASCRIPT PARTIALS AND HTML REDIRECT AS WELL
+      #it 'should redirect to previous page with error message if javascript not enabled' do
+      #  request.env['HTTP_REFERER'] = "http://test.host/previous/page"
+      #  put :withdraw, :id => @bid.id
+      #  flash[:alert].should eql @bid.errors.full_messages[0]
+      #  response.should redirect_to :back
+      #end
+      #
+      #it 'should render fail withdraw view if javascript enabled' do
+      #  put :withdraw, :id => @bid.id, :format => 'js'
+      #  response.should render_template(:partial => 'fail_withdraw.js.erb')
+      #end
     end
+
+
   end
 end

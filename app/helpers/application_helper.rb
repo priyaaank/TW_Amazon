@@ -23,6 +23,20 @@ module ApplicationHelper
     clear_request_paths
   end
 
+  def redirect_back_with_error(default, msg)
+    if session[:return_to] == nil
+      redirect_to(default, :notice => msg)
+    else
+      redirect_to(session[:return_to], :alert => msg)
+    end
+    clear_request_paths
+  end
+
+  def redirect_back_with_success(default, msg)
+    redirect_to(session[:return_to] || default, :notice => msg)
+    clear_request_paths
+  end
+
   private
   def store_location
     session[:return_to] ||= request.referer

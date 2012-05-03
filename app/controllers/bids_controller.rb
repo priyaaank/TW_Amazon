@@ -1,6 +1,5 @@
 class BidsController < ApplicationController
   include ApplicationHelper
-
   before_filter :authenticate_user!
 
   def create
@@ -8,14 +7,13 @@ class BidsController < ApplicationController
     @bid = current_user.bids.build(params[:bid])
     respond_to do |format|
       if @bid.save
-        flash[:error] = "Bid of $#{@bid.amount} has been placed successfully"
-        format.html { redirect_back_or silent_auctions_path }
+        msg = "Bid of $#{@bid.amount} has been placed successfully"
+        format.html { redirect_back_with_success(silent_auctions_path, msg) }
         format.js { render 'create.js.erb'}
       else
-        err_msg = @bid.errors.full_messages
-        flash[:error] = "Error! Bid #{err_msg}"
-        format.html { redirect_back_or silent_auctions_path }
-        format.js { render 'fail.js.erb', :locals => { :errMsg => "Bid #{err_msg}" } }
+        err_msg = @bid.errors.full_messages[0]
+        format.html { redirect_back_with_error(silent_auctions_path,"Error! #{err_msg}") }
+        format.js { render 'fail.js.erb', :locals => { :errMsg => "#{err_msg}" } }
       end
     end
   end
@@ -25,13 +23,12 @@ class BidsController < ApplicationController
     auction = SilentAuction.find(@bid.silent_auction_id)
     respond_to do |format|
       if @bid.withdraw
-          flash[:success] = "Bid withdrawn successfully"
-          format.html { redirect_back_or silent_auctions_path }
+          msg = "Bid withdrawn successfully"
+          format.html { redirect_back_with_success(silent_auctions_path, msg) }
           format.js { render 'withdraw_done.js.erb' }
       else
-        err_msg = @bid.errors.full_messages
-        flash[:error] = err_msg
-        format.html { redirect_back_or silent_auctions_path }
+        err_msg = @bid.errors.full_messages[0]
+        format.html { redirect_back_with_error(silent_auctions_path,"Error! #{err_msg}") }
         format.js { render 'fail_withdraw.js.erb', :locals => { :errMsg => err_msg } }
       end
     end

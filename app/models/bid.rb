@@ -5,7 +5,7 @@ class Bid < ActiveRecord::Base
   validate :auction_closed
 
   validates :amount,
-            :presence => { :message => "amount is required" } ,
+            :presence => { :message => "is required" } ,
             :numericality => { :greater_than => 0, :greater_than_or_equal_to => 0.01, :less_than_or_equal_to => 9999.99},
             :format => { :with => /^\d+?(?:\.\d{0,2})?$/, :message => "can only have 2 decimal places" }
 
