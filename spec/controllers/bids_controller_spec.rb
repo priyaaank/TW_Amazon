@@ -16,22 +16,22 @@ describe BidsController do
       end
 
       it 'should create a new bid given valid details and user has not placed bid on the auction before' do
-        lamda {
-          post :create, :bid => {:amount => 100, :silent_auction_id => @running_auction}
-        }.should change(@running_auction.bids.count).by(1)
+        lambda {
+          post :create, :bid => {:amount => 100, :silent_auction_id => @running_auction.id}
+        }.should change(@running_auction.bids, :count).by(1)
       end
 
       it 'should not create new bid if user has placed bid for the auction' do
-        lamda {
-          post :create, :bid => {:amount => 100, :silent_auction_id => @running_auction}
-        }.should_not change(@running_auction.bids.count)
-        flash[:error].should eql 'You have already bid on this auction'
+        @user.bids.create(:amount => 300, :silent_auction_id => @running_auction.id)
+        lambda {
+          post :create, :bid => {:amount => 100, :silent_auction_id => @running_auction.id}
+        }.should_not change(@running_auction.bids, :count)
       end
 
       it 'should not create bid given invalid details' do
-        lamda {
-          post :create, :bid => {:amount => -99, :silent_auction_id => @running_auction}
-        }.should_not change(@running_auction.bids.count)
+        lambda {
+          post :create, :bid => {:amount => -99, :silent_auction_id => @running_auction.id}
+        }.should_not change(@running_auction.bids, :count)
       end
 
     end
@@ -40,9 +40,9 @@ describe BidsController do
 
       it 'should not create a new bid' do
         closed_auction = SilentAuction.make!(:open => false)
-        lamda {
-          post :create, :bid => {:amount => -99, :silent_auction_id => closed_auction}
-        }.should_not change(closed_auction.bids.count)
+        lambda {
+          post :create, :bid => {:amount => 100, :silent_auction_id => closed_auction.id}
+        }.should_not change(closed_auction.bids, :count)
       end
     end
 
@@ -58,7 +58,7 @@ describe BidsController do
     end
 
     it 'should withdraw the bid if auction is still open' do
-      put :withdraw, :id => bid.id
+      put :withdraw, :id => @bid.id
 
       Bid.find(@bid.id).active.should == false
       flash[:success].should eql "Bid withdrawn successfully"
@@ -72,7 +72,7 @@ describe BidsController do
 
       put :withdraw, :id => @bid.id
       Bid.find(@bid.id).active.should == true
-      flash[:error].should eql 'Error! Auction was closed! Bid cannot be withdrawn'
+      flash[:error].should include 'Auction has been closed! Bid cannot be withdrawn anymore.'
 
       # NEED TO TEST RENDER JAVASCRIPT PARTIALS AND HTML REDIRECT AS WELL
     end

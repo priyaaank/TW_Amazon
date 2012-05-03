@@ -9,5 +9,6 @@ class CreateBids < ActiveRecord::Migration
     end
     add_index :bids, :user_id
     add_index :bids, :silent_auction_id
+    add_index :bids, [:user_id, :silent_auction_id], :unique => true
   end
 end

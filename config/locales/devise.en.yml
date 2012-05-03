@@ -14,7 +14,7 @@ en:
   devise:
     dummy_sessions:
       user:
-        signed_in: 'Login successfully'
+        signed_in: ''
     failure:
       already_authenticated: 'You are already signed in.'
       unauthenticated: 'You need to sign in to use the application.'

@@ -69,6 +69,13 @@ describe Bid do
       bid.should_not be_valid
       bid.should have_at_least(1).errors_on(:silent_auction_id)
     end
+
+    it 'should not be placed if user already bid on the auction' do
+      @user.bids.create(:silent_auction_id => @auction.id, :amount => 100)
+      new_bid = @user.bids.new(:silent_auction_id => @auction.id, :amount => 200)
+      new_bid.should_not be_valid
+      new_bid.should have_at_least(1).errors_on(:silent_auction_id)
+    end
   end
 
   describe 'withdraw' do
