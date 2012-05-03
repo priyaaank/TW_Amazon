@@ -17,8 +17,9 @@ class BidsController < ApplicationController
           format.html { redirect_to request.referer, :notice => "Bid of $#{@bid.amount} has been placed successfully" }
           format.js { render 'create.js.erb'}
         else
-          format.html { redirect_to request.referer, :alert => 'Error! Bid not placed' }
-          format.js { render 'fail.js.erb', :locals => { :errMsg => "Bid #{@bid.errors[:amount][0]}" } }
+          errMsg = @bid.errors[:amount][0]
+          format.html { redirect_to request.referer, :alert => "Error! Bid #{errMsg}" }
+          format.js { render 'fail.js.erb', :locals => { :errMsg => "Bid #{errMsg}" } }
         end
       end
     end
