@@ -18,4 +18,15 @@ class SilentAuction < ActiveRecord::Base
   def strip_whitespace
     self.title = self.title.strip
   end
+
+  def close
+    if self.bids.active.count == 0
+      errors.add :base, "Auction with no active bid cannot be closed"
+      false
+    else
+      self.open = false
+      self.save!
+      true
+    end
+  end
 end

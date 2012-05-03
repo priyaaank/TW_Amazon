@@ -9,17 +9,20 @@ class BidsController < ApplicationController
       # check if user has place any bid for this auction or not
       exist_bids = Bid.where("silent_auction_id = ? AND user_id = ?", params[:bid][:silent_auction_id] , current_user.id).first
       if exist_bids != nil
-        format.html { redirect_to request.referer, :alert => 'You have already bid on this auction' }
+        flash[:error] = 'You have already bid on this auction'
+        format.html { redirect_back_or silent_auction_path }
         format.js { render 'fail.js.erb', :locals => { :errMsg => "You have already bid on this auction"} }
       else
         @bid = current_user.bids.build(params[:bid])
         if @bid.save
-          format.html { redirect_to request.referer, :notice => "Bid of $#{@bid.amount} has been placed successfully" }
+          flash[:error] = "Bid of $#{@bid.amount} has been placed successfully"
+          format.html { redirect_back_or silent_auction_path }
           format.js { render 'create.js.erb'}
         else
-          errMsg = @bid.errors[:amount][0]
-          format.html { redirect_to request.referer, :alert => "Error! Bid #{errMsg}" }
-          format.js { render 'fail.js.erb', :locals => { :errMsg => "Bid #{errMsg}" } }
+          err_msg = @bid.full_messages
+          flash[:error] = "Error! Bid #{err_msg}"
+          format.html { redirect_back_or silent_auction_path }
+          format.js { render 'fail.js.erb', :locals => { :errMsg => "Bid #{err_msg}" } }
         end
       end
     end
@@ -29,18 +32,15 @@ class BidsController < ApplicationController
     @bid = Bid.find(params[:id])
     auction = SilentAuction.find(@bid.silent_auction_id)
     respond_to do |format|
-      if auction.open
-        @bid.active = false
-        if @bid.save
-          format.html { redirect_to request.referer, :notice => "Bid withdrawn successfully" }
+      if @bid.withdraw
+          flash[:success] = "Bid withdrawn successfully"
+          format.html { redirect_back_or silent_auction_path }
           format.js { render 'withdraw_done.js.erb' }
-        else
-          format.html { redirect_to request.referer, :alert => 'Error! Bid not withdrawn' }
-          format.js { render 'fail_withdraw.js.erb', :locals => {:errMsg => 'Something went wrong!<br/> Bid cannot be withdrawn'}}
-        end
       else
-        format.html { redirect_to request.referer, :error => 'Error! Auction was closed! Bid cannot be withdrawn' }
-        format.js { render 'fail_withdraw.js.erb', :locals => {:errMsg => 'Auction has been closed! Cannot withdraw bid anymore'}}
+        err_msg = @bid.full_messages
+        flash[:error] = err_msg
+        format.html { redirect_back_or silent_auction_path }
+        format.js { render 'fail_withdraw.js.erb', :locals => { :errMsg => err_msg } }
       end
     end
   end

@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe SilentAuction do
+
   describe 'to be valid' do
     it 'should have a title' do
       auction = SilentAuction.new(:description => "my description")
@@ -50,5 +51,23 @@ describe SilentAuction do
     end
   end
 
+  describe 'close' do
+    before(:each) do
+      @auction = SilentAuction.make!
+    end
+
+    it 'should close auction with at least one active bid' do
+      user = User.make!(:user)
+      user.bids.create(:silent_auction_id => @auction.id, :amount => 100)
+      @auction.close
+      @auction.open.should == false
+    end
+
+    it 'should not be closed if have no active bid' do
+      @auction.close
+      @auction.open.should == true
+      @auction.should have_at_least(1).errors
+    end
+  end
 
 end

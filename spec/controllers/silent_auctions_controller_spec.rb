@@ -33,31 +33,48 @@ describe SilentAuctionsController do
 
       describe 'list all running auctions' do
         before(:each) do
-          @running_auction1 = mock_model(SilentAuction, :title => 'a', :description => 'b', :created_at => Time.now)
-          @running_auction2 = mock_model(SilentAuction, :title => 'c', :description => 'd', :created_at => Time.now + 1)
-          SilentAuction.stub_chain(:running, :recent, :includes).and_return([@running_auction2, @running_auction1])
+          @auction1 = SilentAuction.make!(:created_at => Time.now + 100)
+          @auction2 = SilentAuction.make!(:created_at => Time.now)
+          @auction3 = SilentAuction.make!(:created_at => Time.now + 50)
+          @close_auction = SilentAuction.make!(:open => false)
           get :index
         end
 
         it 'should assign the running auctions to the view' do
-          assigns[:running_auctions].include?(@running_auction1).should be_true
-          assigns[:running_auctions].include?(@running_auction2).should be_true
+          assigns[:running_auctions].should include @auction1
+          assigns[:running_auctions].should include @auction2
+          assigns[:running_auctions].should include @auction3
+          assigns[:running_auctions].should_not include @close_auction
         end
 
+        it 'should order auctions by most recent first' do
+          assigns[:running_auctions][0].should eql @auction1
+          assigns[:running_auctions][1].should eql @auction3
+          assigns[:running_auctions][2].should eql @auction2
+        end
 
       end
 
       describe 'list all closed auctions' do
         before(:each) do
-          @closed_auction1 = mock_model(SilentAuction, :title => 'a', :description => 'b', :open => false)
-          @closed_auction2 = mock_model(SilentAuction, :title => 'c', :description => 'd', :open => false)
-          SilentAuction.stub_chain(:closed, :recent, :includes).and_return([@closed_auction2, @closed_auction1])
+          @auction1 = SilentAuction.make!(:open => false, :created_at => Time.now + 100)
+          @auction2 = SilentAuction.make!(:open => false, :created_at => Time.now)
+          @auction3 = SilentAuction.make!(:open => false, :created_at => Time.now + 50)
+          @run_auction = SilentAuction.make!
           get :index
         end
 
         it 'should assign the closed auctions to the view' do
-          assigns[:closed_auctions].should include(@closed_auction1)
-          assigns[:closed_auctions].should include(@closed_auction2)
+          assigns[:closed_auctions].should include @auction1
+          assigns[:closed_auctions].should include @auction2
+          assigns[:closed_auctions].should include @auction3
+          assigns[:closed_auctions].should_not include @run_auction
+        end
+
+        it 'should order auctions by most recent first' do
+          assigns[:closed_auctions][0].should eql @auction1
+          assigns[:closed_auctions][1].should eql @auction3
+          assigns[:closed_auctions][2].should eql @auction2
         end
       end
     end
@@ -177,9 +194,9 @@ describe SilentAuctionsController do
 
     it 'should not close auction with no active bid' do
       put :close, :id => @auction.id
-      flash[:error].should eql "Auction with no active bid cannot be closed"
       SilentAuction.find(@auction.id).open.should == true
-      response.should redirect_to(silent_auction_path)
+
+      # TEST RENDER CLOSE FAIL PARTIALS
     end
 
     it 'should close auction with at least one active bid' do
@@ -187,6 +204,8 @@ describe SilentAuctionsController do
       user1.bids.create(:amount => 100, :silent_auction_id => @auction.id)
       put :close, :id => @auction.id
       SilentAuction.find(@auction.id).open.should == false
+
+      # TEST RENDER CLOSE_AUCTION PARTIALS
     end
 
     it 'should not close auction with only withdrawn bids' do
@@ -198,10 +217,9 @@ describe SilentAuctionsController do
 
       put :close, :id => @auction.id
       SilentAuction.find(@auction.id).open.should == true
+
+      # TEST RENDER CLOSE FAIL PARTIALS
     end
-
-    it 'should render the close auction layout after succeed'
-
   end
 end
 
