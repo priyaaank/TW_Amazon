@@ -137,7 +137,7 @@ describe SilentAuctionsController do
     context 'given valid auction details' do
 
       before(:each) do
-        @mock_auction = mock_model(SilentAuction, :title => 'a', :description => 'b').as_new_record
+        @mock_auction = mock_model(SilentAuction, :title => 'a', :description => 'b', :min_price => 250.99).as_new_record
         SilentAuction.stub!(:new).and_return @mock_auction
         @mock_auction.stub!(:save).and_return(true)
       end
@@ -167,7 +167,7 @@ describe SilentAuctionsController do
     context 'given invalid auction details' do
 
       before(:each) do
-        @mock_auction = mock_model(SilentAuction, :title => '', :description => 'b').as_new_record
+        @mock_auction = mock_model(SilentAuction, :title => '', :description => 'b', :min_price => 250.00).as_new_record
         SilentAuction.stub!(:new).and_return @mock_auction
         @mock_auction.stub!(:save).and_return(false)
         post :create

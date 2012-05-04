@@ -2,6 +2,7 @@
 
 = simple_form_for @silent_auction, :html => { :class => 'form-horizontal form-bordered' } do |f|
   = f.input :title, :label => 'Title', :input_html => {:class => "longInput"}
+  = f.input :min_price, :label => 'Minimum Price',:input_html => {:style => "width:100px", :type => 'text'}
   = f.input :description, :as => :text, :label => 'Description', :input_html => { :rows => 10 }
 
   .form-actions

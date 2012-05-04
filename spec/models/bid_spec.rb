@@ -76,6 +76,15 @@ describe Bid do
       new_bid.should_not be_valid
       new_bid.should have_at_least(1).errors_on(:silent_auction_id)
     end
+
+    it 'should not allow amount that less than auction minimum price' do
+      auction1 = SilentAuction.make!(:min_price => 250)
+      bid = @user.bids.new(:silent_auction_id => auction1.id)
+      bid.amount = 100
+      bid.valid?.should == false
+      bid.amount = 250.00
+      bid.valid?.should == true
+    end
   end
 
   describe 'withdraw' do

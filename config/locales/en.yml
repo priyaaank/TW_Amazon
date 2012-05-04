@@ -9,4 +9,8 @@ en:
     attributes:
       bid:
         amount: Bid amount
+      silent_auction:
+        min_prince: Minimum Price
+
+
 

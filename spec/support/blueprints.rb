@@ -3,6 +3,7 @@ require 'machinist/active_record'
 SilentAuction.blueprint do
   title { Faker::Lorem.sentence }
   description { Faker::Lorem.paragraph }
+  min_price { 1.00 }
 end
 
 User.blueprint(:user) do

@@ -4,8 +4,7 @@ Given /^a (?:valid|open) silent auction$/ do
 end
 
 Given /^I am a logged in admin$/ do
-  admin = User.make!(:admin)
-  login_path(admin)
+
 end
 
 Given /^there are valid auctions with the following:$/ do |table|
@@ -36,6 +35,7 @@ end
 When /^I create a silent auction with the following:$/ do |table|
   table.hashes.each do | hash |
     visit new_silent_auction_path
+    current_path.should == new_silent_auction_path
     fill_in("silent_auction[title]", :with => hash['title'])
     fill_in("silent_auction[description]", :with => hash['description'])
     click_button "submit_done"
@@ -116,11 +116,11 @@ Then /^I can see all closed auctions sorted by most recent first:$/ do |table|
 end
 
 Then /^I am told that no auctions are currently running$/ do
-  page.should have_content('There is no running auction')
+  page.should have_content('There are no running auctions')
 end
 
 Then /^I am told that no closed auctions exist$/ do
-  page.should have_content('There is no closed auction')
+  page.should have_content('There are no closed auctions')
 end
 Given /^an open silent auction$/ do
   pending

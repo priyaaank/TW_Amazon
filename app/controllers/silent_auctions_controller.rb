@@ -47,7 +47,12 @@ class SilentAuctionsController < ApplicationController
              end
         end
       else
-        format.html { render action: "new" }
+        format.html {
+          @silent_auction.errors[:min_price].each do |msg|
+            msg.insert(0, "Minimum price ")
+          end
+          render :action => 'new'
+        }
       end
     end
   end

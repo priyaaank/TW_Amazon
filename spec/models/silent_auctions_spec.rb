@@ -4,22 +4,22 @@ describe SilentAuction do
 
   describe 'to be valid' do
     it 'should have a title' do
-      auction = SilentAuction.new(:description => "my description")
+      auction = SilentAuction.new(:description => "my description", :min_price => 250.00)
       auction.valid?.should == false
       auction.title = "my title"
       auction.valid?.should == true
     end
 
     it "should have a unique title" do
-      auction1 = SilentAuction.create(:title => "a", :description => "my description")
+      auction1 = SilentAuction.create(:title => "a", :description => "my description", :min_price => 250.00)
       auction1.should be_valid
-      auction2 = SilentAuction.create(:title => "a  ", :description => "my description")
+      auction2 = SilentAuction.create(:title => "a  ", :description => "my description", :min_price => 250.00)
       auction2.should_not be_valid
       auction2.should have_at_least(1).errors_on(:title)
     end
     
     it 'should have a description' do 
-      auction = SilentAuction.new(:title => "my title")
+      auction = SilentAuction.new(:title => "my title", :min_price => 250.00)
       auction.valid?.should == false
       auction.description = "this is default description"
       auction.valid?.should == true
@@ -27,12 +27,12 @@ describe SilentAuction do
     
 
     it 'should default to open' do
-      auction = SilentAuction.create!(:title => "my title", :description => "my description")
+      auction = SilentAuction.create!(:title => "my title", :description => "my description", :min_price => 250.00)
       auction.open.should == true 
     end
     
     it 'should not allow titles longer than 255' do
-      auction = SilentAuction.new(:description => "my description")
+      auction = SilentAuction.new(:description => "my description", :min_price => 250.00)
       
       auction.title = "A" * 256
       auction.valid?.should == false
@@ -42,11 +42,50 @@ describe SilentAuction do
     end
     
     it 'should not allow descriptions longer than 500' do
-      auction = SilentAuction.new(:title => "my title")
+      auction = SilentAuction.new(:title => "my title", :min_price => 250.00)
       auction.description = "A" * 501
       auction.valid?.should == false
       
       auction.description = "A" * 500
+      auction.valid?.should == true
+    end
+
+    it 'should have a minimum price' do
+      auction = SilentAuction.new(title: "a", description: "b")
+      auction.valid?.should == false
+      auction.should have_at_least(1).errors_on(:min_price)
+      auction.min_price = 250.00
+      auction.valid?.should == true
+    end
+
+    it 'should not allow minimum price less or equal to 0' do
+      auction = SilentAuction.new(title: "a", description: "b")
+
+      auction.min_price = -99
+      auction.valid?.should == false
+      auction.should have_at_least(1).errors_on(:min_price)
+
+      auction.min_price = 0
+      auction.valid?.should == false
+      auction.should have_at_least(1).errors_on(:min_price)
+    end
+
+    it 'should not allow invalid number for min price' do
+      auction = SilentAuction.new(title: "a", description: "b")
+
+      auction.min_price = "ddsaas"
+      auction.valid?.should == false
+      auction.should have_at_least(1).errors_on(:min_price)
+    end
+
+    it 'should not allow min price greater than 9999.00' do
+      auction = SilentAuction.new(title: "a", description: "b")
+
+      auction.min_price = 34322.32
+      auction.valid?.should == false
+      auction.should have_at_least(1).errors_on(:min_price)
+
+      auction.min_price = 9999.99
       auction.valid?.should == true
     end
   end
