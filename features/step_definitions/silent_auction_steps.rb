@@ -3,6 +3,11 @@ Given /^a (?:valid|open) silent auction$/ do
   create_silent_auction
 end
 
+Given /^I am a logged in admin$/ do
+  admin = User.make!(:admin)
+  login_path(admin)
+end
+
 Given /^there are valid auctions with the following:$/ do |table|
   table.hashes.each do | hash |
     hash["open"] = (hash["open"] == "yes") ? true : false

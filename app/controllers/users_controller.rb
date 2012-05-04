@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  include SilentAuctionsHelper
 
   def show
     @user = User.find(params[:id])
