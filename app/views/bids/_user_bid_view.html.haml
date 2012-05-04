@@ -10,9 +10,13 @@
       = render :partial => "bids/newBidForm", :locals => { :auction => auction }
 - else
   - if bid != nil
-    - if bid.id == wonBid.id
-      = simple_format("Your Won Bid: <span class='highlight'>#{number_to_currency(bid.amount)}</span>")
+    - if bid.active
+      - if bid.id == wonBid.id
+        = simple_format("Your Won Bid: <span class='highlight'>#{number_to_currency(bid.amount)}</span>")
+      - else
+        = simple_format("Your Lost Bid: <span class='lost'>#{number_to_currency(bid.amount)}</span>")
     - else
-      = simple_format("Your Lost Bid: <span class='lost'>#{number_to_currency(bid.amount)}</span>")
+      = simple_format("Your bid: <span class='delBid'>#{number_to_currency(bid.amount)}</span>")
+      %span{:style => 'font-weight:bold; color:#f00'} WITHDRAWN
   - else
     &nbsp;

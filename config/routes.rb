@@ -49,4 +49,7 @@ TWAmazon::Application.routes.draw do
     end
   end
 
+  # This is for being able of testing the application with cucumber
+  match 'login/:id' => 'application#login', :as => 'login', :via => [:get] if Rails.env.test?
+
 end

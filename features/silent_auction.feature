@@ -6,6 +6,7 @@ Scenario: define a silent auction
   And it will have a description
 	
 Scenario: create silent auction
+  Given I am a logged in admin
   When I create a silent auction with the following:
 	| title | description | 
 	| sample title | this is my description |

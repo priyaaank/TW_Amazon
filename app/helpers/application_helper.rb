@@ -25,7 +25,7 @@ module ApplicationHelper
 
   def redirect_back_with_error(default, msg)
     if session[:return_to] == nil
-      redirect_to(default, :notice => msg)
+      redirect_to(default, :alert => msg)
     else
       redirect_to(session[:return_to], :alert => msg)
     end
