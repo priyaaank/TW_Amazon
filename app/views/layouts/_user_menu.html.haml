@@ -12,7 +12,7 @@
     %ul{:class => "dropdown-menu"}
       - if test_mode?
         - if not(current_user.admin?)
-          %li=link_to("My Auctions", user_path(current_user))
+          /%li=link_to("My Auctions", user_path(current_user))
         %li=link_to("Logout", destroy_user_session_path)
         - if session[:cas_login]
           %li=link_to("Logout from CAS", destroy_cas_user_session_path)
