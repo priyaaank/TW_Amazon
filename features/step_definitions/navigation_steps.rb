@@ -28,10 +28,20 @@ Then /^I should (?:be on|go back to) 'listings' page$/ do
   current_path.should == silent_auctions_path
 end
 
-When /^I'm logged in$/ do
-  visit '/users/login/' 
-  puts page.find(:css, 'title').text
-  save_and_open_page
-  select 'admin_tw_1', :from => 'user[username]'
-  fill_in 'user[password]', :with => 'adminpass'
+When /^I'm logged in as a user$/ do
+  @user = User.create!(:username => 'test-user', :password => 'foobar')
+  visit destroy_user_session_path
+  visit new_dummy_session_path 
+  select 'test-user', :from => 'user[username]'
+  fill_in 'user[password]', :with => @user.password
+  click_button 'Login'
+end
+
+When /^I'm logged in as an admin$/ do
+  @user = User.create!(:username => 'test-admin', :password => 'foobar', :admin => true)
+  visit destroy_user_session_path
+  visit new_dummy_session_path 
+  select 'test-admin', :from => 'user[username]'
+  fill_in 'user[password]', :with => @user.password
+  click_button 'Login'
 end
