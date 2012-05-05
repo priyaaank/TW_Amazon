@@ -1,6 +1,6 @@
 - bid = user_bid_for_auction(auction)
 - if auction.open?
-  %td{ :id => "bid_for_auction_#{auction.id}", :class =>"bid_col", :style => "width:20%", :html => "colspan='2'"}
+  %td{ :id => "bid_for_auction_#{auction.id}", :class =>"bid_col", :html => "colspan='2'"}
     - if bid != nil
       - if bid.active?
         = render :partial => "bids/withdrawBidForm", :locals => { :bid => bid }

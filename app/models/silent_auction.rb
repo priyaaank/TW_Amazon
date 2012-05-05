@@ -28,9 +28,13 @@ class SilentAuction < ActiveRecord::Base
       errors.add :base, "Auction with no active bid cannot be closed"
       false
     else
-      self.open = false
-      self.save!
+      change_to_closed
       true
     end
+  end
+
+  def change_to_closed
+    self.open = false
+    self.save!
   end
 end

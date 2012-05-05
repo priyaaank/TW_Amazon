@@ -1,15 +1,18 @@
 %tr{:class => 'auction', :id => "silentAuction_#{auction.id}"}
   - wonBid = won_bid_for_auction(auction)
-  %td{:style => "width:70%"}
+  %td.auction_info
     %p.itemTitle= auction.title
     = simple_format(auction.description, :class => 'itemDescription')
     = simple_format("Winner: <span class='highlight'>#{wonBid.user.username}@thoughtworks.com</span>", :class => 'itemWinner')
-  %td{:stype => "width:10%"}
+  %td.min_price
     = simple_format("Min Price: <strong>#{number_to_currency(auction.min_price)}</strong>")
-  %td{:style => "width:10%"}
+  %td.auction_bids
     = simple_format("Winning Bid:<br/><span class='highlight'>#{number_to_currency(wonBid.amount)}</span>")
-  %td{:style => "width:10%"}
+  %td.auction_controls
     - if current_user.admin?
-      &nbsp;
+      .controls_holder
+        = link_to "<i class='icon-remove icon-gray'></i>".html_safe, confirm_delete_silent_auction_path(auction),
+                                :method => 'post',
+                                :class => "btn btn-mini delete_btn"
     - else
       = render :partial => "bids/user_bid_view", :locals => { :auction => auction, :wonBid => wonBid }

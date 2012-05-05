@@ -70,6 +70,14 @@ class SilentAuctionsController < ApplicationController
         format.js { render 'fail_close_auction.js.erb', :locals => { :errMsg => err_msg } }
       end
     end
+  end
 
+  # POST to ask for confirmation of deleting an auction
+  def confirm_delete
+    @delete_auction = SilentAuction.find(params[:id])
+    @bidders = User.joins(:bids).where(:bids => {:silent_auction_id => @delete_auction.id}).order("username ASC")
+    respond_to do |format|
+      format.html
+    end
   end
 end

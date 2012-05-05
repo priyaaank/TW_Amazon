@@ -1,7 +1,7 @@
 %div{:class => "jumbotron masthead"}
-  %h1 TW Amazon
+  %h1 Garage Sale
   %p
-    = "Beta application - version 0.2 - #{test_mode? ? 'Test Mode': ''}"
+    = "Beta application - version 0.3 - #{test_mode? ? 'Test Mode': ''}"
   %p
     =link_to "Login with CAS Account", user_omniauth_authorize_path(:cas), :class => "btn btn-inverse btn-large"
     =link_to "Login with Test Account", new_dummy_session_path, :class => "btn btn-primary btn-large"

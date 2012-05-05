@@ -10,6 +10,7 @@ TWAmazon::Application.routes.draw do
   resources :silent_auctions do
     member do
       put 'close'
+      post 'confirm_delete'
     end
   end
 
@@ -19,7 +20,6 @@ TWAmazon::Application.routes.draw do
   resources :bids do
     member do
       put 'withdraw'
-      get 'withdraw' #to allow get to the page when js is disabled
     end
   end
 

@@ -58,9 +58,18 @@ describe BidsController do
     end
 
     context 'given a running auction' do
+
       it 'should withdraw the bid' do
         put :withdraw, :id => @bid.id
-        Bid.find(@bid.id).active.should == false
+        Bid.find(@bid.id).active.should be_false
+      end
+
+      it 'should not allow anyone other than bid owner to withdraw the bid' do
+        other_user = User.make!(:user)
+        other_user_bid = other_user.bids.create(:amount => 200, :silent_auction_id => @auction.id)
+        put :withdraw, :id => other_user_bid.id
+        Bid.find(other_user_bid.id).active.should_not be_false
+        flash[:error].should include "Unauthorized Withdrawal"
       end
 
       #it 'should redirect to previous page with success message if javascript not enabled' do
@@ -83,7 +92,7 @@ describe BidsController do
 
       it 'should not withdraw the bid if auction is closed' do
         put :withdraw, :id => @bid.id
-        Bid.find(@bid.id).active.should == true
+        Bid.find(@bid.id).active.should_not be_false
       end
 
       #it 'should redirect to previous page with error message if javascript not enabled' do

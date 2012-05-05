@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Bid do
-
   describe "to be valid" do
 
     before(:each) do
@@ -91,8 +90,8 @@ describe Bid do
 
     before(:each) do
       @auction = SilentAuction.make!
-      @user = User.make!(:user)
-      @bid = @user.bids.create(:silent_auction_id => @auction.id, :amount => 100)
+      @current_user = User.make!(:user)
+      @bid = @current_user.bids.create(:silent_auction_id => @auction.id, :amount => 100)
     end
 
     it 'should become inactive if auction is open' do
@@ -101,12 +100,10 @@ describe Bid do
     end
 
     it 'should not become inactive if auction is closed' do
-      @auction.open = false
-      @auction.save!
+      @auction.change_to_closed
       @bid.withdraw
       @bid.active.should_not == false
       @bid.should have_at_least(1).errors
     end
   end
-
 end

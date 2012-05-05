@@ -221,5 +221,88 @@ describe SilentAuctionsController do
       # TEST RENDER CLOSE FAIL PARTIALS
     end
   end
+
+  describe "POST 'confirm_delete'" do
+
+    before(:each) do
+      @auction = SilentAuction.make!
+    end
+
+    describe "for signed-in admin users" do
+      before (:each) do
+        @admin = User.make!(:admin)
+        sign_in @admin
+      end
+
+      it 'should return http success' do
+        post :confirm_delete, :id => @auction.id
+        response.should be_success
+      end
+
+      it 'should render the confirm delete template' do
+        post :confirm_delete, :id => @auction.id
+        response.should render_template 'confirm_delete'
+      end
+
+      it 'should assign the auction to display its info' do
+        post :confirm_delete, :id => @auction.id
+        assigns[:delete_auction].should eql @auction
+      end
+
+      describe 'list auction bidders' do
+        before (:each) do
+          @user_b = User.make!(:username => "b")
+          @user_c = User.make!(:username => "c")
+          @user_a = User.make!(:username => "a")
+
+          @user_a.bids.create(:silent_auction_id => @auction.id, :amount => 100)
+          @user_b.bids.create(:silent_auction_id => @auction.id, :amount => 200)
+          @user_c.bids.create(:silent_auction_id => @auction.id, :amount => 300)
+        end
+
+        it 'should list all bidders of the auction' do
+          post :confirm_delete, :id => @auction.id
+          assigns[:bidders].should include @user_a
+          assigns[:bidders].should include @user_b
+          assigns[:bidders].should include @user_c
+        end
+
+        it 'should list bidders by username ASC' do
+          post :confirm_delete, :id => @auction.id
+          assigns[:bidders][0].should eql @user_a
+          assigns[:bidders][1].should eql @user_b
+          assigns[:bidders][2].should eql @user_c
+        end
+      end
+    end
+
+    describe "for signed-in non-admin users" do
+      before (:each) do
+        @user = User.make!(:user)
+        sign_in @user
+      end
+
+      it 'should not display the page, redirect back with "unauthorized" error message' do
+        post :confirm_delete, :id => @auction.id
+        flash[:error].should include("Unauthorized Access")
+        response.should redirect_to(index_path)
+      end
+    end
+
+    describe "for non-signed-in users" do
+      it 'should redirect to login page' do
+        post :confirm_delete, :id => @auction.id
+        if Rails.application.config.test_mode
+          response.should redirect_to(root_path)
+        else
+          response.should redirect_to(user_omniauth_authorize_path(:cas))
+        end
+      end
+    end
+  end
+
+  describe "DELETE 'destroy'" do
+
+  end
 end
 

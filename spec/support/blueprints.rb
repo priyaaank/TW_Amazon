@@ -6,22 +6,29 @@ SilentAuction.blueprint do
   min_price { 1.00 }
 end
 
+User.blueprint do
+  username  { "user-#{sn}" }
+  admin { false }
+  password {"userpass"}
+  password_confirmation {"userpass"}
+end
+
 User.blueprint(:user) do
-  username  { Faker::Internet.user_name }
+  username  { "user-#{sn}" }
   admin { false }
   password {"userpass"}
   password_confirmation {"userpass"}
 end
 
 User.blueprint(:admin) do
-  username  { Faker::Internet.user_name }
+  username  { "admin-#{sn}" }
   admin { true }
   password {"adminpass"}
   password_confirmation {"adminpass"}
 end
 
 User.blueprint(:casUser) do
-  username  { Faker::Internet.user_name }
+  username  { "casUser-#{sn}" }
   admin { false }
   password { nil }
   password_confirmation {nil}

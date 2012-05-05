@@ -29,13 +29,17 @@ class Bid < ActiveRecord::Base
 
   def withdraw
     if SilentAuction.find(self.silent_auction_id).open
-      self.active = false
-      self.save!
+      self.turn_inactive
       true
     else
       errors.add :base, "Auction has been closed! Bid cannot be withdrawn anymore."
       false
     end
+  end
+
+  def turn_inactive
+    self.active = false
+    self.save!
   end
 
 end
