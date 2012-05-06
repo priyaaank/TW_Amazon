@@ -62,6 +62,20 @@ When /^I close the auction$/ do
   end
 end
 
+When /^I delete the auction$/ do
+  within("tr#silentAuction_#{get(:silent_auctions).id}") do
+    click_link 'delete_auction'
+  end
+end
+
+When /^I choose to continue deleting$/ do
+  click_link "delete_auction"
+end
+
+When /^choose to cancel deleting$/ do
+  click_link "cancel_delete_auction"
+end
+
 # VALIDATE HOWEVER WE MUST
 Then /^a valid silent auction is created with the following:$/ do |table|
   table.hashes.each do | hash |
@@ -133,5 +147,22 @@ Then /^I cannot close the auction$/ do
   end
 end
 
+Then /^I should see the confirmation page$/ do
+  auction = get(:silent_auctions)
+  current_path.should == confirm_delete_silent_auction_path(auction)
+  page.should have_content("Are you sure you want to delete this auction?")
+  page.should have_content(auction.title)
+end
 
+Then /^I should see the list of active bidders as following:$/ do |table|
+  table.hashes.each do |hash|
+    page.should have_content(hash["bidder"])
+  end
+end
 
+Then /^the auction should be deleted$/ do
+  auction = get(:silent_auctions)
+  visit silent_auctions_path
+  page.should have_no_content(auction.title)
+  SilentAuction.find_by_title(auction.title).should == nil
+end

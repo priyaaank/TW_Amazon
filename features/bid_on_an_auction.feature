@@ -1,10 +1,10 @@
 Feature: Bid on an auction
 
   Background:
-  Given I'm logged in as a user
-  And there is a running auction as the following:
+  Given there is a running auction as the following:
     | title        | description        | min_price |
     | test title 1 | test description 1 | 200       |
+  And I'm logged in as a user
 
   @javascript
   Scenario: Place a bid
