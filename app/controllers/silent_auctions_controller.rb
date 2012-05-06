@@ -84,6 +84,10 @@ class SilentAuctionsController < ApplicationController
 
   # DELETE auction
   def destroy
-
+    @auction = SilentAuction.find(params[:id])
+    title = @auction.title
+    @auction.destroy
+    flash[:success] = "Auction <strong>#{title}</strong> has been successfully deleted.".html_safe
+    redirect_to silent_auctions_path
   end
 end

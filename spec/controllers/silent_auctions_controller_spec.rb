@@ -307,7 +307,63 @@ describe SilentAuctionsController do
   end
 
   describe "DELETE 'destroy'" do
+    before(:each) do
+      @auction = SilentAuction.make!
+    end
 
+    describe "for signed-in admin users" do
+      before (:each) do
+        @admin = User.make!(:admin)
+        sign_in @admin
+      end
+
+      it 'should delete the auction' do
+        lambda do
+          delete :destroy, :id => @auction.id
+        end.should change(SilentAuction, :count).by(-1)
+      end
+
+      it 'should delete auction and any associated bids of the auctions' do
+        bid1 = User.make!.bids.create(:silent_auction_id => @auction.id, :amount => 100, :active => false)
+        bid2 = User.make!.bids.create(:silent_auction_id => @auction.id, :amount => 200)
+        bid3 = User.make!.bids.create(:silent_auction_id => @auction.id, :amount => 300)
+        bid4 = User.make!.bids.create(:silent_auction_id => @auction.id, :amount => 400, :active => false)
+
+        lambda do
+          delete :destroy, :id => @auction.id
+        end.should change(Bid, :count).by(-4)
+      end
+
+      it 'should go back to listing after delete, with success message' do
+        delete :destroy, :id => @auction.id
+        flash[:success].should include @auction.title
+        response.should redirect_to silent_auctions_path
+      end
+    end
+
+    describe "for signed-in non-admin users" do
+      before (:each) do
+        @user = User.make!(:user)
+        sign_in @user
+      end
+
+      it 'should not display the page, redirect back with "unauthorized" error message' do
+        delete :destroy, :id => @auction.id
+        flash[:error].should include("Unauthorized Access")
+        response.should redirect_to(index_path)
+      end
+    end
+
+    describe "for non-signed-in users" do
+      it 'should redirect to login page' do
+        delete :destroy, :id => @auction.id
+        if Rails.application.config.test_mode
+          response.should redirect_to(root_path)
+        else
+          response.should redirect_to(user_omniauth_authorize_path(:cas))
+        end
+      end
+    end
   end
 end
 
