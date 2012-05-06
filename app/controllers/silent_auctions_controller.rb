@@ -74,10 +74,16 @@ class SilentAuctionsController < ApplicationController
 
   # POST to ask for confirmation of deleting an auction
   def confirm_delete
+    @title = "Confirm delete auction"
     @delete_auction = SilentAuction.find(params[:id])
-    @bidders = User.joins(:bids).where(:bids => {:silent_auction_id => @delete_auction.id}).order("username ASC")
+    @bidders = User.joins(:bids).where(:bids => {:silent_auction_id => @delete_auction.id, :active => true}).order("username ASC")
     respond_to do |format|
       format.html
     end
+  end
+
+  # DELETE auction
+  def destroy
+
   end
 end

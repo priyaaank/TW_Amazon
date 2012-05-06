@@ -11,7 +11,7 @@
   %td.auction_controls
     - if current_user.admin?
       .controls_holder
-        = link_to "<i class='icon-remove icon-gray'></i>".html_safe, confirm_delete_silent_auction_path(auction),
+        = link_to "x".html_safe, confirm_delete_silent_auction_path(auction),
                                 :method => 'post',
                                 :class => "btn btn-mini delete_btn"
     - else

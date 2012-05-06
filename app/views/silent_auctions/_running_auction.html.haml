@@ -4,7 +4,7 @@
     %p.itemTitle= auction.title
     = simple_format(auction.description, :class => 'itemDescription')
   %td.min_price
-    = simple_format("Min Price: <strong>#{number_to_currency(auction.min_price)}</strong>")
+    = simple_format("Min Price:<br/><strong>#{number_to_currency(auction.min_price)}</strong>")
   - if current_user.admin?
     = render :partial => "admin_auction_view", :locals => { :auction => auction }
   - else

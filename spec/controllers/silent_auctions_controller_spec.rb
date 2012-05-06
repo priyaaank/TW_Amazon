@@ -258,16 +258,21 @@ describe SilentAuctionsController do
           @user_a.bids.create(:silent_auction_id => @auction.id, :amount => 100)
           @user_b.bids.create(:silent_auction_id => @auction.id, :amount => 200)
           @user_c.bids.create(:silent_auction_id => @auction.id, :amount => 300)
+
+          @user_d = User.make!(:username => "d")
+          withdraw_bid = @user_d.bids.create(:silent_auction_id => @auction.id, :amount => 800)
+          withdraw_bid.withdraw
         end
 
-        it 'should list all bidders of the auction' do
+        it 'should list all active bidders of the auction' do
           post :confirm_delete, :id => @auction.id
           assigns[:bidders].should include @user_a
           assigns[:bidders].should include @user_b
           assigns[:bidders].should include @user_c
+          assigns[:bidders].should_not include @user_d
         end
 
-        it 'should list bidders by username ASC' do
+        it 'should list active bidders by username ASC' do
           post :confirm_delete, :id => @auction.id
           assigns[:bidders][0].should eql @user_a
           assigns[:bidders][1].should eql @user_b

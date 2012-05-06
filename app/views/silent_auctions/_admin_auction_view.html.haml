@@ -1,14 +1,14 @@
 %td.auction_bids
-  - bidCount = auction.bids.active.count
-  - if bidCount > 0
+  - bid_count = auction.bids.active.count
+  - if bid_count > 0
     %span{:style => "font-weight:bold;"}
-      = pluralize(auction.bids.count, "bid")
+      = pluralize(bid_count, "bid")
   - else
     %span{:class => 'badge badge-error', :style => "font-weight:bold;"}
       = "0 bids"
 %td.auction_controls
   .controls_holder
-    - if bidCount > 0
+    - if bid_count > 0
       = link_to "CLOSE", close_silent_auction_path(auction),
                           :method => 'put',
                           :disable_with => "Closing...",
@@ -16,6 +16,6 @@
                           :confirm => "Auction cannot be re-opened after closed. Continue?",
                           :class => "btn btn-inverse btn-mini close_auction_btn"
 
-    = link_to "<i class='icon-remove icon-gray'></i>".html_safe, confirm_delete_silent_auction_path(auction),
+    = link_to "x".html_safe, confirm_delete_silent_auction_path(auction),
                                                                   :method => 'post',
-                                                                  :class => "btn btn-mini"
+                                                                  :class => "btn btn-mini delete_btn"

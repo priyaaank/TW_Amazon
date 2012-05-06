@@ -11,6 +11,7 @@ TWAmazon::Application.routes.draw do
     member do
       put 'close'
       post 'confirm_delete'
+      delete 'destroy'
     end
   end
 

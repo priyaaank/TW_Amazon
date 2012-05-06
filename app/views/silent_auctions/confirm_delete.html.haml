@@ -1,0 +1,40 @@
+%div{:class => 'alert alert-block confirm_delete'}
+  %h2 Are you sure you want to delete this auction?
+  =simple_format("All details and existing bids for this auction will be removed permanently. <strong>This cannot be undone.</strong>#{@bidders.empty? ? '' : '<br/><strong>Please note down the winner or active bidders to contact them</strong> <i>(This information will not be available after the auction is deleted)</i>'}", :class => "warningText")
+  %div.wrapper
+    %table{:class => 'table table-simpleBordered', :id => 'runningAuctions'}
+      %tbody
+        %tr
+          %td.auction_info
+            %p.itemTitle= @delete_auction.title
+            =simple_format(@delete_auction.description)
+            - if !@delete_auction.open
+              - wonBid = won_bid_for_auction(@delete_auction)
+              %h4 Active bidders:
+              %ul
+                %li.win= "#{won_bid_for_auction(@delete_auction).user.username}@thoughtworks.com <span>[WINNER]</span>".html_safe
+                - @bidders.each do |bidder|
+                  - if bidder.id != wonBid.user.id
+                    %li= bidder.username << "@thoughtworks.com"
+            - else
+              %h4 Active bidders:
+              - if @bidders.empty?
+                %p.empty There are no active bidders for this auction
+              - else
+                %ul
+                  - @bidders.each do |bidder|
+                    %li= bidder.username << "@thoughtworks.com"
+          %td.min_price
+            = simple_format("Min Price:<br/><strong>#{number_to_currency(@delete_auction.min_price)}</strong>")
+          %td.auction_bids
+            = simple_format("Active bids:<br/><strong>#{pluralize(@delete_auction.bids.active.count, "bid")}</strong>")
+          %td.auction_controls
+            %p
+              Status:
+              - if @delete_auction.open
+                %span{:style => "font-weight:bold; color:#f00"} RUNNING
+              - else
+                %span{:style => "font-weight:bold; color:#f00"} CLOSED
+  %div.btn_wrapper
+    =link_to "Back to listing", silent_auctions_path, :class => "btn"
+    =link_to "<strong>Delete Auction</strong>".html_safe, "#", :class => "btn btn-danger", :method => 'delete'
