@@ -40,9 +40,9 @@
 }
 
 .emptyMsg {background:#fff; border:1px solid #dddddd; font-size:14px; padding:20px 10px; font-style: italic; color:#666;}
-.itemTitle {font-weight:bold; font-size:1.2em; }
+.itemTitle {font-weight:bold; font-size:1.1em; margin:0;}
 .delBid {text-decoration: line-through; font-weight:bold;}
-.itemWinner {font-weight:bold;}
+.itemWinner {font-weight:bold; margin-top:5px;}
 .highlight {color:green; font-weight:bold;}
 .lost {color:red; font-weight:bold;}
 .error {color:#B94A48;}
