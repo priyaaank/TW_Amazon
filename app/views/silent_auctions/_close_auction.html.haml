@@ -13,6 +13,7 @@
       .controls_holder
         = link_to "x".html_safe, confirm_delete_silent_auction_path(auction),
                                 :method => 'post',
-                                :class => "btn btn-mini delete_btn"
+                                :class => "btn btn-mini delete_btn",
+                                :title => "delete_auction"
     - else
       = render :partial => "bids/user_bid_view", :locals => { :auction => auction, :wonBid => wonBid }

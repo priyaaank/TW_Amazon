@@ -1,19 +1,21 @@
 Feature: Close auction to see winner
 
   Background:
-    Given I'm logged in as an admin
-    And there is a running auction as the following:
+    Given there is a running auction as the following:
       | title        | description        | min_price |
       | test title 1 | test description 1 | 200       |
 
   @javascript
   Scenario: Admin close auction
+    Given there is at least one bid placed for the auction
+    And I'm logged in as an admin
     When I close the auction
     Then the auction is closed
     And no more bids are allowed
 
   @javascript
   Scenario: Auction with no bid
+    Given I'm logged in as an admin
     When there are no bids placed for the auction
     Then I cannot close the auction
 
@@ -25,6 +27,7 @@ Feature: Close auction to see winner
       | user_2 | 200.5 |
       | user_3 | 550.00 |
       | user_4 | 210.45 |
+    And I'm logged in as an admin
     When I close the auction
     Then I can see the winner is "user_3@thoughtworks.com"
-    And I can see the winning bid is $550.00
+    And I can see the winning bid is "$550.00"

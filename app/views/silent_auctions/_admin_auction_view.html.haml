@@ -14,8 +14,10 @@
                           :disable_with => "Closing...",
                           :remote => true,
                           :confirm => "Auction cannot be re-opened after closed. Continue?",
-                          :class => "btn btn-inverse btn-mini close_auction_btn"
+                          :class => "btn btn-inverse btn-mini close_auction_btn",
+                          :title => "close_auction"
 
     = link_to "x".html_safe, confirm_delete_silent_auction_path(auction),
                                                                   :method => 'post',
-                                                                  :class => "btn btn-mini delete_btn"
+                                                                  :class => "btn btn-mini delete_btn",
+                                                                  :title => "delete_auction"

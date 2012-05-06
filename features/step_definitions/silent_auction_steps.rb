@@ -3,23 +3,15 @@ Given /^a (?:valid|open) silent auction$/ do
   create_silent_auction
 end
 
-Given /^I am a logged in admin$/ do
-
-end
-
-Given /^there are valid auctions with the following:$/ do |table|
+Given /^there are valid auctions as the following:$/ do |table|
   table.hashes.each do | hash |
     hash["open"] = (hash["open"] == "yes") ? true : false
-    SilentAuction.make!(:title => hash['title'], :description => hash['description'], :open => hash['open'])
-  end
-end
-
-Given /^there are valid running and closed silent auctions$/ do
-  5.times do
-    SilentAuction.make!
-  end
-  3.times do
-    SilentAuction.make!(:open => false)
+    auction = SilentAuction.make!(:title => hash['title'], :description => hash['description'], :min_price => hash['min_price'])
+    hash['active bids'].to_i.times do
+      User.make!(:user).bids.create(:silent_auction_id => auction.id, :amount => hash['min_price'])
+    end
+    auction.open = hash["open"]
+    auction.save!
   end
 end
 
@@ -37,6 +29,7 @@ When /^I create a silent auction with the following:$/ do |table|
     visit new_silent_auction_path
     current_path.should == new_silent_auction_path
     fill_in("silent_auction[title]", :with => hash['title'])
+    fill_in("silent_auction[min_price]", :with => hash['min_price'])
     fill_in("silent_auction[description]", :with => hash['description'])
     click_button "submit_done"
   end
@@ -62,6 +55,13 @@ When /^I view all closed auctions$/ do
   visit silent_auctions_path
 end
 
+When /^I close the auction$/ do
+  within("tr#silentAuction_#{get(:silent_auctions).id}") do
+    click_link 'close_auction'
+    page.driver.browser.switch_to.alert.accept
+  end
+end
+
 # VALIDATE HOWEVER WE MUST
 Then /^a valid silent auction is created with the following:$/ do |table|
   table.hashes.each do | hash |
@@ -76,6 +76,10 @@ end
 
 Then /^it will have a description$/ do
   verify_silent_auction_has_description get(:silent_auctions)
+end
+
+Then /^it will have a minimum price$/ do
+  verify_silent_auction_has_min_price get(:silent_auctions)
 end
 
 Then /^the auction is running$/ do
@@ -122,6 +126,12 @@ end
 Then /^I am told that no closed auctions exist$/ do
   page.should have_content('There are no closed auctions')
 end
-Given /^an open silent auction$/ do
-  pending
+
+Then /^I cannot close the auction$/ do
+  within("tr#silentAuction_#{get(:silent_auctions).id}") do
+    page.should have_no_link("close_auction")
+  end
 end
+
+
+

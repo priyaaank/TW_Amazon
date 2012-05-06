@@ -1,5 +1,5 @@
-Given /^I have bided on following auctions:$/ do |table|
-  visit index_path
+Given /^I have bid on following auctions:$/ do |table|
+  visit silent_auctions_path
   table.hashes.each do |hash|
     auction = SilentAuction.find_by_title(hash['title'])
     within("td#bid_for_auction_#{auction.id}") do
@@ -11,7 +11,7 @@ end
 
 When /^I view my page$/ do
   user = User.find_by_username("test-user")
-  visit user_path(user) 
+  visit user_path(user)
 end
 
 Then /^I can see all the running auctions that I have placed bids sorted by the most recent first:$/ do |table|

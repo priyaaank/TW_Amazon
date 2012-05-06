@@ -60,6 +60,10 @@ td.endTime {}
 td.auction_bids {width:10%}
 td.auction_controls {width:10%;}
 
+.auction_controls p{
+  margin-bottom:0;
+}
+
 .controls_holder {text-align: right;}
 .delete_btn {
   color:#a4a4a4; font-weight:bold; text-transform: uppercase;
