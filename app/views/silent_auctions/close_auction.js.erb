@@ -2,7 +2,7 @@ $('.close_auction_btn').unbind('ajax:success');
 
 $('.close_auction_btn').bind('ajax:success', function(){
     $("span.success").empty();
-    var parent = $(this).parent().parent();
+    var parent = $(this).parent().parent().parent();
     var pId = parent.attr('id');
     parent.fadeOut('slow', function() {
         parent.replaceWith(
