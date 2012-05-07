@@ -1,7 +1,7 @@
 class SilentAuction < ActiveRecord::Base
   has_many :bids, :dependent => :destroy, :inverse_of => :silent_auction
 
-  attr_accessible :title, :description, :open, :min_price
+  attr_accessible :title, :description, :open, :min_price, :end_date
   before_save :strip_whitespace
 
   validates :title, :presence => { :message => "Title is required" } ,
@@ -18,6 +18,12 @@ class SilentAuction < ActiveRecord::Base
   scope :running, where(:open => true)
   scope :closed, where(:open => false)
   scope :recent, order('created_at desc')
+
+  after_initialize :set_attr
+
+  def set_attr
+    self.end_date = 2.weeks.from_now.to_formatted_s(:day_date_and_month)
+  end
 
   def strip_whitespace
     self.title = self.title.strip
