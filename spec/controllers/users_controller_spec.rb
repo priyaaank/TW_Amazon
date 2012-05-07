@@ -26,6 +26,15 @@ describe UsersController do
         get :show, :id => @user.id
         response.should be_success
       end
+
+
+      it 'should allow a user to see only their profile page' do
+        wrong_user = User.create(username: 'wrong-user', password: 'barfoo')
+        get :show, :id => wrong_user.id
+
+        response.should redirect_to(root_path)
+      end
+
     end
   end
 end
