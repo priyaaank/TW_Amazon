@@ -18,9 +18,12 @@ Feature: View auction listing
     | test title 2 |
     | test title 1 |
 
+    And I can see the end date
+
     And I can see all closed auctions sorted by most recent first:
     | test title 4 |
     | test title 3 |
+
 
     @javascript
     Scenario: No running auctions to see

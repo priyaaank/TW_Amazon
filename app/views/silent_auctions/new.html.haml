@@ -4,7 +4,7 @@
   = f.input :title, :label => 'Title', :input_html => {:class => "longInput"}
   = f.input :min_price, :label => 'Minimum Price',:input_html => {:style => "width:100px", :type => 'text'}
   = f.input :description, :as => :text, :label => 'Description', :input_html => { :rows => 10 }
-  = f.input :end_date, :label => 'End date', :as => :string
+  = f.input :end_date, :label => 'End date', :as => :string, :readonly => true, :input_html => { :value => formatted_date(@silent_auction.end_date) }
 
   .form-actions
     = link_to "Back to Listing", silent_auctions_path, :class => 'btn'

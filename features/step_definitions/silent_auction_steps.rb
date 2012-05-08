@@ -28,7 +28,7 @@ When /^I create a silent auction with the following:$/ do |table|
   table.hashes.each do | hash |
     visit new_silent_auction_path
     current_path.should == new_silent_auction_path
-    find_field('End date').value.should == 2.weeks.from_now.to_formatted_s(:day_date_and_month)
+    find_field('End date').value.should == 2.weeks.from_now.to_date.to_s(:day_date_and_month)
     fill_in("silent_auction[title]", :with => hash['title'])
     fill_in("silent_auction[min_price]", :with => hash['min_price'])
     fill_in("silent_auction[description]", :with => hash['description'])
@@ -159,6 +159,12 @@ Then /^I should see the list of active bidders as following:$/ do |table|
   table.hashes.each do |hash|
     page.should have_content(hash["bidder"])
   end
+end
+
+Then /^I can see the end date$/ do
+  # TODO improve the effectiveness of asserting the dynamic end date
+  # that should appear for each open auction on the listing page
+  page.should have_content 'End date' 
 end
 
 Then /^the auction should be deleted$/ do

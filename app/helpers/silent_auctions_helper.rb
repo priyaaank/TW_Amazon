@@ -10,4 +10,8 @@ module SilentAuctionsHelper
     winBid = auction.bids.active.highFirst.earlier.first
   end
 
+  def formatted_date(date)
+    date.to_s(:day_date_and_month)
+  end
+
 end

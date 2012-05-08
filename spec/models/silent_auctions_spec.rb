@@ -25,7 +25,6 @@ describe SilentAuction do
       auction.valid?.should == true
     end
     
-
     it 'should default to open' do
       auction = SilentAuction.create!(:title => "my title", :description => "my description", :min_price => 250.00)
       auction.open.should == true 
@@ -107,6 +106,12 @@ describe SilentAuction do
       @auction.open.should == true
       @auction.should have_at_least(1).errors
     end
+  end
+
+  it "should have an end date" do
+    auction = SilentAuction.make!
+
+    auction.end_date.should == 2.weeks.from_now.to_date
   end
 
 end
