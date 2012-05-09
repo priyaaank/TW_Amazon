@@ -63,11 +63,11 @@ class SilentAuctionsController < ApplicationController
     respond_to do |format|
       if @silent_auction.close
         format.html { redirect_to silent_auction_path, :notice => "Auction for <b>#{@silent_auction.title}</b> has been closed".html_safe }
-        format.js { render 'close_auction.js.erb'}
+        format.js { render 'close_auction'}
       else
         err_msg = @silent_auction.errors.full_messages
         format.html { redirect_to silent_auction_path, :notice => err_msg }
-        format.js { render 'fail_close_auction.js.erb', :locals => { :errMsg => err_msg } }
+        format.js { render 'fail_close_auction', :locals => { :errMsg => err_msg } }
       end
     end
   end
