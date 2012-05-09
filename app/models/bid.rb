@@ -8,7 +8,7 @@ class Bid < ActiveRecord::Base
   validate :auction_must_not_be_closed
   validates :silent_auction_id, :presence => true, :uniqueness => {:scope => :user_id, :message => 'You cannot place multiple bids for an auction.'}
 
-  attr_accessible :amount, :active, :silent_auction_id
+  attr_accessible :amount, :active, :silent_auction_id, :created_at
 
   scope :active, where(:active => true)
   scope :highFirst, order('amount DESC')
