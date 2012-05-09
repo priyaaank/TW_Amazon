@@ -53,10 +53,13 @@ span.success i{display:inline-block; margin-left:5px;}
 
 // main listing table proportion
 
-td.auction_info {width:70%}
+td.auction_info {width:60%}
 td.min_price {width:10%}
+
+td.end_date {width:10%}
+
+//becareful when change, bid_col = auctions_bid + auctions_controls in user view for running auctions
 td.bid_col {width:20%}
-td.endTime {}
 td.auction_bids {width:10%}
 td.auction_controls {width:10%;}
 

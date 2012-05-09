@@ -6,6 +6,8 @@
     = simple_format("Winner: <span class='highlight'>#{wonBid.user.username}@thoughtworks.com</span>", :class => 'itemWinner')
   %td.min_price
     = simple_format("Min Price: <strong>#{number_to_currency(auction.min_price)}</strong>")
+  %td.end_date
+    = simple_format("End date:<br /><strong>#{formatted_date(auction.end_date)}</strong>")
   %td.auction_bids
     = simple_format("Winning Bid:<br/><span class='highlight'>#{number_to_currency(wonBid.amount)}</span>")
   %td.auction_controls
