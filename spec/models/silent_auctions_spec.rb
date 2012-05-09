@@ -87,6 +87,11 @@ describe SilentAuction do
       auction.min_price = 9999.99
       auction.valid?.should == true
     end
+
+    it "should have an end date" do
+      auction = SilentAuction.make!
+      auction.end_date.should == 2.weeks.from_now.to_date
+    end
   end
 
   describe 'close' do
@@ -106,12 +111,6 @@ describe SilentAuction do
       @auction.open.should == true
       @auction.should have_at_least(1).errors
     end
-  end
-
-  it "should have an end date" do
-    auction = SilentAuction.make!
-
-    auction.end_date.should == 2.weeks.from_now.to_date
   end
 
 end
