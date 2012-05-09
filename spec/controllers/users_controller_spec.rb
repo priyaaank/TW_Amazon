@@ -30,7 +30,8 @@ describe UsersController do
       it 'should allow a user to see only their profile page' do
         wrong_user = User.create(username: 'wrong-user', password: 'barfoo')
         get :show, :id => wrong_user.id
-        response.should redirect_to(root_path)
+        flash[:error].should include("Unauthorized Access")
+        response.should redirect_to(index_path)
       end
 
       describe 'listing auctions user has placed bid on' do
@@ -65,6 +66,7 @@ describe UsersController do
           assigns[:closed_bids].should include @bid4
         end
       end
+
     end
   end
 end
