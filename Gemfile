@@ -25,6 +25,7 @@ end
 group :production, :staging do
   gem "pg"
   gem 'thin'
+  gem 'rufus-scheduler'
 end
 
 group :development, :test do
