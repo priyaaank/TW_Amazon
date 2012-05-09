@@ -43,17 +43,12 @@ end
 When /^the auction is closed$/ do
   get(:silent_auctions).open = false
 end
-
-When /^I view all auctions$/ do
-  visit silent_auctions_path
-end
-
 When /^I view all running auctions$/ do
-  visit silent_auctions_path
+  visit running_silent_auctions_path
 end
 
 When /^I view all closed auctions$/ do
-  visit silent_auctions_path
+  visit closed_silent_auctions_path
 end
 
 When /^I close the auction$/ do

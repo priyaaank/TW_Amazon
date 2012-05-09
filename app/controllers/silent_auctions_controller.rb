@@ -2,17 +2,25 @@ class SilentAuctionsController < ApplicationController
   include ApplicationHelper
 
   before_filter :authenticate_user!
-  before_filter :authorize_admin, :except => :index
+  before_filter :authorize_admin, :except => [:running, :closed]
 
-  # GET /silent_auctions
-  def index
-    @title = "Silent Auctions Listing"
+  # GET /auctions/running
+  def running
+    @title = "Running Auctions Listing"
     @running_auctions = SilentAuction.running.recent.includes(:bids)
+
+    respond_to do |format|
+      format.html
+    end
+  end
+
+  # GET /auctions/closed
+  def closed
+    @title = "Closed Auctions Listing"
     @closed_auctions = SilentAuction.closed.recent.includes(:bids)
 
     respond_to do |format|
-      format.js # ensure the controller can accept javascript call
-      format.html # new.html.haml
+      format.html
     end
   end
 
@@ -25,7 +33,7 @@ class SilentAuctionsController < ApplicationController
     @title = "Create new auction"
     @silent_auction = SilentAuction.new
     respond_to do |format|
-      format.html # new.html.haml
+      format.html
     end
 
   end

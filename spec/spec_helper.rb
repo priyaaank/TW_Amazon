@@ -41,7 +41,6 @@ RSpec.configure do |config|
 end
 
 
-
 def requires property
   valid_user.delete(property.to_sym)
   user = User.new(valid_user)
@@ -59,4 +58,12 @@ def has_limit property, limit
   user.valid?.should == false
   user[property.to_sym] = "a" * limit
   user.valid?.should == true
+end
+
+def redirect_to_login
+  if Rails.application.config.test_mode
+    response.should redirect_to(root_path)
+  else
+    response.should redirect_to(user_omniauth_authorize_path(:cas))
+  end
 end
