@@ -4,7 +4,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    @bids = @user.bids.active
+    @running_bids = @user.bids.joins(:silent_auction).where(:silent_auctions => {:open => true})
   end
 
   def correct_user

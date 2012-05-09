@@ -12,9 +12,9 @@
   - if bid != nil
     - if bid.active
       - if bid.id == wonBid.id
-        = simple_format("Your Win Bid:<br/><span class='highlight'>#{number_to_currency(bid.amount)}</span>")
+        = simple_format("Your Bid:<br/><span class='highlight'>#{number_to_currency(bid.amount)}</span>")
       - else
-        = simple_format("Your Lost Bid:<br/><span class='lost'>#{number_to_currency(bid.amount)}</span>")
+        = simple_format("Your Bid:<br/><span class='lost'>#{number_to_currency(bid.amount)}</span>")
     - else
       = simple_format("Your bid: <span class='delBid'>#{number_to_currency(bid.amount)}</span>")
       %span{:style => 'font-weight:bold; color:#f00'} WITHDRAWN
