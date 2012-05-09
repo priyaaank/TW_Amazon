@@ -3,14 +3,20 @@ TWAmazon::Application.routes.draw do
   root :to => 'home#login'
 
   # define an index or home path to redirect if a user already login
-  match 'home', :to => 'SilentAuctions#index', :as => :index
+  match 'home', :to => 'SilentAuctions#running', :as => :index
+  match 'silent_auctions', :to => 'SilentAuctions#running'
 
   # silent auctions paths
-  resources :silent_auctions, :only => [:create, :new, :index, :destroy]
+  resources :silent_auctions, :only => [:create, :new, :destroy]
   resources :silent_auctions do
     member do
       put 'close'
       post 'confirm_delete'
+    end
+
+    collection do
+      get 'running'
+      get 'closed'
     end
   end
 
@@ -48,8 +54,5 @@ TWAmazon::Application.routes.draw do
       get '/test-users/logout', :to => 'dummy_sessions#destroy', :as => :destroy_user_session
     end
   end
-
-  # This is for being able of testing the application with cucumber
-  match 'autoTestLogin/:id' => 'application#login', :as => 'autotest_login', :via => [:get] if Rails.env.test?
 
 end

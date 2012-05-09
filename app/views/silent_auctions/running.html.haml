@@ -1,9 +1,9 @@
 %h1
-  %span Silent Auctions Listing
+  %span Running Auctions
   - if current_user.admin?
     = link_to 'Create NEW Auction', new_silent_auction_path, :class => 'btn btn-primary'
 
-%h3 Running Auctions
+%h3= "Total running auction: #{@running_auctions.count}"
 - if @running_auctions.empty?
   .empty_collection
     %p.emptyMsg There are no running auctions.
@@ -12,13 +12,3 @@
     %tbody
       - @running_auctions.each do |auction|
         = render :partial => "running_auction", :locals => { :auction => auction }
-
-%h3 Closed Auctions
-- if @closed_auctions.empty?
-  .empty_collection
-    %p.emptyMsg There are no closed auctions.
-- else
-  %table{:class => 'table table-simpleBordered', :id => 'closedAuctions'}
-    %tbody
-      - @closed_auctions.each do |auction|
-        = render :partial => "close_auction", :locals => { :auction => auction }

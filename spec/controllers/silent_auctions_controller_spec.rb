@@ -2,16 +2,12 @@ require 'spec_helper'
 
 describe SilentAuctionsController do
 
-  describe "GET 'index'" do
+  describe "GET 'auctions/running'" do
 
     describe "for non-signed-in users" do
       it 'should redirect to login page' do
-        get :index
-        if Rails.application.config.test_mode
-          response.should redirect_to(root_path)
-        else
-          response.should redirect_to(user_omniauth_authorize_path(:cas))
-        end
+        get :running
+        redirect_to_login
       end
     end
 
@@ -22,13 +18,13 @@ describe SilentAuctionsController do
       end
 
       it 'should return http success' do
-        get :index
+        get :running
         response.should be_success
       end
 
       it 'should render the index template' do
-        get :index
-        response.should render_template 'index'
+        get :running
+        response.should render_template 'running'
       end
 
       describe 'list all running auctions' do
@@ -37,7 +33,7 @@ describe SilentAuctionsController do
           @auction2 = SilentAuction.make!(:created_at => Time.now)
           @auction3 = SilentAuction.make!(:created_at => Time.now + 50)
           @close_auction = SilentAuction.make!(:open => false)
-          get :index
+          get :running
         end
 
         it 'should assign the running auctions to the view' do
@@ -52,7 +48,33 @@ describe SilentAuctionsController do
           assigns[:running_auctions][1].should eql @auction3
           assigns[:running_auctions][2].should eql @auction2
         end
+      end
+    end
+  end
 
+  describe "GET 'auctions/closed'" do
+
+    describe "for non-signed-in users" do
+      it 'should redirect to login page' do
+        get :closed
+        redirect_to_login
+      end
+    end
+
+    describe "for signed-in users" do
+      before(:each) do
+        @user = User.make!(:user)
+        sign_in @user
+      end
+
+      it 'should return http success' do
+        get :closed
+        response.should be_success
+      end
+
+      it 'should render the index template' do
+        get :closed
+        response.should render_template 'closed'
       end
 
       describe 'list all closed auctions' do
@@ -61,7 +83,7 @@ describe SilentAuctionsController do
           @auction2 = SilentAuction.make!(:open => false, :created_at => Time.now)
           @auction3 = SilentAuction.make!(:open => false, :created_at => Time.now + 50)
           @run_auction = SilentAuction.make!
-          get :index
+          get :closed
         end
 
         it 'should assign the closed auctions to the view' do
@@ -117,11 +139,7 @@ describe SilentAuctionsController do
     describe "for non-signed-in users" do
       it 'should redirect to login page' do
         get :new
-        if Rails.application.config.test_mode
-          response.should redirect_to(root_path)
-        else
-          response.should redirect_to(user_omniauth_authorize_path(:cas))
-        end
+        redirect_to_login
       end
     end
   end
@@ -357,11 +375,7 @@ describe SilentAuctionsController do
     describe "for non-signed-in users" do
       it 'should redirect to login page' do
         delete :destroy, :id => @auction.id
-        if Rails.application.config.test_mode
-          response.should redirect_to(root_path)
-        else
-          response.should redirect_to(user_omniauth_authorize_path(:cas))
-        end
+        redirect_to_login
       end
     end
   end
