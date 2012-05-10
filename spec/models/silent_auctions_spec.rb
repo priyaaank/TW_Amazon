@@ -88,35 +88,18 @@ describe SilentAuction do
       auction.valid?.should == true
     end
 
-    it "should have an end date" do
+    it "should have an automatic 2 weeks from now on end date" do
       auction = SilentAuction.make!
       auction.end_date.should == 2.weeks.from_now.to_date
     end
   end
 
-  describe 'close' do
-    before(:each) do
-      @auction = SilentAuction.make!
-    end
-
-    it 'should close auction with at least one active bid' do
-      user = User.make!(:user)
-      user.bids.create(:silent_auction_id => @auction.id, :amount => 100)
-      @auction.close
-      @auction.open.should == false
-    end
-
-    it 'should not be closed if have no active bid' do
-      @auction.close
-      @auction.open.should == true
-      @auction.should have_at_least(1).errors
-    end
-
+  describe 'close_auctions_ending_today' do
     it 'should automatically close auctions with bids that are ending today' do
       @auction.end_date = Date.today
       user = User.make!(:user)
       user.bids.create(:silent_auction_id => @auction.id, :amount => 100)
-      
+
       @auction.save!
       SilentAuction.close_auctions_ending_today
       @auction.reload
@@ -146,4 +129,99 @@ describe SilentAuction do
       @auction.open.should be_true
     end
   end
+
+  describe 'close' do
+    before(:each) do
+      @auction = SilentAuction.make!
+    end
+
+    it 'should close auction with at least one active bid' do
+      user = User.make!(:user)
+      user.bids.create(:silent_auction_id => @auction.id, :amount => 100)
+      @auction.close
+      @auction.open.should == false
+    end
+
+    it 'should not be closed if have no active bid' do
+      @auction.close
+      @auction.open.should == true
+      @auction.should have_at_least(1).errors
+    end
+  end
+
+  describe "scope 'running'" do
+    before(:each) do
+      @auction1 = SilentAuction.make!
+      @auction2 = SilentAuction.make!
+      @auction3 = SilentAuction.make!(:open => false)
+
+      @running_auctions = SilentAuction.running
+    end
+
+    it 'should return all auctions that are open' do
+      @running_auctions.should include @auction1
+      @running_auctions.should include @auction2
+    end
+
+    it 'should not return any closed auctions' do
+      @running_auctions.should_not include @auction3
+    end
+  end
+
+  describe "scope 'closed'" do
+    before(:each) do
+      @auction1 = SilentAuction.make!
+      @auction2 = SilentAuction.make!
+      @auction3 = SilentAuction.make!(:open => false)
+      @auction4 = SilentAuction.make!
+
+      User.make!(:user).bids.create(:silent_auction_id => @auction1.id, :amount => 100)
+      User.make!(:user).bids.create(:silent_auction_id => @auction2.id, :amount => 100)
+
+      @auction1.change_to_closed
+      @auction2.change_to_closed
+
+      @closed_auctions = SilentAuction.closed
+    end
+
+    it 'should return only closed auctions that have at least bids' do
+      @closed_auctions.should include @auction1
+      @closed_auctions.should include @auction2
+    end
+
+    it 'should not return closed auctions that have no bids' do
+      @closed_auctions.should_not include @auction3
+    end
+
+    it 'should not return running auctions' do
+      @closed_auctions.should_not include @auction4
+    end
+  end
+
+  describe "scope 'expired'" do
+    before(:each) do
+      @auction1 = SilentAuction.make!(:open => false)
+      @auction2 = SilentAuction.make!(:open => false)
+      @auction3 = SilentAuction.make!
+      @auction4 = SilentAuction.make!
+
+      User.make!(:user).bids.create(:silent_auction_id => @auction3.id, :amount => 100)
+      @auction3.change_to_closed
+      @expired_auctions = SilentAuction.expired
+    end
+
+    it 'should return all closed auctions that have no bids' do
+      @expired_auctions.should include @auction1
+      @expired_auctions.should include @auction2
+    end
+
+    it 'should not return closed auction that have bids' do
+      @closed_auctions.should_not include @auction3
+    end
+
+    it 'should not return running auctions' do
+      @closed_auctions.should_not include @auction4
+    end
+  end
+
 end

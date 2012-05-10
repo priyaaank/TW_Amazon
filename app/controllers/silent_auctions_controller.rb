@@ -4,7 +4,7 @@ class SilentAuctionsController < ApplicationController
   before_filter :authenticate_user!
   before_filter :authorize_admin, :except => [:index, :closed]
 
-  # GET /auctions/index
+  # GET /silent_auctions/running
   def index
     @title = "Running Auctions Listing"
     @running_auctions = SilentAuction.running.recent.includes(:bids)
@@ -14,7 +14,7 @@ class SilentAuctionsController < ApplicationController
     end
   end
 
-  # GET /auctions/closed
+  # GET /silent_auctions/closed
   def closed
     @title = "Closed Auctions Listing"
     @closed_auctions = SilentAuction.closed.recent
@@ -24,7 +24,7 @@ class SilentAuctionsController < ApplicationController
     end
   end
 
-  # GET /auctions/expired
+  # GET /silent_auctions/expired
   def expired
     @title = "Expired Auctions Listing"
     @expired_auctions = SilentAuction.expired.recent
