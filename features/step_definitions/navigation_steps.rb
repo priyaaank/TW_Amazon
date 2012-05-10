@@ -25,6 +25,6 @@ Then /^I should be on the 'create silent auction' page$/ do
   current_path.should == new_silent_auction_path
 end
 
-Then /^I should (?:be on|go back to) 'listings' page$/ do
+Then /^I should (?:be on|go back to) 'running_auctions' page$/ do
   current_path.should == silent_auctions_path
 end

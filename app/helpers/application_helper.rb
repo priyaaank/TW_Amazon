@@ -23,6 +23,7 @@ module ApplicationHelper
   end
 
   def back_link(default)
+    clear_request_paths
     session[:return_to] ||= request.referer
     if session[:return_to].nil?
       default

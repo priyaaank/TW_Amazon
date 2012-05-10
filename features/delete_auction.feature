@@ -29,10 +29,10 @@ Feature: Delete Auction
   Scenario: delete auction
     When I delete the auction
     And I choose to continue deleting
-    Then I should go back to 'listings' page
+    Then I should go back to 'running_auctions' page
 
   @javascript
   Scenario: delete auction
     When I delete the auction
     And choose to cancel deleting
-    Then I should go back to 'listings' page
+    Then I should go back to 'running_auctions' page

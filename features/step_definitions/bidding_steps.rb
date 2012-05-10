@@ -68,6 +68,8 @@ end
 Then /^no more bids are allowed$/ do
   step "I'm logged in as a user"
   visit silent_auctions_path
+  page.should have_no_content("tr#silentAuction_#{get(:silent_auctions).id}")
+  visit closed_silent_auctions_path
   within("tr#silentAuction_#{get(:silent_auctions).id}") do
     page.should have_no_button("Place Bid")
   end
