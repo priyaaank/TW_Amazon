@@ -3,8 +3,7 @@ TWAmazon::Application.routes.draw do
   root :to => 'home#login'
 
   # define an index or home path to redirect if a user already login
-  match 'silent_auctions/running', :to => 'SilentAuctions#index', :as => :index
-  match 'silent_auctions/running', :to => 'SilentAuctions#index', :as => :silent_auctions
+  match 'home', :to => 'SilentAuctions#index', :as => :index
 
   # silent auctions paths
   resources :silent_auctions, :only => [:index, :create, :new, :destroy]

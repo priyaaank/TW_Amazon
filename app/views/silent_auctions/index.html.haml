@@ -3,7 +3,7 @@
   - if current_user.admin?
     = link_to 'Create NEW Auction', new_silent_auction_path, :class => 'btn btn-primary'
 
-%h3= "Total running auction: #{@running_auctions.count}"
+%h3= (page_entries_info @running_auctions).sub("silent", "running").html_safe
 - if @running_auctions.empty?
   .empty_collection
     %p.emptyMsg There are no running auctions.
@@ -12,4 +12,8 @@
     %tbody
       - @running_auctions.each do |auction|
         = render :partial => "running_auction", :locals => { :auction => auction }
-  = paginate @running_auctions
+  %div{:class => 'index_footer clearfix'}
+    = paginate @running_auctions
+    .pagination_info
+      = (page_entries_info @running_auctions).sub("silent", "running").html_safe
+

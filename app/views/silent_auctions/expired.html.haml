@@ -1,12 +1,16 @@
 %h1
   %span Expired Auctions
 
-%h3= "Total expired auctions: #{@expired_auctions.count}"
+%h3= (page_entries_info @expired_auctions).sub("silent", "expired").html_safe
 - if @expired_auctions.empty?
   .empty_collection
     %p.emptyMsg There are no expired auctions.
 - else
-  %table{:class => 'table table-simpleBordered', :id => 'closedAuctions'}
+  %table{:class => 'table table-simpleBordered', :id => 'expiredAuctions'}
     %tbody
       - @expired_auctions.each do |auction|
         = render :partial => "expired_auction", :locals => { :auction => auction }
+  %div{:class => 'index_footer clearfix'}
+    = paginate @expired_auctions
+    .pagination_info
+      = (page_entries_info @expired_auctions).sub("silent", "expired").html_safe

@@ -44,11 +44,15 @@ When /^the auction is closed$/ do
   get(:silent_auctions).open = false
 end
 When /^I view all running auctions$/ do
-  visit running_silent_auctions_path
+  visit silent_auctions_path
 end
 
 When /^I view all closed auctions$/ do
   visit closed_silent_auctions_path
+end
+
+When /^I view all expired auctions$/ do
+  visit expired_silent_auctions_path
 end
 
 When /^I close the auction$/ do
@@ -122,6 +126,16 @@ end
 Then /^I can see all closed auctions sorted by most recent first:$/ do |table|
   within_table('closedAuctions') do
     page.find(:css,"tr.auction", :count => SilentAuction.closed.count)
+
+    expected_order = table.raw.map {|titleRow| titleRow[0]}
+    actual_order = page.all('p.itemTitle').collect(&:text)
+    actual_order.should == expected_order
+  end
+end
+
+Then /^I can see all expired auctions sorted by most recent first:$/ do |table|
+  within_table('expiredAuctions') do
+    page.find(:css,"tr.auction", :count => SilentAuction.expired.count)
 
     expected_order = table.raw.map {|titleRow| titleRow[0]}
     actual_order = page.all('p.itemTitle').collect(&:text)

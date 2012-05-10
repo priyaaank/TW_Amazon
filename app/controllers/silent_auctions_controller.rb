@@ -7,7 +7,7 @@ class SilentAuctionsController < ApplicationController
   # GET /silent_auctions/running
   def index
     @title = "Running Auctions Listing"
-    @running_auctions = SilentAuction.running.recent.includes(:bids)
+    @running_auctions = SilentAuction.running.recent.includes(:bids).page(params[:page])
 
     respond_to do |format|
       format.html
@@ -17,7 +17,7 @@ class SilentAuctionsController < ApplicationController
   # GET /silent_auctions/closed
   def closed
     @title = "Closed Auctions Listing"
-    @closed_auctions = SilentAuction.closed.recent
+    @closed_auctions = SilentAuction.closed.recent.page(params[:page])
 
     respond_to do |format|
       format.html
@@ -27,7 +27,7 @@ class SilentAuctionsController < ApplicationController
   # GET /silent_auctions/expired
   def expired
     @title = "Expired Auctions Listing"
-    @expired_auctions = SilentAuction.expired.recent
+    @expired_auctions = SilentAuction.expired.recent.page(params[:page])
 
     respond_to do |format|
       format.html
