@@ -1,20 +1,11 @@
 .container h3 {
   margin-top:20px;
+
   background-color: #EFEFEF;
-
-/* Safari 4-5, Chrome 1-9 */
   background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#EFEFEF), to(#DFE1E2));
-
-/* Safari 5.1, Chrome 10+ */
   background: -webkit-linear-gradient(top, #EFEFEF, #DFE1E2);
-
-/* Firefox 3.6+ */
   background: -moz-linear-gradient(top, #EFEFEF, #DFE1E2);
-
-/* IE 10 */
   background: -ms-linear-gradient(top, #EFEFEF, #DFE1E2);
-
-/* Opera 11.10+ */
   background: -o-linear-gradient(top, #EFEFEF, #DFE1E2);
 
   box-shadow:rgba(0, 0, 0, 0.117188) 0 1px 3px, white 0 0 1px inset;

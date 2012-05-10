@@ -6,7 +6,7 @@
 %h3= "Total expired auctions: #{@expired_auctions.count}"
 - if @expired_auctions.empty?
   .empty_collection
-    %p.emptyMsg There are no closed auctions.
+    %p.emptyMsg There are no expired auctions.
 - else
   %table{:class => 'table table-simpleBordered', :id => 'closedAuctions'}
     %tbody

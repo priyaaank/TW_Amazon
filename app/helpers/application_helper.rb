@@ -8,6 +8,10 @@ module ApplicationHelper
     string.gsub("\n", '<br/>')
   end
 
+  def is_active?(page_name)
+    "active" if params[:action] == page_name
+  end
+
   def authorize_admin
     store_location
 
