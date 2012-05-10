@@ -16,14 +16,20 @@ class SilentAuction < ActiveRecord::Base
                         :format => { :with => /^\d+?(?:\.\d{0,2})?$/, :message => "can only have 2 decimal places" }
 
   scope :running, where(:open => true)
-  scope :closed, where(:open => false)
+  scope :closed, joins(:bids).where(:open => false)
   scope :recent, order('created_at desc')
+  scope :ending_today, lambda { where("end_date < ?", Time.zone.now ) }
+  scope :expired, joins(<<-SQL
+    LEFT OUTER JOIN bids on silent_auctions.id = bids.silent_auction_id
+    WHERE bids.id is null
+    AND silent_auctions.open = 'f'
+  SQL
+  )
    
   def initialize(*params)
     super(*params)
     self.end_date = 2.weeks.from_now.to_date
   end
-
 
   def strip_whitespace
     self.title = self.title.strip
@@ -42,5 +48,11 @@ class SilentAuction < ActiveRecord::Base
   def change_to_closed
     self.open = false
     self.save!
+  end
+
+  def self.close_auctions_ending_today
+    self.ending_today.each do | auction |
+      auction.change_to_closed if auction.open? 
+    end
   end
 end

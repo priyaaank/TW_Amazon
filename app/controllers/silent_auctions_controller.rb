@@ -8,7 +8,8 @@ class SilentAuctionsController < ApplicationController
   def index
     @title = "Silent Auctions Listing"
     @running_auctions = SilentAuction.running.recent.includes(:bids)
-    @closed_auctions = SilentAuction.closed.recent.includes(:bids)
+    @closed_auctions  = SilentAuction.closed.recent
+    @expired_auctions = SilentAuction.expired.recent
 
     respond_to do |format|
       format.js # ensure the controller can accept javascript call

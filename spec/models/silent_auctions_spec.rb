@@ -111,6 +111,39 @@ describe SilentAuction do
       @auction.open.should == true
       @auction.should have_at_least(1).errors
     end
-  end
 
+    it 'should automatically close auctions with bids that are ending today' do
+      @auction.end_date = Date.today
+      user = User.make!(:user)
+      user.bids.create(:silent_auction_id => @auction.id, :amount => 100)
+      
+      @auction.save!
+      SilentAuction.close_auctions_ending_today
+      @auction.reload
+
+      @auction.open.should be_false
+    end
+
+    it 'should automatically close auctions that do not have any bids and are ending today' do
+      @auction.end_date = Date.today
+
+      @auction.save!
+      SilentAuction.close_auctions_ending_today
+      @auction.reload
+
+      @auction.open.should be_false
+    end
+
+    it 'should not automatically close auctions with bids that are not ending today' do
+      @auction.end_date = Date.tomorrow
+      user = User.make!(:user)
+      user.bids.create(:silent_auction_id => @auction.id, :amount => 100)
+
+      @auction.save!
+      SilentAuction.close_auctions_ending_today
+      @auction.reload
+
+      @auction.open.should be_true
+    end
+  end
 end

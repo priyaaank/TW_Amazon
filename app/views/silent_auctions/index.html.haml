@@ -22,3 +22,14 @@
     %tbody
       - @closed_auctions.each do |auction|
         = render :partial => "close_auction", :locals => { :auction => auction }
+
+%h3 Expired Auctions
+- if @expired_auctions.empty?
+  .empty_collection
+    %p.emptyMsg There are no expired auctions.
+- else
+  %table{:class => 'table table-simpleBordered', :id => 'expiredAuctions'}
+    %tbody
+      - @expired_auctions.each do |auction|
+        = render :partial => "expired_auction", :locals => { :auction => auction }
+

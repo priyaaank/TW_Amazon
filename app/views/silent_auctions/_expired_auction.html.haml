@@ -1,0 +1,13 @@
+- bid = user_bid_for_auction(auction)
+%tr{:class => "auction #{ (bid != nil && bid.active) ? 'bid_auction' : ''}", :id => "silentAuction_#{auction.id}"}
+  %td.auction_info
+    %p.itemTitle= auction.title
+    = simple_format(auction.description, :class => 'itemDescription')
+  %td.min_price
+    = simple_format("Min Price:<br/><strong>#{number_to_currency(auction.min_price)}</strong>")
+  %td.end_date
+    = simple_format("End date:<br /><strong>#{formatted_date(auction.end_date)}</strong>")
+  - if current_user.admin?
+    = render :partial => "admin_auction_view", :locals => { :auction => auction }
+  - else
+    = render :partial => "bids/user_bid_view", :locals => { :auction => auction, :bid => bid }
