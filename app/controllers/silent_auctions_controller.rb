@@ -2,10 +2,10 @@ class SilentAuctionsController < ApplicationController
   include ApplicationHelper
 
   before_filter :authenticate_user!
-  before_filter :authorize_admin, :except => [:running, :closed, :expired]
+  before_filter :authorize_admin, :except => [:index, :closed]
 
-  # GET /auctions/running
-  def running
+  # GET /auctions/index
+  def index
     @title = "Running Auctions Listing"
     @running_auctions = SilentAuction.running.recent.includes(:bids)
 
@@ -66,6 +66,7 @@ class SilentAuctionsController < ApplicationController
         end
       else
         format.html {
+          # to force error message for minimum price has a subject
           @silent_auction.errors[:min_price].each do |msg|
             msg.insert(0, "Minimum price ")
           end

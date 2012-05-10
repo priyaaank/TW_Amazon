@@ -3,11 +3,11 @@ TWAmazon::Application.routes.draw do
   root :to => 'home#login'
 
   # define an index or home path to redirect if a user already login
-  match 'home', :to => 'SilentAuctions#running', :as => :index
-  match 'silent_auctions', :to => 'SilentAuctions#running'
+  match 'silent_auctions/running', :to => 'SilentAuctions#index', :as => :index
+  match 'silent_auctions/running', :to => 'SilentAuctions#index', :as => :silent_auctions
 
   # silent auctions paths
-  resources :silent_auctions, :only => [:create, :new, :destroy]
+  resources :silent_auctions, :only => [:index, :create, :new, :destroy]
   resources :silent_auctions do
     member do
       put 'close'
@@ -15,7 +15,6 @@ TWAmazon::Application.routes.draw do
     end
 
     collection do
-      get 'running'
       get 'closed'
       get 'expired'
     end

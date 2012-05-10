@@ -1,7 +1,7 @@
 %ul.nav
   %li{:class => 'divider-vertical divider-left'}
   %li
-    = link_to "Running Auctions", running_silent_auctions_path, :class => is_active?('running')
+    = link_to "Running Auctions", silent_auctions_path, :class => is_active?('index')
   %li
     = link_to "Closed Auctions", closed_silent_auctions_path, :class => is_active?('closed')
   - if current_user.admin?

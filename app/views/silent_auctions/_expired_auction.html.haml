@@ -7,7 +7,12 @@
     = simple_format("Min Price:<br/><strong>#{number_to_currency(auction.min_price)}</strong>")
   %td.end_date
     = simple_format("End date:<br /><strong>#{formatted_date(auction.end_date)}</strong>")
-  - if current_user.admin?
-    = render :partial => "admin_auction_view", :locals => { :auction => auction }
-  - else
-    = render :partial => "bids/user_bid_view", :locals => { :auction => auction, :bid => bid }
+  %td.auction_bids
+    %span{:class => 'badge badge-error', :style => "font-weight:bold;"}
+      = "0 bids"
+  %td.auction_controls
+    .controls_holder
+      = link_to "x".html_safe, confirm_delete_silent_auction_path(auction),
+                              :method => 'post',
+                              :class => "btn btn-mini delete_btn",
+                              :title => "delete_auction"

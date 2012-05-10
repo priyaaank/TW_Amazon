@@ -1,7 +1,5 @@
 %h1
   %span Closed Auctions
-  - if current_user.admin?
-    = link_to 'Create NEW Auction', new_silent_auction_path, :class => 'btn btn-primary'
 
 %h3= "Total closed auction: #{@closed_auctions.count}"
 - if @closed_auctions.empty?

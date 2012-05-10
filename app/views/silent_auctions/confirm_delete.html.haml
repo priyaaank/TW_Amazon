@@ -36,7 +36,7 @@
               - else
                 %span{:style => "font-weight:bold; color:#f00"} CLOSED
   %div.btn_wrapper
-    =link_to "Back to listing", silent_auctions_path, :class => "btn", :title => "cancel_delete_auction"
+    =link_to "Back to listing", back_link(silent_auctions_path), :class => "btn", :title => "cancel_delete_auction"
     =link_to "<strong>Delete Auction</strong>".html_safe, @delete_auction,
                                                           :class => "btn btn-danger",
                                                           :method => :delete,

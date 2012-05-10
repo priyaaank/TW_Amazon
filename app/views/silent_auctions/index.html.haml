@@ -12,3 +12,4 @@
     %tbody
       - @running_auctions.each do |auction|
         = render :partial => "running_auction", :locals => { :auction => auction }
+  = paginate @running_auctions

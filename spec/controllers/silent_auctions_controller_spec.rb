@@ -2,11 +2,11 @@ require 'spec_helper'
 
 describe SilentAuctionsController do
 
-  describe "GET 'auctions/running'" do
+  describe "GET 'index'" do
 
     describe "for non-signed-in users" do
       it 'should redirect to login page' do
-        get :running
+        get :index
         redirect_to_login
       end
     end
@@ -18,13 +18,13 @@ describe SilentAuctionsController do
       end
 
       it 'should return http success' do
-        get :running
+        get :index
         response.should be_success
       end
 
       it 'should render the index template' do
-        get :running
-        response.should render_template 'running'
+        get :index
+        response.should render_template 'index'
       end
 
       describe 'list all running auctions' do
@@ -33,7 +33,7 @@ describe SilentAuctionsController do
           @auction2 = SilentAuction.make!(:created_at => Time.now)
           @auction3 = SilentAuction.make!(:created_at => Time.now + 50)
           @close_auction = SilentAuction.make!(:open => false)
-          get :running
+          get :index
         end
 
         it 'should assign the running auctions to the view' do
@@ -43,7 +43,7 @@ describe SilentAuctionsController do
           assigns[:running_auctions].should_not include @close_auction
         end
 
-        it 'should order auctions by most recent first' do
+        it 'should order running auctions by most recent first' do
           assigns[:running_auctions][0].should eql @auction1
           assigns[:running_auctions][1].should eql @auction3
           assigns[:running_auctions][2].should eql @auction2
@@ -52,7 +52,7 @@ describe SilentAuctionsController do
     end
   end
 
-  describe "GET 'auctions/closed'" do
+  describe "GET 'closed'" do
 
     describe "for non-signed-in users" do
       it 'should redirect to login page' do
@@ -77,12 +77,22 @@ describe SilentAuctionsController do
         response.should render_template 'closed'
       end
 
-      describe 'list all closed auctions' do
+      describe 'list all closed auctions that has at least one bid' do
         before(:each) do
-          @auction1 = SilentAuction.make!(:open => false, :created_at => Time.now + 100)
-          @auction2 = SilentAuction.make!(:open => false, :created_at => Time.now)
-          @auction3 = SilentAuction.make!(:open => false, :created_at => Time.now + 50)
+          @auction1 = SilentAuction.make!(:created_at => Time.now + 100)
+          @auction2 = SilentAuction.make!(:created_at => Time.now)
+          @auction3 = SilentAuction.make!(:created_at => Time.now + 50)
+
+          @user.bids.create(:silent_auction_id => @auction1.id, :amount => 100)
+          @user.bids.create(:silent_auction_id => @auction2.id, :amount => 100)
+          @user.bids.create(:silent_auction_id => @auction3.id, :amount => 100)
+
+          @auction1.change_to_closed
+          @auction2.change_to_closed
+          @auction3.change_to_closed
+
           @run_auction = SilentAuction.make!
+          @no_bid_auction = SilentAuction.make!(:open => false)
           get :closed
         end
 
@@ -91,12 +101,77 @@ describe SilentAuctionsController do
           assigns[:closed_auctions].should include @auction2
           assigns[:closed_auctions].should include @auction3
           assigns[:closed_auctions].should_not include @run_auction
+          assigns[:closed_auctions].should_not include @no_bid_auction
         end
 
         it 'should order auctions by most recent first' do
           assigns[:closed_auctions][0].should eql @auction1
           assigns[:closed_auctions][1].should eql @auction3
           assigns[:closed_auctions][2].should eql @auction2
+        end
+      end
+    end
+  end
+
+  describe "GET 'expired'" do
+
+    describe "for unauthorized users" do
+      it 'should redirect to login page if not sign-in' do
+        get :expired
+        redirect_to_login
+      end
+
+      it 'should not display the page, redirect back with "unauthorized" error message if user is not admin' do
+        sign_in User.make!(:user)
+        get :expired
+        flash[:error].should include("Unauthorized Access")
+        response.should redirect_to(index_path)
+      end
+    end
+
+    describe "for sign-in admin" do
+      before(:each) do
+        @admin = User.make!(:admin)
+        sign_in @admin
+      end
+
+      it 'should return http success' do
+        get :expired
+        response.should be_success
+      end
+
+      it 'should render the index template' do
+        get :expired
+        response.should render_template 'expired'
+      end
+
+      describe 'list all expired auctions (closed auctions with no bid)' do
+        before(:each) do
+          @auction1 = SilentAuction.make!(:open => false, :created_at => Time.now + 100)
+          @auction2 = SilentAuction.make!(:open => false, :created_at => Time.now)
+          @auction3 = SilentAuction.make!(:open => false, :created_at => Time.now + 50)
+
+          @run_auction = SilentAuction.make!
+
+          @closed_auction = SilentAuction.make!()
+          User.make!(:user).bids.create(:silent_auction_id => @closed_auction.id, :amount => 100)
+          @closed_auction.change_to_closed
+
+          get :expired
+        end
+
+        it 'should assign the closed auctions to the view' do
+          assigns[:expired_auctions].should include @auction1
+          assigns[:expired_auctions].should include @auction2
+          assigns[:expired_auctions].should include @auction3
+          assigns[:expired_auctions].should_not include @run_auction
+          assigns[:expired_auctions].should_not include @closed_auction
+        end
+
+        it 'should order auctions by most recent first' do
+          assigns[:expired_auctions][0].should eql @auction1
+          assigns[:expired_auctions][1].should eql @auction3
+          assigns[:expired_auctions][2].should eql @auction2
         end
       end
     end
