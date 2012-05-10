@@ -1,14 +1,12 @@
 %ul.nav
-  %li.dropdown
-    %a{:href => "#", :class => "dropdown-toggle", "data-toggle" => "dropdown"}
-      Silent Auctions
-      %b.caret
-    %ul{:class => "dropdown-menu"}
-      %li
-        %a{:href => silent_auctions_path}
-          %i.icon-list
-          Silent Auctions Listing
-        - if current_user.admin?
-          %a{:href => new_silent_auction_path}
-            %i.icon-edit
-            Create New Auction
+  %li.divider-vertical
+  %li
+    = link_to "Running Auctions", running_silent_auctions_path
+  %li.divider-vertical
+  %li
+    = link_to "Closed Auctions", closed_silent_auctions_path
+  %li.divider-vertical
+  %li
+    %a{:href => new_silent_auction_path}
+      %i{:class => 'icon-edit icon-green'}
+      Create New Auction

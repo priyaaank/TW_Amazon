@@ -15,7 +15,6 @@ describe SilentAuctionsHelper do
   end
 
   describe 'won_bid_for_auction' do
-
     before (:each) do
       @auction = SilentAuction.make!
       user1 = User.make!(:user)
@@ -39,6 +38,15 @@ describe SilentAuctionsHelper do
       helper.won_bid_for_auction(@auction).should eql @bid2
     end
 
-  end
+    it 'should return bid of user registered earlier if 2 bids have same amount placed at same time' do
+      test_auction = SilentAuction.make!
+      bid_create_time = Time.now
+      user1 = User.make!(:user)
+      user2 = User.make!(:user)
 
+      tbid1 = user1.bids.create(:silent_auction_id => test_auction.id, :amount => 200, :created_at => bid_create_time)
+      tbid2 = user2.bids.create(:silent_auction_id => test_auction.id, :amount => 200, :created_at => bid_create_time)
+      helper.won_bid_for_auction(test_auction).should eql tbid1
+    end
+  end
 end

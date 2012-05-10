@@ -9,16 +9,34 @@ Given /^I have bid on following auctions:$/ do |table|
   end
 end
 
-When /^I view my page$/ do
+When /^I view my auctions page$/ do
   user = User.find_by_username("test-user")
   visit user_path(user)
 end
 
-Then /^I can see all the running auctions that I have placed bids sorted by the most recent first:$/ do |table|
+When /^the following auctions were closed:$/ do |table|
   table.hashes.each do |hash|
-    page.should have_content(hash['title'])
-    page.should have_content(hash['description'])
-    page.should have_content(number_to_currency(hash['my bid']))
+    auction = SilentAuction.find_by_title(hash['title'])
+    auction.close
   end
 end
 
+Then /^I can see all the running auctions that I have placed bids:$/ do |table|
+  within_table('currentBids') do
+    table.hashes.each do |hash|
+      page.should have_content(hash['title'])
+      page.should have_content(hash['description'])
+      page.should have_content(number_to_currency(hash['my bid']))
+    end
+  end
+end
+
+Then /^I can see all the closed auctions that I have placed bids:$/ do |table|
+  within_table('closedBids') do
+    table.hashes.each do |hash|
+      page.should have_content(hash['title'])
+      page.should have_content(hash['description'])
+      page.should have_content(number_to_currency(hash['my bid']))
+    end
+  end
+end

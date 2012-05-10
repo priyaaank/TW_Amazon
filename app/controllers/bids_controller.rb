@@ -9,11 +9,11 @@ class BidsController < ApplicationController
       if @bid.save
         msg = "Bid of $#{@bid.amount} has been placed successfully"
         format.html { redirect_back_with_success(silent_auctions_path, msg) }
-        format.js { render 'create.js.erb'}
+        format.js { render 'create'}
       else
         err_msg = @bid.errors.full_messages[0]
         format.html { redirect_back_with_error(silent_auctions_path,"Error! #{err_msg}") }
-        format.js { render 'fail.js.erb', :locals => { :errMsg => "#{err_msg}" } }
+        format.js { render 'fail', :locals => { :errMsg => "#{err_msg}" } }
       end
     end
   end
@@ -30,11 +30,11 @@ class BidsController < ApplicationController
         if @bid.withdraw
             msg = "Bid withdrawn successfully"
             format.html { redirect_back_with_success(silent_auctions_path, msg) }
-            format.js { render 'withdraw_done.js.erb' }
+            format.js { render 'withdraw_done' }
         else
           err_msg = @bid.errors.full_messages[0]
           format.html { redirect_back_with_error(silent_auctions_path,"Error! #{err_msg}") }
-          format.js { render 'fail_withdraw.js.erb', :locals => { :errMsg => err_msg } }
+          format.js { render 'fail_withdraw', :locals => { :errMsg => err_msg } }
         end
       end
     end

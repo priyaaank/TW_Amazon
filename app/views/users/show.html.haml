@@ -9,3 +9,14 @@
       - @running_bids.each do |bid|
         - auction = bid.silent_auction
         = render :partial => "silent_auctions/running_auction", :locals => {:auction => auction }
+
+%h3 Closed Auctions
+- if @closed_bids.empty?
+  .empty_collection
+    %p.emptyMsg You don't have any bids in the closed auctions.
+-else
+  %table{:class => 'table table-simpleBordered', :id => 'closedBids'}
+    %tbody
+      - @closed_bids.each do |bid|
+        - auction = bid.silent_auction
+        = render :partial => "silent_auctions/close_auction", :locals => {:auction => auction }

@@ -1,0 +1,14 @@
+%h1
+  %span Expired Auctions
+  - if current_user.admin?
+    = link_to 'Create NEW Auction', new_silent_auction_path, :class => 'btn btn-primary'
+
+%h3= "Total expired auctions: #{@expired_auctions.count}"
+- if @expired_auctions.empty?
+  .empty_collection
+    %p.emptyMsg There are no closed auctions.
+- else
+  %table{:class => 'table table-simpleBordered', :id => 'closedAuctions'}
+    %tbody
+      - @expired_auctions.each do |auction|
+        = render :partial => "expired_auction", :locals => { :auction => auction }

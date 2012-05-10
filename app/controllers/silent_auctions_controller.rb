@@ -2,18 +2,35 @@ class SilentAuctionsController < ApplicationController
   include ApplicationHelper
 
   before_filter :authenticate_user!
-  before_filter :authorize_admin, :except => :index
+  before_filter :authorize_admin, :except => [:running, :closed]
 
-  # GET /silent_auctions
-  def index
-    @title = "Silent Auctions Listing"
+  # GET /auctions/running
+  def running
+    @title = "Running Auctions Listing"
     @running_auctions = SilentAuction.running.recent.includes(:bids)
-    @closed_auctions  = SilentAuction.closed.recent
+
+    respond_to do |format|
+      format.html
+    end
+  end
+
+  # GET /auctions/closed
+  def closed
+    @title = "Closed Auctions Listing"
+    @closed_auctions = SilentAuction.closed.recent
+
+    respond_to do |format|
+      format.html
+    end
+  end
+
+  # GET /auctions/expired
+  def expired
+    @title = "Expired Auctions Listing"
     @expired_auctions = SilentAuction.expired.recent
 
     respond_to do |format|
-      format.js # ensure the controller can accept javascript call
-      format.html # new.html.haml
+      format.html
     end
   end
 
@@ -26,7 +43,7 @@ class SilentAuctionsController < ApplicationController
     @title = "Create new auction"
     @silent_auction = SilentAuction.new
     respond_to do |format|
-      format.html # new.html.haml
+      format.html
     end
 
   end
@@ -64,11 +81,11 @@ class SilentAuctionsController < ApplicationController
     respond_to do |format|
       if @silent_auction.close
         format.html { redirect_to silent_auction_path, :notice => "Auction for <b>#{@silent_auction.title}</b> has been closed".html_safe }
-        format.js { render 'close_auction.js.erb'}
+        format.js { render 'close_auction'}
       else
         err_msg = @silent_auction.errors.full_messages
         format.html { redirect_to silent_auction_path, :notice => err_msg }
-        format.js { render 'fail_close_auction.js.erb', :locals => { :errMsg => err_msg } }
+        format.js { render 'fail_close_auction', :locals => { :errMsg => err_msg } }
       end
     end
   end
