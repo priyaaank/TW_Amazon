@@ -2,7 +2,7 @@ class SilentAuctionsController < ApplicationController
   include ApplicationHelper
 
   before_filter :authenticate_user!
-  before_filter :authorize_admin, :except => [:running, :closed]
+  before_filter :authorize_admin, :except => [:running, :closed, :expired]
 
   # GET /auctions/running
   def running
