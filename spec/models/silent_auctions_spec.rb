@@ -95,6 +95,9 @@ describe SilentAuction do
   end
 
   describe 'close_auctions_ending_today' do
+    before(:each) do
+      @auction = SilentAuction.make!
+    end
     it 'should automatically close auctions with bids that are ending today' do
       @auction.end_date = Date.today
       user = User.make!(:user)
@@ -216,11 +219,11 @@ describe SilentAuction do
     end
 
     it 'should not return closed auction that have bids' do
-      @closed_auctions.should_not include @auction3
+      @expired_auctions.should_not include @auction3
     end
 
     it 'should not return running auctions' do
-      @closed_auctions.should_not include @auction4
+      @expired_auctions.should_not include @auction4
     end
   end
 
