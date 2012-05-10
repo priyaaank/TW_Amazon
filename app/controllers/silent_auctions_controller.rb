@@ -7,7 +7,7 @@ class SilentAuctionsController < ApplicationController
   # GET /silent_auctions/running
   def index
     @title = "Running Auctions Listing"
-    @running_auctions = SilentAuction.running.recent.includes(:bids).page(params[:page])
+    @running_auctions = SilentAuction.running.recent.includes(:bids)
 
     respond_to do |format|
       format.html
