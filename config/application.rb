@@ -78,7 +78,7 @@ module TWAmazon
     if Rails.env.test?
       config.test_mode = true # always have test evn run app in test_mode for cucumber to auth user
     else
-      config.test_mode = false # setting test mode for development-production
+      config.test_mode = true # setting test mode for development-production
     end
 
     # for Rails to load script in lib folder
