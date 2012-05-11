@@ -1,7 +1,7 @@
 %h1
   %span Expired Auctions
 
-- status = page_entries_info @closed_auctions
+- status = page_entries_info @expired_auctions
 - replacements = [ ["silent", "expired"], ["entries", "auctions"] ]
 - replacements.each {|replacement| status.gsub!(replacement[0], replacement[1])}
 %h3= status.html_safe
