@@ -11,7 +11,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120507042619) do
+ActiveRecord::Schema.define(:version => 20120511060711) do
+
+  create_table "assets", :force => true do |t|
+    t.string   "data_file_name"
+    t.string   "data_content_type"
+    t.integer  "data_file_size"
+    t.integer  "attachable_id"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
+
+  add_index "assets", ["attachable_id"], :name => "index_assets_on_attachable_id"
 
   create_table "bids", :force => true do |t|
     t.float    "amount"

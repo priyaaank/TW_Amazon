@@ -1,6 +1,9 @@
 class SilentAuction < ActiveRecord::Base
   has_many :bids, :dependent => :destroy, :inverse_of => :silent_auction
 
+  has_many :assets, :as => :attachable, :dependent => :destroy
+  accepts_nested_attributes_for :assets
+
   attr_accessible :title, :description, :open, :min_price, :end_date 
   before_save :strip_whitespace
 
@@ -14,6 +17,8 @@ class SilentAuction < ActiveRecord::Base
   validates :min_price, :presence => { :message => "is required"},
                         :numericality => { :greater_than => 0, :greater_than_or_equal_to => 0.01, :less_than_or_equal_to => 9999.99},
                         :format => { :with => /^\d+?(?:\.\d{0,2})?$/, :message => "can only have 2 decimal places" }
+
+  validate :validate_attachments
 
   scope :running, where(:open => true)
   scope :closed, joins(:bids).where(:open => false)
@@ -33,6 +38,11 @@ class SilentAuction < ActiveRecord::Base
 
   def strip_whitespace
     self.title = self.title.strip
+  end
+
+  def validate_attachments
+    errors.add_to_base("Too many attachments - maximum is #{Asset::Max_Attachments}") if assets.length > Asset::Max_Attachments
+    assets.each {|a| errors.add_to_base("#{a.name} is over #{Asset::Max_Attachment_Size/1.megabyte}MB") if a.file_size > Asset::Max_Attachment_Size}
   end
 
   def close

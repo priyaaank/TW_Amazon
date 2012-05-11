@@ -8,11 +8,16 @@ gem "heroku"
 #CAS OAUTH gems
 gem 'devise'
 gem 'omniauth-cas'
+
 gem 'simple_form'
 gem "haml"
 gem "haml-rails"
 gem "twitter-bootstrap-rails"
 gem 'kaminari'
+
+#photo upload and amazon s3
+gem 'paperclip'
+gem 'aws-s3'
 
 # Gems used only for assets and not required
 # in production environments by default.
