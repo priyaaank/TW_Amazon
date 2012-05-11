@@ -37,7 +37,3 @@ end
 Bid.blueprint do
   # Attributes here
 end
-
-Asset.blueprint do
-  # Attributes here
-end

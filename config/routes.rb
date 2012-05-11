@@ -1,7 +1,5 @@
 TWAmazon::Application.routes.draw do
 
-  resources :assets
-
   root :to => 'home#login'
 
   # define an index or home path to redirect if a user already login
