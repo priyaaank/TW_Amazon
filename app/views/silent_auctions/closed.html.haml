@@ -1,7 +1,10 @@
 %h1
   %span Closed Auctions
 
-%h3= (page_entries_info @closed_auctions).sub("silent", "closed").html_safe
+- status = page_entries_info @closed_auctions
+- replacements = [ ["silent", "closed"], ["entries", "auctions"] ]
+- replacements.each {|replacement| status.gsub!(replacement[0], replacement[1])}
+%h3= status.html_safe
 - if @closed_auctions.empty?
   .empty_collection
     %p.emptyMsg There are no closed auctions.
