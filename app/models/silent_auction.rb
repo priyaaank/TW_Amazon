@@ -1,5 +1,7 @@
 class SilentAuction < ActiveRecord::Base
   has_many :bids, :dependent => :destroy, :inverse_of => :silent_auction
+  has_many :assets, :as => :attachable, :dependent => :destroy
+  accepts_nested_attributes_for :assets
 
   attr_accessible :title, :description, :open, :min_price, :end_date 
   before_save :strip_whitespace
