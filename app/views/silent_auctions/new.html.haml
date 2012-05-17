@@ -1,13 +1,19 @@
 %h1{:style => 'margin-bottom:20px;'} Create New Auction
 
-= simple_form_for @silent_auction, :html => { :class => 'form-horizontal form-bordered', :multipart => true } do |f|
-  = f.input :title, :label => 'Title', :input_html => {:class => "longInput"}
-  = f.input :min_price, :label => 'Minimum Price',:input_html => {:style => "width:100px", :type => 'text'}
-  = f.input :description, :as => :text, :label => 'Description', :input_html => { :rows => 10 }
-  = f.input :end_date, :label => 'End date', :as => :string, :hint => 'End date is automatically set as 2 weeks from now', :readonly => true, :input_html => { :value => formatted_date(@silent_auction.end_date) }
-  = f.simple_fields_for  :photos do |builder|
-    = builder.file_field :image, :label => 'Upload image'
-    = builder.input :remote_image_url, :label => 'or image URL'
+= simple_form_for @silent_auction, :html => { :class => 'form-horizontal', :multipart => true } do |f|
+  %div.well
+    %legend Item Details
+    = f.input :title, :label => 'Title', :input_html => {:class => "span6"}
+    = f.input :min_price, :label => 'Minimum Price',:wrapper => :prepend do
+      = content_tag :span, "$", :class => "add-on"
+      = f.input_field :min_price
+    = f.input :description, :as => :text, :label => 'Description', :input_html => { :rows => 8, :class => "span6", :id => "description" }
+    = f.input :end_date, :label => 'End date', :as => :string, :hint => 'End date is automatically set as 2 weeks from now', :disabled => true, :input_html => { :value => formatted_date(@silent_auction.end_date) }
+
+  %div.well
+    %legend Upload Images
+    = f.simple_fields_for  :photos do |builder|
+      = render :partial => "photos/photo_fields", :locals => {:f => builder}
 
   .form-actions
     = link_to "Back to Listing", silent_auctions_path, :class => 'btn'

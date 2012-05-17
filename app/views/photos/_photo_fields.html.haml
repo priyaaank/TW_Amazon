@@ -1,0 +1,5 @@
+%div.fields
+  = f.hidden_field :image_cache
+  = f.input :remove_image, :as => :boolean
+  = f.file_field :image, :label => 'Upload image'
+  = f.input :remote_image_url, :label => 'or image URL'
