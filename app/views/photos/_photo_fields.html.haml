@@ -6,13 +6,10 @@
 %div.field_holder
   %div{:class => 'input-prepend'}
     = f.input :caption, :label => false, :wrapper => :prepend do
-      = content_tag :span, "<i class='icon-camera'></i> Caption".html_safe, :class => "add-on"
+      = content_tag :span, "<i class='icon-camera'></i> Description".html_safe, :class => "add-on"
       = f.input_field :caption, :class => "span3"
   %div.inner_fields
-    - if f.object.image.path.blank?
-      = f.input :image, :label => false
-      = f.input :image_cache, :as => :hidden
-    - else
-      = f.input :image, :label => false, :disabled => true
+    = f.input :image, :label => false
+    = f.input :image_cache, :as => :hidden
   %div.delete-holder
     = f.link_to_remove "<i class='icon-trash icon-white'></i> Remove".html_safe, :class => "btn btn-mini btn-danger img-delete-btn"

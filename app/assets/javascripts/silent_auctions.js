@@ -1,6 +1,6 @@
 $(document).ready( function() {
     // to open auction photos in light box
-    $('a.gallery').colorbox();
+    $('a.gallery').fancybox();
 
     //have dynamic character count for description
     $("#description").charCount({
