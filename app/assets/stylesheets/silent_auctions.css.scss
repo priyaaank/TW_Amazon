@@ -41,6 +41,7 @@
 
 .emptyMsg {background:#fff; border:1px solid #dddddd; font-size:14px; padding:20px 10px; font-style: italic; color:#666;}
 .itemTitle {font-weight:bold; font-size:1.1em; margin:0; color:#003E77;}
+.itemDescription {padding-top:5px;}
 .delBid {text-decoration: line-through; font-weight:bold;}
 .itemWinner {font-weight:bold; margin-top:5px;}
 .highlight {color:green; font-weight:bold;}
@@ -53,14 +54,14 @@ span.success i{display:inline-block; margin-left:5px;}
 
 // main listing table proportion
 td.auction_photos {width:10%; text-align: center;}
-td.auction_info {width:50%}
+td.auction_info {width:55%}
 td.min_price {width:10%}
 
 td.end_date {width:10%}
 
 // be careful when change, bid_col = auctions_bid + auctions_controls in user view for running auctions
-td.bid_col {width:20%}
-td.auction_bids {width:10%}
+td.bid_col {width:15%}
+td.auction_bids {width:5%}
 td.auction_controls {width:10%;}
 
 .auction_controls p{
@@ -211,19 +212,24 @@ form .exceeded{color:#e00;}
   text-align: right;
 }
 
-a.gallery, a.gallery:hover {
-  position: relative;
-  display: block; text-align: center;
+.photo_area {
+  width:121px;
+  height:94px;
+  border: 1px solid #eeeeee;
+  background: #fff;
+}
+.albums {
+  background: url("/assets/sprProductCard_2.png") no-repeat 0 0;
   width:130px;
-  color: #fff; font-size:10px; font-weight:bold;
-  overflow: hidden;
+  height:101px;
+  padding-top: 1px;
 }
 
-.more {
-  position: absolute;
-  border-radius: 10px;
-  background: rgba(0,0,0,0.7);
-  padding:1px 5px 3px 5px;
-  bottom:40px;
-  left:55px;
+.albums a {
+  display: block;
+}
+
+.note {
+  font-size: 10px;
+  color:#666;
 }

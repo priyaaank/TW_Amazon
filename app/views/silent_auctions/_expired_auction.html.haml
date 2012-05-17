@@ -1,5 +1,7 @@
 - bid = user_bid_for_auction(auction)
 %tr{:class => "auction #{ (bid != nil && bid.active) ? 'bid_auction' : ''}", :id => "silentAuction_#{auction.id}"}
+  %td.auction_photos
+    = render :partial => 'silent_auctions/auction_photos', :locals => {:auction => auction}
   %td.auction_info
     %p.itemTitle= auction.title
     = simple_format(auction.description, :class => 'itemDescription')

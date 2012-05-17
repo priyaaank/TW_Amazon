@@ -5,6 +5,8 @@
     %table{:class => 'table table-simpleBordered', :id => 'runningAuctions'}
       %tbody
         %tr
+          %td.auction_photos
+            = render :partial => 'silent_auctions/auction_photos', :locals => {:auction => @delete_auction}
           %td.auction_info
             %p.itemTitle= @delete_auction.title
             =simple_format(@delete_auction.description)

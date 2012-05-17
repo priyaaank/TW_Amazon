@@ -19,15 +19,11 @@ class SilentAuction < ActiveRecord::Base
                         :format => { :with => /^\d+?(?:\.\d{0,2})?$/, :message => "can only have 2 decimal places" }
 
   scope :running, where(:open => true)
-  scope :closed, joins(:bids).where(:open => false)
-  scope :recent, order('created_at desc')
+  scope :closed, joins(:bids).where(:open => false).group(:silent_auction_id)
+  scope :expired, includes(:bids).where("bids.id IS NULL AND open = ?", false)
+
+  scope :recent, order('silent_auctions.created_at desc')
   scope :ending_today, lambda { where("end_date < ?", Time.zone.now ) }
-  scope :expired, joins(<<-SQL
-    LEFT OUTER JOIN bids on silent_auctions.id = bids.silent_auction_id
-    WHERE bids.id is null
-    AND silent_auctions.open = 'f'
-  SQL
-  )
    
   def initialize(*params)
     super(*params)
