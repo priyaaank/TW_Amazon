@@ -1,21 +1,25 @@
 %h1{:style => 'margin-bottom:20px;'} Create New Auction
 
-= simple_form_for @silent_auction, :html => { :class => 'form-horizontal', :multipart => true } do |f|
-  %div.well
+= simple_nested_form_for @silent_auction, :html => { :multipart => true } do |f|
+  %div{:class => 'well form-horizontal'}
     %legend Item Details
     = f.input :title, :label => 'Title', :input_html => {:class => "span6"}
     = f.input :min_price, :label => 'Minimum Price',:wrapper => :prepend do
       = content_tag :span, "$", :class => "add-on"
       = f.input_field :min_price
-    = f.input :description, :as => :text, :label => 'Description', :input_html => { :rows => 8, :class => "span6", :id => "description" }
+    .text_counter
+      = f.input :description, :as => :text, :label => 'Description', :input_html => { :rows => 8, :class => "span6", :id => "description" }
     = f.input :end_date, :label => 'End date', :as => :string, :hint => 'End date is automatically set as 2 weeks from now', :disabled => true, :input_html => { :value => formatted_date(@silent_auction.end_date) }
 
-  %div.well
-    %legend Upload Images
-    = f.simple_fields_for  :photos do |builder|
-      = render :partial => "photos/photo_fields", :locals => {:f => builder}
+  %div{:class => 'well form-inline'}
+    %legend Upload Extra Images (optional)
+    = f.simple_fields_for :photos do |photo|
+      = render :partial => "photos/photo_fields", :locals => {:f => photo}
 
-  .form-actions
-    = link_to "Back to Listing", silent_auctions_path, :class => 'btn'
-    = submit_tag "Save and create another auction", :name => "continue", :id => 'submit_continue', :class => 'btn btn-primary'
-    = submit_tag "Save and go back to listing", :name => "done", :id => 'submit_done', :class => 'btn btn-primary'
+    = f.link_to_add "<i class='icon-plus icon-white'></i> Add another image".html_safe, :photos, :class => "btn btn-success add-image-btn"
+
+  %div{:class => 'form-horizontal'}
+    %div{:class => 'form-actions'}
+      = link_to "Back to Listing", silent_auctions_path, :class => 'btn'
+      = submit_tag "Save and create another auction", :name => "continue", :id => 'submit_continue', :class => 'btn btn-primary'
+      = submit_tag "Save and go back to listing", :name => "done", :id => 'submit_done', :class => 'btn btn-primary'
