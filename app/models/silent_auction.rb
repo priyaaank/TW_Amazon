@@ -1,7 +1,10 @@
 class SilentAuction < ActiveRecord::Base
   has_many :bids, :dependent => :destroy, :inverse_of => :silent_auction
 
-  attr_accessible :title, :description, :open, :min_price, :end_date 
+  has_many :photos, :dependent => :destroy, :inverse_of => :silent_auction
+  accepts_nested_attributes_for :photos
+
+  attr_accessible :title, :description, :open, :min_price, :end_date, :photos_attributes
   before_save :strip_whitespace
 
   validates :title, :presence => { :message => "Title is required" } ,

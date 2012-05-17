@@ -1,5 +1,12 @@
 - bid = user_bid_for_auction(auction)
+- photos = auction.photos
 %tr{:class => "auction #{ (bid != nil && bid.active) ? 'bid_auction' : ''}", :id => "silentAuction_#{auction.id}"}
+  %td.auction_photos
+    %a{:class => 'gallery', :rel => "photos_auction_#{auction.id}", :href => photos[0].image_url.to_s}
+      = image_tag photos[0].image_url(:thumb).to_s
+    %div{:style=>"visibility:hidden"}
+      - photos.each do |photo|
+        = link_to "", photo.image_url.to_s, :class => "gallery", :rel => "photos_auction_#{auction.id}"
   %td.auction_info
     %p.itemTitle= auction.title
     = simple_format(auction.description, :class => 'itemDescription')

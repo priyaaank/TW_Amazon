@@ -42,6 +42,7 @@ class SilentAuctionsController < ApplicationController
   def new
     @title = "Create new auction"
     @silent_auction = SilentAuction.new
+    4.times { @silent_auction.photos.build }
     respond_to do |format|
       format.html
     end
