@@ -1,7 +1,5 @@
 class SilentAuction < ActiveRecord::Base
   has_many :bids, :dependent => :destroy, :inverse_of => :silent_auction
-  has_many :assets, :as => :attachable, :dependent => :destroy
-  accepts_nested_attributes_for :assets
 
   has_many :photos, :dependent => :destroy, :inverse_of => :silent_auction
   accepts_nested_attributes_for :photos, :allow_destroy => true, :reject_if => proc { |attributes| attributes['image'].blank? && attributes['image_cache'].blank? }
