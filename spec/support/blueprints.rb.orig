@@ -1,0 +1,47 @@
+require 'machinist/active_record'
+
+SilentAuction.blueprint do
+  title { Faker::Lorem.sentence }
+  description { Faker::Lorem.paragraph }
+  min_price { 1.00 }
+end
+
+User.blueprint do
+  username  { "user-#{sn}" }
+  admin { false }
+  password {"userpass"}
+  password_confirmation {"userpass"}
+end
+
+User.blueprint(:user) do
+  username  { "user-#{sn}" }
+  admin { false }
+  password {"userpass"}
+  password_confirmation {"userpass"}
+end
+
+User.blueprint(:admin) do
+  username  { "admin-#{sn}" }
+  admin { true }
+  password {"adminpass"}
+  password_confirmation {"adminpass"}
+end
+
+User.blueprint(:casUser) do
+  username  { "casUser-#{sn}" }
+  admin { false }
+  password { nil }
+  password_confirmation {nil}
+end
+
+Bid.blueprint do
+  # Attributes here
+end
+
+<<<<<<< HEAD
+Photo.blueprint do
+=======
+Asset.blueprint do
+>>>>>>> 17c9d5e5fcae4561edc731f0ebb4e3677b862e54
+  # Attributes here
+end

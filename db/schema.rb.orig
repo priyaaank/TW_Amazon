@@ -11,7 +11,21 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(:version => 20120517091834) do
+=======
+ActiveRecord::Schema.define(:version => 20120511110031) do
+>>>>>>> 17c9d5e5fcae4561edc731f0ebb4e3677b862e54
+
+  create_table "assets", :force => true do |t|
+    t.integer  "attachable_id"
+    t.string   "attachable_type"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+  end
 
   create_table "bids", :force => true do |t|
     t.float    "amount"
