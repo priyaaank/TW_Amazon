@@ -2,7 +2,7 @@ class SilentAuction < ActiveRecord::Base
   has_many :bids, :dependent => :destroy, :inverse_of => :silent_auction
 
   has_many :photos, :dependent => :destroy, :inverse_of => :silent_auction
-  accepts_nested_attributes_for :photos
+  accepts_nested_attributes_for :photos, :allow_destroy => true, :reject_if => proc { |attributes| attributes['image'].blank? }
 
   attr_accessible :title, :description, :open, :min_price, :end_date, :photos_attributes
   before_save :strip_whitespace

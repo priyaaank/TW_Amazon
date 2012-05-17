@@ -42,7 +42,7 @@ class SilentAuctionsController < ApplicationController
   def new
     @title = "Create new auction"
     @silent_auction = SilentAuction.new
-    4.times { @silent_auction.photos.build }
+    @silent_auction.photos.build
     respond_to do |format|
       format.html
     end
@@ -71,6 +71,7 @@ class SilentAuctionsController < ApplicationController
           @silent_auction.errors[:min_price].each do |msg|
             msg.insert(0, "Minimum price ")
           end
+          @title = "Create New Auction"
           render :action => 'new'
         }
       end

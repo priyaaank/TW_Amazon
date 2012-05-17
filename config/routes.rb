@@ -18,7 +18,7 @@ TWAmazon::Application.routes.draw do
       get 'expired'
     end
 
-    resources :photos, :only => [:create, :destroy]
+    resources :photos, :only => [:index, :create, :destroy]
   end
 
 

@@ -40,7 +40,7 @@
 }
 
 .emptyMsg {background:#fff; border:1px solid #dddddd; font-size:14px; padding:20px 10px; font-style: italic; color:#666;}
-.itemTitle {font-weight:bold; font-size:1.1em; margin:0;}
+.itemTitle {font-weight:bold; font-size:1.1em; margin:0; color:#003E77;}
 .delBid {text-decoration: line-through; font-weight:bold;}
 .itemWinner {font-weight:bold; margin-top:5px;}
 .highlight {color:green; font-weight:bold;}
@@ -52,13 +52,13 @@ span.success i{display:inline-block; margin-left:5px;}
 .bid_col p {margin-bottom:2px;}
 
 // main listing table proportion
-td.auction_photos {width:10%}
+td.auction_photos {width:10%; text-align: center;}
 td.auction_info {width:50%}
 td.min_price {width:10%}
 
 td.end_date {width:10%}
 
-//becareful when change, bid_col = auctions_bid + auctions_controls in user view for running auctions
+// be careful when change, bid_col = auctions_bid + auctions_controls in user view for running auctions
 td.bid_col {width:20%}
 td.auction_bids {width:10%}
 td.auction_controls {width:10%;}
@@ -128,10 +128,85 @@ td.auction_controls {width:10%;}
   color: #468847
 }
 
+// for character counter in create auction page
+.text_counter .controls {
+  margin-bottom:30px; position: relative;
+}
 form .counter{
-  display: block; margin-top:9px; font-size:0.9em;
+  margin-top:9px; font-size:0.9em; position: absolute; left:0; bottom:-25px;
   font-weight:bold;
   color:#888;
 }
 form .warning{color:#600;}
 form .exceeded{color:#e00;}
+
+// for image upload section in create auction page
+.fields {
+  padding:10px;
+  background: #ededed;
+  display:inline-block;
+  border:1px solid #E4E4E4;
+  border-radius: 5px;
+  margin-right:10px;
+  margin-bottom: 10px;
+  vertical-align:top;
+}
+
+.image_holder {
+  margin: 0;
+  width:100px;
+  height:90px; overflow: hidden;
+  display: inline-block;
+  text-align: center;
+  border: 1px solid #ccc;
+  margin-right:5px;
+  vertical-align:top;
+  background: #fff;
+  padding:2px;
+}
+
+.image_holder img {
+  height: 90px;
+}
+
+.field_holder {
+  display: inline-block;
+}
+
+.fields input {
+  position: static;
+}
+
+.inner_fields {
+  padding:3px 5px;
+  margin: 0px 0 5px 0px;
+  background: #fff;
+  border:1px solid #ccc;
+  border-radius: 3px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border linear 0.2s, box-shadow linear 0.2s;
+  -moz-transition: border linear 0.2s, box-shadow linear 0.2s;
+  -ms-transition: border linear 0.2s, box-shadow linear 0.2s;
+  -o-transition: border linear 0.2s, box-shadow linear 0.2s;
+  transition: border linear 0.2s, box-shadow linear 0.2s;
+  -webkit-transition: border linear 0.2s, box-shadow linear 0.2s;
+  -moz-transition: border linear 0.2s, box-shadow linear 0.2s;
+  -ms-transition: border linear 0.2s, box-shadow linear 0.2s;
+  -o-transition: border linear 0.2s, box-shadow linear 0.2s;
+  transition: border linear 0.2s, box-shadow linear 0.2s;
+}
+
+.add-image-btn {
+  margin-top: 9px;
+  display:block;
+  width:130px;
+}
+
+.delete-holder {
+  text-align: right;
+}

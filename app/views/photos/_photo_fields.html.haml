@@ -1,5 +1,18 @@
-%div.fields
-  = f.hidden_field :image_cache
-  = f.input :remove_image, :as => :boolean
-  = f.file_field :image, :label => 'Upload image'
-  = f.input :remote_image_url, :label => 'or image URL'
+%div.image_holder
+  - if !f.object.image.path.blank?
+    = image_tag(f.object.image.mini_thumb.url)
+  - else
+    = image_tag(asset_path("img_placeholder.jpg"))
+%div.field_holder
+  %div{:class => 'input-prepend'}
+    = f.input :caption, :label => false, :wrapper => :prepend do
+      = content_tag :span, "<i class='icon-camera'></i> Caption".html_safe, :class => "add-on"
+      = f.input_field :caption, :class => "span3"
+  %div.inner_fields
+    - if f.object.image.path.blank?
+      = f.input :image, :label => false
+      = f.input :image_cache, :as => :hidden
+    - else
+      = f.input :image, :label => false, :disabled => true
+  %div.delete-holder
+    = f.link_to_remove "<i class='icon-trash icon-white'></i> Remove".html_safe, :class => "btn btn-mini btn-danger img-delete-btn"
