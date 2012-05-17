@@ -5,12 +5,14 @@
     - if photos.empty?
       = image_tag(asset_path("img_placeholder.jpg"))
     - else
-      %a{:class => 'gallery', :rel => "photos_auction_#{auction.id}", :href => photos[0].image_url.to_s}
+      %a{:class => 'gallery', :rel => "photos_auction_#{auction.id}", :href => photos[0].image_url.to_s, :title => photos[0].caption}
+        %span.more= "<i class='icon-search icon-white'></i>".html_safe
         = image_tag photos[0].image_url(:thumb).to_s
-      %div{:style=>"visibility:hidden"}
-        - photos.each_with_index do |photo, index|
-          - unless index == 0
-            = link_to "", photo.image_url.to_s, :class => "gallery", :rel => "photos_auction_#{auction.id}", :title => photo.caption
+      - if photos.count > 1
+        %div{:style=>"visibility:hidden"}
+          - photos.each_with_index do |photo, index|
+            - unless index == 0
+              = link_to "", photo.image_url.to_s, :class => "gallery", :rel => "photos_auction_#{auction.id}", :title => photo.caption
   %td.auction_info
     %p.itemTitle= auction.title
     = simple_format(auction.description, :class => 'itemDescription')

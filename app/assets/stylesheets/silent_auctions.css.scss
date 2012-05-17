@@ -210,3 +210,20 @@ form .exceeded{color:#e00;}
 .delete-holder {
   text-align: right;
 }
+
+a.gallery, a.gallery:hover {
+  position: relative;
+  display: block; text-align: center;
+  width:130px;
+  color: #fff; font-size:10px; font-weight:bold;
+  overflow: hidden;
+}
+
+.more {
+  position: absolute;
+  border-radius: 10px;
+  background: rgba(0,0,0,0.7);
+  padding:1px 5px 3px 5px;
+  bottom:40px;
+  left:55px;
+}
