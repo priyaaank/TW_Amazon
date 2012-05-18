@@ -111,4 +111,38 @@ class SilentAuctionsController < ApplicationController
     flash[:success] = "Auction <strong>#{title}</strong> has been successfully deleted.".html_safe
     redirect_to silent_auctions_path
   end
+
+  # Edit Auction
+  # only allow edit running auction that has no bid
+  def edit
+    @title = "Edit Auction"
+    @silent_auction = SilentAuction.find(params[:id])
+    unless @silent_auction.open
+      redirect_back_with_error(index_path,"You cannot edit closed auctions")
+    else
+      redirect_back_with_error(index_path,"You cannot edit auctions that have active bids") if @silent_auction.has_active_bid
+    end
+  end
+
+  # Update Auction
+  def update
+    @silent_auction = SilentAuction.find(params[:id])
+    respond_to do |format|
+      if @silent_auction.update_attributes(params[:silent_auction])
+        format.html {
+          flash[:success] = "Auction <b>#{@silent_auction.title}</b> was successfully updated!".html_safe
+          redirect_to silent_auctions_path
+        }
+      else
+        format.html {
+          # to force error message for minimum price has a subject
+          @silent_auction.errors[:min_price].each do |msg|
+            msg.insert(0, "Minimum price ")
+          end
+          @title = "Create New Auction"
+          render :action => 'edit'
+        }
+      end
+    end
+  end
 end

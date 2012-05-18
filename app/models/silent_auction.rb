@@ -2,7 +2,7 @@ class SilentAuction < ActiveRecord::Base
   has_many :bids, :dependent => :destroy, :inverse_of => :silent_auction
 
   has_many :photos, :dependent => :destroy, :inverse_of => :silent_auction
-  accepts_nested_attributes_for :photos, :allow_destroy => true, :reject_if => proc { |attributes| attributes['image'].blank? && attributes['image_cache'].blank? }
+  accepts_nested_attributes_for :photos, :allow_destroy => true, :reject_if => proc { |attributes| attributes['image'].blank? && attributes['image_cache'].blank? && attributes['caption'].blank? }
 
   attr_accessible :title, :description, :open, :min_price, :end_date, :photos_attributes
   before_save :strip_whitespace
@@ -42,6 +42,10 @@ class SilentAuction < ActiveRecord::Base
       change_to_closed
       true
     end
+  end
+
+  def has_active_bid
+    self.bids.active.count > 0
   end
 
   def change_to_closed

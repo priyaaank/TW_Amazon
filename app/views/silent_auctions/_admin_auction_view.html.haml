@@ -8,16 +8,22 @@
       = "0 bids"
 %td.auction_controls
   .controls_holder
-    - if bid_count > 0
-      = link_to "CLOSE", close_silent_auction_path(auction),
-                          :method => 'put',
-                          :disable_with => "Closing...",
-                          :remote => true,
-                          :confirm => "Auction cannot be re-opened after closed. Continue?",
-                          :class => "btn btn-inverse btn-mini close_auction_btn",
-                          :title => "close_auction"
-
-    = link_to "x".html_safe, confirm_delete_silent_auction_path(auction),
-                                                                  :method => 'post',
-                                                                  :class => "btn btn-mini delete_btn",
-                                                                  :title => "delete_auction"
+    %div{:class=>'btn-group manage_auction'}
+      %button{:class => 'btn btn-mini btn-inverse dropdown-toggle', 'data-toggle' => 'dropdown'}
+        %i{:class=>'icon-cog icon-white'}
+        = "Manage"
+        %span.caret
+      %ul{:class => "dropdown-menu pull-right"}
+        - unless bid_count == 0
+          %li
+            = link_to "<i class='icon-lock'></i> Close Auction".html_safe, close_silent_auction_path(auction), :method => 'put',
+                                      :disable_with => "Closing...",
+                                      :remote => true,
+                                      :confirm => "Auction cannot be re-opened after closed. Continue?",
+                                      :class => "close_auction_btn",
+                                      :title => "close_auction" unless bid_count == 0
+        - unless bid_count > 0
+          %li
+            = link_to "<i class='icon-edit'></i> Edit Auction".html_safe, edit_silent_auction_path(auction) unless bid_count > 0
+        %li
+          = link_to "<i class='icon-remove'></i> Delete".html_safe, confirm_delete_silent_auction_path(auction), :method => 'post'

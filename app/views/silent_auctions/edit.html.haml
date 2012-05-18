@@ -1,0 +1,9 @@
+%h1{:style => 'margin-bottom:20px;'} Edit Auction
+
+= simple_nested_form_for @silent_auction, :html => { :multipart => true } do |f|
+  = render :partial => 'form', :locals => {:f => f}
+
+  %div{:class => 'form-horizontal'}
+    %div{:class => 'form-actions'}
+      = link_to "Back to Listing", silent_auctions_path, :class => 'btn'
+      = submit_tag "Save changes", :class => 'btn btn-primary'

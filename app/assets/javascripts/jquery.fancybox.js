@@ -62,7 +62,7 @@
 			wrapCSS: '',
 
 			arrows: false,
-			closeBtn: false,
+			closeBtn: true,
 			closeClick: false,
 			nextClick : true,
 			mouseWheel: true,

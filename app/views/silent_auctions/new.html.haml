@@ -1,22 +1,7 @@
 %h1{:style => 'margin-bottom:20px;'} Create New Auction
 
 = simple_nested_form_for @silent_auction, :html => { :multipart => true } do |f|
-  %div{:class => 'well form-horizontal'}
-    %legend Item Details
-    = f.input :title, :label => 'Title', :input_html => {:class => "span6"}
-    = f.input :min_price, :label => 'Minimum Price',:wrapper => :prepend do
-      = content_tag :span, "$", :class => "add-on"
-      = f.input_field :min_price
-    .text_counter
-      = f.input :description, :as => :text, :label => 'Description', :input_html => { :rows => 8, :class => "span6", :id => "description" }
-    = f.input :end_date, :label => 'End date', :as => :string, :hint => 'End date is automatically set as 2 weeks from now', :disabled => true, :input_html => { :value => formatted_date(@silent_auction.end_date) }
-
-  %div{:class => 'well form-inline'}
-    %legend Upload Extra Images (optional)
-    = f.simple_fields_for :photos do |photo|
-      = render :partial => "photos/photo_fields", :locals => {:f => photo}
-
-    = f.link_to_add "<i class='icon-plus icon-white'></i> Add another image".html_safe, :photos, :class => "btn btn-success add-image-btn"
+  = render :partial => 'form', :locals => {:f => f}
 
   %div{:class => 'form-horizontal'}
     %div{:class => 'form-actions'}
