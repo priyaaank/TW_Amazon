@@ -15,7 +15,6 @@ $(document).ready( function() {
     });
 
     $(".upload_btn").on('click', function(event){
-        var text = $(this).val();
-
+        $("#upload-overlay").show();
     });
 });
