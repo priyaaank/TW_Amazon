@@ -6,4 +6,4 @@
   %div{:class => 'form-horizontal'}
     %div{:class => 'form-actions'}
       = link_to "Back to Listing", silent_auctions_path, :class => 'btn'
-      = submit_tag "Save changes", :class => 'btn btn-primary'
+      = submit_tag "Save changes", :class => 'btn btn-primary upload_btn', :disable_with => "Saving changes..."

@@ -13,4 +13,9 @@ $(document).ready( function() {
         $('#bid_amount').val('');
         $(this).removeAttr('disabled');
     });
+
+    $(".upload_btn").on('click', function(event){
+        var text = $(this).val();
+
+    });
 });

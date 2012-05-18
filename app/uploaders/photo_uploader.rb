@@ -11,8 +11,8 @@ class PhotoUploader < CarrierWave::Uploader::Base
   # include Sprockets::Helpers::IsolatedHelper
 
   # Choose what kind of storage to use for this uploader:
-  storage :file
-  # storage :fog
+  # storage :file
+  storage :fog
 
   # cleanup cache folder
   before :store, :remember_cache_id
