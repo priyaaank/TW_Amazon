@@ -1,6 +1,6 @@
 %div.image_holder
   - if !f.object.image.path.blank?
-    = image_tag(f.object.image.mini_thumb.url)
+    = image_tag(f.object.image.thumb.url)
   - else
     = image_tag(asset_path("img_placeholder.jpg"))
 %div.field_holder
