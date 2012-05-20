@@ -15,8 +15,8 @@ $(document).ready( function() {
     });
 
     //display overlay when form is submitting
-    $(".upload_btn").on('click', function(event){
-        $("#upload-overlay").show();
+    $(".form_action_btn").on('click', function(event){
+        $("#submit-overlay").show();
     });
 
     // file upload style
@@ -27,6 +27,7 @@ $(document).ready( function() {
        // change fake text to selected filename, check valid filename
        bindInputEvent($(this));
     });
+    toggleAddImageBtn();
 
     // prevent adding more than 5 images
     $('form').on('nested:fieldAdded', function() {
