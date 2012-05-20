@@ -278,7 +278,7 @@ legend.file_upload span {font-size:13px;}
   min-width:130px;
 }
 
-#upload-overlay {
+#submit-overlay {
   position: fixed;
   top: 0;
   left: 0;
