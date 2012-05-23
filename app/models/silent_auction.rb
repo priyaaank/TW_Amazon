@@ -22,7 +22,7 @@ class SilentAuction < ActiveRecord::Base
   scope :closed, joins(:bids).where(:open => false).group(:silent_auction_id)
   scope :expired, includes(:bids).where("bids.id IS NULL AND open = ?", false)
 
-  scope :recent, order("'silent_auctions'.'created_at' desc")
+  scope :recent, order('"silent_auctions"."created_at" desc')
   scope :ending_today, lambda { where("end_date < ?", Time.zone.now ) }
    
   def initialize(*params)
