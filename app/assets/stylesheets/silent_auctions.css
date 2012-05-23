@@ -23,7 +23,7 @@
   text-shadow:white 0 1px 0;
 }
 
-.just_closed td, {
+.just_closed td {
   background: #f3f3f3;
 }
 
@@ -187,7 +187,7 @@ form .exceeded{color:#e00;}
   z-index: 100;
   position: relative;
   -moz-opacity:0 ;
-  filter:alpha(opacity: 0);
+  filter: alpha(opacity: 0);
   opacity: 0;
 }
 
