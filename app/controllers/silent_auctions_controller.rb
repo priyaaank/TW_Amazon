@@ -118,6 +118,7 @@ class SilentAuctionsController < ApplicationController
   def edit
     @title = "Edit Auction"
     @silent_auction = SilentAuction.find(params[:id])
+    @silent_auction.photos.build if @silent_auction.photos.empty?
     unless @silent_auction.open
       redirect_back_with_error(index_path,"You cannot edit closed auctions")
     else
@@ -141,6 +142,7 @@ class SilentAuctionsController < ApplicationController
             msg.insert(0, "Minimum price ")
           end
           @title = "Create New Auction"
+          @silent_auction.photos.build if @silent_auction.photos.empty?
           render :action => 'edit'
         }
       end

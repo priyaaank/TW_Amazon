@@ -1,5 +1,5 @@
+- wonBid = won_bid_for_auction(auction)
 %tr{:class => 'auction', :id => "silentAuction_#{auction.id}"}
-  - wonBid = won_bid_for_auction(auction)
   %td.auction_photos
     = render :partial => 'silent_auctions/auction_photos', :locals => {:auction => auction}
   %td.auction_info
