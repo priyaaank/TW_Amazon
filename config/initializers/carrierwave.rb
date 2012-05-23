@@ -6,6 +6,11 @@ if Rails.env.test? or Rails.env.cucumber?
 end
 
 CarrierWave.configure do |config|
+  # following 2 lines is for Heroku cached upload since Heroku does not allow writing to file system
+  # this might not work if we change to use more than 1 dyno on heorku and has different tmp files
+  config.root = Rails.root.join('tmp')
+  config.cache_dir = 'carrierwave'
+
   config.fog_credentials = {
       :provider               => 'AWS',       # required
       :aws_access_key_id      => ENV['S3_KEY'],       # required
