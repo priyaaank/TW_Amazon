@@ -13,7 +13,7 @@ class Bid < ActiveRecord::Base
   scope :active, where(:active => true)
   scope :highFirst, order('amount DESC')
   scope :earlier, order('created_at ASC')
-  scope :recent, order("'silent_auctions'.'created_at' desc")
+  scope :recent, order('"silent_auctions"."created_at" desc')
 
   def auction_must_not_be_closed
     # not allow placing bid for closed auction
