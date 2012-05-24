@@ -10,14 +10,14 @@
           %td.auction_info
             %p.itemTitle= @delete_auction.title
             =simple_format(@delete_auction.description)
-            - if !@delete_auction.open
+            - if !@delete_auction.open && !@delete_auction.bids.empty?
               - wonBid = won_bid_for_auction(@delete_auction)
               %h4 Active bidders:
               %ul
                 %li.win= "#{won_bid_for_auction(@delete_auction).user.username}@thoughtworks.com <span>[WINNER]</span>".html_safe
                 - @bidders.each do |bidder|
                   - if bidder.id != wonBid.user.id
-                    %li= bidder.username << "@thoughtworks.com"
+                    %li= "#{bidder.username}@thoughtworks.com"
             - else
               %h4 Active bidders:
               - if @bidders.empty?
@@ -25,7 +25,7 @@
               - else
                 %ul
                   - @bidders.each do |bidder|
-                    %li= bidder.username << "@thoughtworks.com"
+                    %li= "#{bidder.username}@thoughtworks.com"
           %td.min_price
             = simple_format("Min Price:<br/><strong>#{number_to_currency(@delete_auction.min_price)}</strong>")
           %td.auction_bids
