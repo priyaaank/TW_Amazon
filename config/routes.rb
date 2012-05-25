@@ -6,7 +6,7 @@ TWAmazon::Application.routes.draw do
   match 'silent_auctions', :to => 'SilentAuctions#index', :as => :index, :via => :get
 
   # silent auctions paths
-  resources :silent_auctions, :only => [:index, :create, :new, :destroy]
+  resources :silent_auctions, :only => [:index, :create, :new, :destroy, :edit, :update]
   resources :silent_auctions do
     member do
       put 'close'
@@ -17,6 +17,8 @@ TWAmazon::Application.routes.draw do
       get 'closed'
       get 'expired'
     end
+
+    resources :photos, :only => [:index, :create, :destroy]
   end
 
 

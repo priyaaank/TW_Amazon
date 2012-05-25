@@ -29,10 +29,4 @@ class User < ActiveRecord::Base
       false
     end
   end
-
-  # This is commented out when still need test mode, which need password validation
-  # for CAS, no need for password validation within system so should add this method
-  #def valid_password?(password)
-  #  true
-  #end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120507042619) do
+ActiveRecord::Schema.define(:version => 20120517091834) do
 
   create_table "bids", :force => true do |t|
     t.float    "amount"
@@ -24,6 +24,14 @@ ActiveRecord::Schema.define(:version => 20120507042619) do
 
   add_index "bids", ["silent_auction_id"], :name => "index_bids_on_silent_auction_id"
   add_index "bids", ["user_id"], :name => "index_bids_on_user_id"
+
+  create_table "photos", :force => true do |t|
+    t.integer  "silent_auction_id"
+    t.string   "image"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+    t.string   "caption"
+  end
 
   create_table "silent_auctions", :force => true do |t|
     t.string   "title"

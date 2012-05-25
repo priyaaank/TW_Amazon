@@ -1,0 +1,6 @@
+%div{:class => 'alert alert-block confirm_delete'}
+  %h2= @error_heading
+  %p{:class => "warningText"}= @error_msg
+%div.btn_wrapper
+  =link_to "Back", back_link(index_path), :class => "btn"
+  =link_to "Go to home page", index_path, :class => "btn"
