@@ -41,6 +41,7 @@ describe SilentAuctionsController do
           assigns[:running_auctions].should include @auction2
           assigns[:running_auctions].should include @auction3
           assigns[:running_auctions].should_not include @close_auction
+          assigns[:running_auctions].count.should == 3
         end
 
         it 'should order running auctions by most recent first' do
@@ -102,6 +103,7 @@ describe SilentAuctionsController do
           assigns[:closed_auctions].should include @auction3
           assigns[:closed_auctions].should_not include @run_auction
           assigns[:closed_auctions].should_not include @no_bid_auction
+          assigns[:closed_auctions].count.should == 3
         end
 
         it 'should order auctions by most recent first' do
@@ -166,6 +168,7 @@ describe SilentAuctionsController do
           assigns[:expired_auctions].should include @auction3
           assigns[:expired_auctions].should_not include @run_auction
           assigns[:expired_auctions].should_not include @closed_auction
+          assigns[:expired_auctions].count.should == 3
         end
 
         it 'should order auctions by most recent first' do
@@ -186,9 +189,10 @@ describe SilentAuctionsController do
         sign_in @admin
       end
 
-      it 'should create a new unsaved silent auction' do
-        SilentAuction.should_receive(:new).and_return(@silent_auction)
+      it 'should create a new unsaved silent auction with one placeholder photo' do
         get :new
+        assigns[:silent_auction].should_not be_nil
+        # need to test that one place holder photo is built
       end
 
       it 'should return http success' do
@@ -230,28 +234,27 @@ describe SilentAuctionsController do
     context 'given valid auction details' do
 
       before(:each) do
-        @mock_auction = mock_model(SilentAuction, :title => 'a', :description => 'b', :min_price => 250.99).as_new_record
-        SilentAuction.stub!(:new).and_return @mock_auction
-        @mock_auction.stub!(:save).and_return(true)
+        @valid_details = { :title => 'a', :description => 'b', :min_price => 250, :photos_attributes => {}}
       end
 
       it 'should save new silent auction' do
-        post :create
-        @mock_auction.save.should eql true
+        lambda do
+          post :create, :silent_auction => @valid_details
+        end.should change(SilentAuction, :count).by(1)
       end
 
       it 'should display confirmation message with auction title on successful save' do
-        post :create
-        flash[:success].should include(@mock_auction.title)
+        post :create,  :silent_auction => @valid_details
+        flash[:success].should include(@valid_details[:title])
       end
 
       it 'should redirect to #new form if select "Save and create another"' do
-        post :create, :continue => true
+        post :create, :silent_auction => @valid_details, :continue => true
         response.should redirect_to(new_silent_auction_path)
       end
 
       it 'should redirect to listing page if select "Save and return to listing"'  do
-        post :create, :done => true
+        post :create, :silent_auction => @valid_details, :done => true
         response.should redirect_to(silent_auctions_path)
       end
 
@@ -260,17 +263,17 @@ describe SilentAuctionsController do
     context 'given invalid auction details' do
 
       before(:each) do
-        @mock_auction = mock_model(SilentAuction, :title => '', :description => 'b', :min_price => 250.00).as_new_record
-        SilentAuction.stub!(:new).and_return @mock_auction
-        @mock_auction.stub!(:save).and_return(false)
-        post :create
+        @invalid_details = { :title => '', :description => 'b', :min_price => 250, :photos_attributes => {}}
       end
 
       it 'should not create a new silent auction' do
-        @mock_auction.save.should eql false
+        lambda do
+          post :create, :silent_auction => @invalid_details
+        end.should_not change(SilentAuction, :count)
       end
 
       it "should re-render the 'new' page" do
+        post :create, :silent_auction => @invalid_details
         response.should render_template('new')
       end
 
@@ -429,7 +432,7 @@ describe SilentAuctionsController do
 
       it 'should go back to listing after delete, with success message' do
         delete :destroy, :id => @auction.id
-        flash[:success].should include @auction.title
+        flash[:notice].should include @auction.title
         response.should redirect_to silent_auctions_path
       end
     end
