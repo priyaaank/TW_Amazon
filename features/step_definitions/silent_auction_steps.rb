@@ -57,6 +57,7 @@ end
 
 When /^I close the auction$/ do
   within("tr#silentAuction_#{get(:silent_auctions).id}") do
+    click_button 'Manage'
     click_link 'close_auction'
     page.driver.browser.switch_to.alert.accept
   end
@@ -64,6 +65,7 @@ end
 
 When /^I delete the auction$/ do
   within("tr#silentAuction_#{get(:silent_auctions).id}") do
+    click_button 'Manage'
     click_link 'delete_auction'
   end
 end

@@ -26,4 +26,4 @@
           %li
             = link_to "<i class='icon-edit'></i> Edit Auction".html_safe, edit_silent_auction_path(auction) unless bid_count > 0
         %li
-          = link_to "<i class='icon-remove'></i> Delete".html_safe, confirm_delete_silent_auction_path(auction), :method => 'post'
+          = link_to "<i class='icon-remove'></i> Delete".html_safe, confirm_delete_silent_auction_path(auction), :method => 'post', :title => 'delete_auction'

@@ -33,8 +33,8 @@ class SilentAuction < ActiveRecord::Base
   end
 
   def strip_whitespace
-    self.title = self.title.strip
-    self.description = self.description.strip
+    self.title = self.title.strip unless self.title.nil?
+    self.description = self.description.strip unless self.description.nil?
   end
 
   def close

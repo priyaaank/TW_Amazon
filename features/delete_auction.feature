@@ -26,13 +26,13 @@ Feature: Delete Auction
     Then the auction should be deleted
 
   @javascript
-  Scenario: delete auction
+  Scenario: confirm delete auction
     When I delete the auction
     And I choose to continue deleting
     Then I should go back to 'running_auctions' page
 
   @javascript
-  Scenario: delete auction
+  Scenario: cancel delete auction
     When I delete the auction
     And choose to cancel deleting
     Then I should go back to 'running_auctions' page
