@@ -64,6 +64,7 @@ When /^I close the auction$/ do
 end
 
 When /^I delete the auction$/ do
+  visit silent_auctions_path
   within("tr#silentAuction_#{get(:silent_auctions).id}") do
     click_button 'Manage'
     click_link 'delete_auction'
