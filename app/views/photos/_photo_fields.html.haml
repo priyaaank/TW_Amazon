@@ -1,0 +1,12 @@
+%div.image_holder
+  - if !f.object.image.path.blank?
+    = image_tag(f.object.image.thumb.url)
+  - else
+    = image_tag(asset_path("img_placeholder.jpg"))
+%div.field_holder
+  %div.inner_fields
+    = f.input :image, :label => false
+    = f.input :image_cache, :as => :hidden
+  = f.input :caption, :label => false, :as => :text, :input_html => {:placeholder => 'Description', :style => "width:320px", :rows => '2'}
+  %div.delete-holder
+    = f.link_to_remove "<i class='icon-trash icon-white'></i> Remove".html_safe, :class => "btn btn-mini btn-danger img-delete-btn"

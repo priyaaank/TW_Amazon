@@ -1,8 +1,13 @@
 class SilentAuction < ActiveRecord::Base
+  before_validation :strip_whitespace
+  before_save :strip_whitespace
+
   has_many :bids, :dependent => :destroy, :inverse_of => :silent_auction
 
-  attr_accessible :title, :description, :open, :min_price, :end_date 
-  before_save :strip_whitespace
+  has_many :photos, :dependent => :destroy, :inverse_of => :silent_auction
+  accepts_nested_attributes_for :photos, :allow_destroy => true, :reject_if => proc { |attributes| attributes['image'].blank? && attributes['image_cache'].blank? && attributes['caption'].blank? }
+
+  attr_accessible :title, :description, :open, :min_price, :end_date, :photos_attributes
 
   validates :title, :presence => { :message => "Title is required" } ,
                     :length => { :maximum => 255, :message => "Title is too long (Maximum 255 characters)" },
@@ -16,15 +21,11 @@ class SilentAuction < ActiveRecord::Base
                         :format => { :with => /^\d+?(?:\.\d{0,2})?$/, :message => "can only have 2 decimal places" }
 
   scope :running, where(:open => true)
-  scope :closed, joins(:bids).where(:open => false)
-  scope :recent, order('created_at desc')
+  scope :closed, includes(:bids).where("bids.id IS NOT NULL AND open = ?", false)
+  scope :expired, includes(:bids).where("bids.id IS NULL AND open = ?", false)
+
+  scope :recent, order('"silent_auctions"."created_at" desc')
   scope :ending_today, lambda { where("end_date < ?", Time.zone.now ) }
-  scope :expired, joins(<<-SQL
-    LEFT OUTER JOIN bids on silent_auctions.id = bids.silent_auction_id
-    WHERE bids.id is null
-    AND silent_auctions.open = 'f'
-  SQL
-  )
    
   def initialize(*params)
     super(*params)
@@ -33,6 +34,7 @@ class SilentAuction < ActiveRecord::Base
 
   def strip_whitespace
     self.title = self.title.strip
+    self.description = self.description.strip
   end
 
   def close
@@ -43,6 +45,10 @@ class SilentAuction < ActiveRecord::Base
       change_to_closed
       true
     end
+  end
+
+  def has_active_bid
+    self.bids.active.count > 0
   end
 
   def change_to_closed

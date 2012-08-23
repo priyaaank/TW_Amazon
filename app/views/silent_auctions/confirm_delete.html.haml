@@ -5,17 +5,19 @@
     %table{:class => 'table table-simpleBordered', :id => 'runningAuctions'}
       %tbody
         %tr
+          %td.auction_photos
+            = render :partial => 'silent_auctions/auction_photos', :locals => {:auction => @delete_auction}
           %td.auction_info
             %p.itemTitle= @delete_auction.title
             =simple_format(@delete_auction.description)
-            - if !@delete_auction.open
+            - if !@delete_auction.open && !@delete_auction.bids.empty?
               - wonBid = won_bid_for_auction(@delete_auction)
               %h4 Active bidders:
               %ul
                 %li.win= "#{won_bid_for_auction(@delete_auction).user.username}@thoughtworks.com <span>[WINNER]</span>".html_safe
                 - @bidders.each do |bidder|
                   - if bidder.id != wonBid.user.id
-                    %li= bidder.username << "@thoughtworks.com"
+                    %li= "#{bidder.username}@thoughtworks.com"
             - else
               %h4 Active bidders:
               - if @bidders.empty?
@@ -23,7 +25,7 @@
               - else
                 %ul
                   - @bidders.each do |bidder|
-                    %li= bidder.username << "@thoughtworks.com"
+                    %li= "#{bidder.username}@thoughtworks.com"
           %td.min_price
             = simple_format("Min Price:<br/><strong>#{number_to_currency(@delete_auction.min_price)}</strong>")
           %td.auction_bids
@@ -38,6 +40,7 @@
   %div.btn_wrapper
     =link_to "Back to listing", back_link(silent_auctions_path), :class => "btn", :title => "cancel_delete_auction"
     =link_to "<strong>Delete Auction</strong>".html_safe, @delete_auction,
-                                                          :class => "btn btn-danger",
+                                                          :class => "btn btn-danger form_action_btn",
                                                           :method => :delete,
-                                                          :title => "delete_auction"
+                                                          :title => "delete_auction",
+                                                          :disable_with => 'Deleting...'

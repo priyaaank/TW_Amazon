@@ -1,7 +1,10 @@
 %h1
   %span Expired Auctions
 
-%h3= (page_entries_info @expired_auctions).sub("silent", "expired").html_safe
+- status = page_entries_info @expired_auctions
+- replacements = [ ["silent", "expired"], ["entries", "auctions"] ]
+- replacements.each {|replacement| status.gsub!(replacement[0], replacement[1])}
+%h3= status.html_safe
 - if @expired_auctions.empty?
   .empty_collection
     %p.emptyMsg There are no expired auctions.

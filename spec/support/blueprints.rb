@@ -37,3 +37,7 @@ end
 Bid.blueprint do
   # Attributes here
 end
+
+Photo.blueprint do
+  # Attributes here
+end

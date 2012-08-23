@@ -1,12 +1,10 @@
 %h1{:style => 'margin-bottom:20px;'} Create New Auction
 
-= simple_form_for @silent_auction, :html => { :class => 'form-horizontal form-bordered' } do |f|
-  = f.input :title, :label => 'Title', :input_html => {:class => "longInput"}
-  = f.input :min_price, :label => 'Minimum Price',:input_html => {:style => "width:100px", :type => 'text'}
-  = f.input :description, :as => :text, :label => 'Description', :input_html => { :rows => 10 }
-  = f.input :end_date, :label => 'End date', :as => :string, :readonly => true, :input_html => { :value => formatted_date(@silent_auction.end_date) }
+= simple_nested_form_for @silent_auction, :html => { :multipart => true } do |f|
+  = render :partial => 'form', :locals => {:f => f}
 
-  .form-actions
-    = link_to "Back to Listing", silent_auctions_path, :class => 'btn'
-    = submit_tag "Save and create another auction", :name => "continue", :id => 'submit_continue', :class => 'btn btn-primary'
-    = submit_tag "Save and go back to listing", :name => "done", :id => 'submit_done', :class => 'btn btn-primary'
+  %div{:class => 'form-horizontal'}
+    %div{:class => 'form-actions'}
+      = link_to "Back to Listing", silent_auctions_path, :class => 'btn'
+      = submit_tag "Save and create another auction", :name => "continue", :id => 'submit_continue', :class => 'btn btn-primary form_action_btn', :disable_with => "Save and create another auction"
+      = submit_tag "Save and go back to listing", :name => "done", :id => 'submit_done', :class => 'btn btn-primary form_action_btn', :disable_with => "Save and go back to listing"
