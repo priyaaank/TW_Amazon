@@ -6,7 +6,8 @@
     %p.itemTitle= auction.title
     = simple_format(auction.description, :class => 'itemDescription')
   %td.min_price
-    = simple_format("Min Price:<br/><strong>#{number_to_currency(auction.min_price)}</strong>")
+    -#= simple_format("Min Price:<br/><strong>#{number_to_currency(auction.min_price)}</strong>")
+    = simple_format("Min Price:<br/><strong>#{(auction.region == "AUS" ? "AU$" : "NA") + " " + auction.min_price.to_s}</strong>")
   %td.end_date
     = simple_format("End date:<br /><strong>#{formatted_date(auction.end_date)}</strong>")
   %td.auction_bids

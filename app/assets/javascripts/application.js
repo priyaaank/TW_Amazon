@@ -12,6 +12,16 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery-ui
+//= require jquery-ui-timepicker-addon.js
 //= require twitter/bootstrap
 //= require jquery_nested_form
 //= require_tree .
+$(function(){
+  $(".datePicker").datepicker();
+  $('#ui-datepicker-div').hide();
+   
+  $.datepicker._defaults.dateFormat = 'dd M yy' 
+  
+});
+

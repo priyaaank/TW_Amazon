@@ -1,0 +1,19 @@
+%h1
+  %span Future Auctions
+
+- status = page_entries_info @future_auctions
+- replacements = [ ["silent", "future"], ["entries", "auctions"] ]
+- replacements.each {|replacement| status.gsub!(replacement[0], replacement[1])}
+%h3= status.html_safe
+- if @future_auctions.empty?
+  .empty_collection
+    %p.emptyMsg There are no future auctions.
+- else
+  %table{:class => 'table table-simpleBordered', :id => 'futureAuctions'}
+    %tbody
+      - @future_auctions.each do |auction|
+        = render :partial => "running_auction", :locals => { :auction => auction }
+  %div{:class => 'index_footer clearfix'}
+    = paginate @future_auctions
+    .pagination_info
+      = (page_entries_info @future_auctions).sub("silent", "future").html_safe

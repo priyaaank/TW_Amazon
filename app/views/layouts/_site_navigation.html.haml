@@ -8,4 +8,6 @@
     %li
       = link_to "Expired Auctions", expired_silent_auctions_path, :class => is_active?('expired')
     %li
+      = link_to "Future Auctions", future_silent_auctions_path, :class => is_active?('future')
+    %li
       = link_to "<i class='icon-edit icon-gray'></i> Create New Auction".html_safe, new_silent_auction_path, :class => is_active?('new')

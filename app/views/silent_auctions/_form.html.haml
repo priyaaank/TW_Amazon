@@ -1,12 +1,45 @@
 %div{:class => 'well form-horizontal'}
   %legend Item Details
   = f.input :title, :label => 'Title', :input_html => {:class => "span6"}
+  -#= f.input :region, :label => 'Region', :collection => ["AUS", "IND"], :selected => "AUD"
   = f.input :min_price, :label => 'Minimum Price',:wrapper => :prepend do
-    = content_tag :span, "$", :class => "add-on"
+    = content_tag :span, "AU$", :class => "add-on", :id => "silent_auction_currency"
     = f.input_field :min_price
   .text_counter
     = f.input :description, :as => :text, :label => 'Description', :input_html => { :rows => 8, :class => "span6", :id => "description" }
-  = f.input :end_date, :label => 'End date', :as => :string, :hint => 'End date is automatically set as 2 weeks from now', :disabled => true, :input_html => { :value => formatted_date(@silent_auction.end_date) }
+  - month0 = Time.zone.now.month;
+  - month1 = 1.month.from_now.to_date.month;
+  - month2 = 2.months.from_now.to_date.month;
+  - month1 -= 12 if month1 > 12;
+  - month2 -= 12 if month2 > 12;
+  -#= f.input :end_date, :label => 'End date', :collection => [Date::MONTHNAMES[month0], Date::MONTHNAMES[month1], Date::MONTHNAMES[month2]], :selected => Date::MONTHNAMES[month0]
+  -#= f.input :month, :label => 'End date', :collection => [month0, Date::MONTHNAMES[month1], Date::MONTHNAMES[month2]], :selected => Date::MONTHNAMES[month0]
+  -#%span End date
+  -#%div{:class => "control-group string required control-label"} End date
+  -#= f.date_select :end_date, :order => [:day, :month], :default => Time.zone.now
+  
+  -#= f.input :end_date, :label => 'End date', :as => :string, :hint => 'End date is automatically set as 2 weeks from now', :disabled => true, :input_html => { :value => formatted_date(@silent_auction.end_date) }
+  
+  -#= f.input :end_date, :label => 'End date', :as => :string, :hint => 'End date is automatically set as 2 weeks from now', :input_html => { :value => formatted_date(@silent_auction.end_date) }
+    
+  -#%div{:class => "control-group string optional disabled control-label"} End date
+  -#%div{:class => "controls string optional disabled"}
+    -#= f.date_select :end_date, :order => [:day, :month], :default => Time.now
+    -#%span{:class => "help-block"} End date must be between start date up to 2 months long
+
+  -#= f.input :start_date, :label => 'End date', :order => [:day, :month, :year], :default => Time.now, :hint => 'End date must be between start date up to 2 months long' 
+  -#= f.input :start_date, :label => 'Start date', :order => [:day, :month, :year], :default => Time.now, :hint => 'Start date must be any date starting from today\'s date' 
+  -#= f.input :end_date, :label => 'End date', :order => [:day, :month, :year], :default => Time.now, :hint => 'End date must be between start date up to 2 months long' 
+  -#= f.input :start_date, :label =>"Start d", :as => :string, :order =>[:day,:month,:year], :input_html => {:class =>"datePicker" }
+  = f.input :start_date, :label =>"Start date", :as => :string, :order =>[:day,:month,:year], :input_html => {:class =>"datePicker" }
+  = f.input :end_date, :label =>"End date", :as => :string, :order =>[:day,:month,:year], :input_html => {:class =>"datePicker" }  
+
+  -#= f.input :dummy, :label => 'End date', :as => :string, :disabled => true, :input_html => { :value => Time.now.to_s }
+  -#= f.datetime_picker :end_date
+  -#%div{:class => "control-group string optional disabled control-label"} End date
+  -#%div{:class => "controls"}
+    -#%input{:class => "string optional disabled", :id => "silent_auction_end_date", :name => "silent_auction[end_date]", :size => "50", :type => "text", :value => "Thu 06 Sep" }
+    -#%p{:class => "help-block"} End date is automatically set as 2 weeks from now
 
 %div{:class => 'well form-inline clearfix', :id => "image-upload"}
   %legend.file_upload

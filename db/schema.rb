@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120517091834) do
+ActiveRecord::Schema.define(:version => 20120824060550) do
 
   create_table "bids", :force => true do |t|
     t.float    "amount"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(:version => 20120517091834) do
   end
 
   add_index "bids", ["silent_auction_id"], :name => "index_bids_on_silent_auction_id"
+  add_index "bids", ["user_id", "silent_auction_id"], :name => "index_bids_on_user_id_and_silent_auction_id", :unique => true
   add_index "bids", ["user_id"], :name => "index_bids_on_user_id"
 
   create_table "photos", :force => true do |t|
@@ -37,10 +38,12 @@ ActiveRecord::Schema.define(:version => 20120517091834) do
     t.string   "title"
     t.text     "description"
     t.boolean  "open",        :default => true
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
     t.float    "min_price"
     t.date     "end_date"
+    t.string   "region",      :default => "AUS"
+    t.date     "start_date"
   end
 
   create_table "users", :force => true do |t|

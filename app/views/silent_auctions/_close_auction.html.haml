@@ -6,8 +6,10 @@
     %p.itemTitle= auction.title
     = simple_format(auction.description, :class => 'itemDescription')
     = simple_format("Winner: <span class='highlight'>#{wonBid.user.username}@thoughtworks.com</span>", :class => 'itemWinner')
+  %td.region
+    = simple_format("Region:<br/><strong>#{auction.region}</strong>")
   %td.min_price
-    = simple_format("Min Price: <strong>#{number_to_currency(auction.min_price)}</strong>")
+    = simple_format("Min Price:<br/><strong>#{(auction.region == "AUS" ? "AU$" : "NA") + " " + auction.min_price.to_s}</strong>")
   %td.end_date
     = simple_format("End date:<br /><strong>#{formatted_date(auction.end_date)}</strong>")
   %td.auction_bids

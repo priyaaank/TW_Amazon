@@ -34,6 +34,16 @@ class SilentAuctionsController < ApplicationController
     end
   end
 
+  # GET /silent_auctions/future
+  def future
+    @title = "Future Auctions Listing"
+    @future_auctions = SilentAuction.future.recent.page(params[:page])
+
+    respond_to do |format|
+      format.html
+    end
+  end
+
   # GET /silent_auctions/new
   # An HTTP GET to /resources/new is intended to render a form suitable for creating a new resource,
   # which it does by calling the new action within the controller,
@@ -43,6 +53,7 @@ class SilentAuctionsController < ApplicationController
     @title = "Create new auction"
     @silent_auction = SilentAuction.new
     @silent_auction.photos.build
+    
     respond_to do |format|
       format.html
     end

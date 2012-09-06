@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.2'
 gem 'jquery-rails'
+gem 'jquery_datepicker'
 gem 'coffee-rails', '~> 3.2.1'
 gem "heroku"
 
@@ -9,8 +10,10 @@ gem "heroku"
 gem 'devise'
 gem 'omniauth-cas'
 
+
 #form, display, pagination
 gem 'simple_form'
+gem 'formtastic'
 gem "haml"
 gem "haml-rails"
 gem "twitter-bootstrap-rails"
@@ -55,4 +58,7 @@ group :test do
   gem 'faker'
   gem 'blueprints'
 end
+
+
+
 

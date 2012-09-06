@@ -1,4 +1,11 @@
 $(document).ready( function() {
+    /*
+    document.getElementById("silent_auction_region").onchange = function()
+    {
+	if ( document.getElementById("silent_auction_region").value == "AUS" )    document.getElementById("silent_auction_currency").innerHTML = "AU$";
+	else if ( document.getElementById("silent_auction_region").value == "IND" )    document.getElementById("silent_auction_currency").innerHTML = "&#x20b9;";
+    };
+	*/
     // to open auction photos in light box
     $('a.gallery').fancybox();
 

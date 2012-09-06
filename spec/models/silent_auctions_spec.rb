@@ -76,7 +76,7 @@ describe SilentAuction do
       auction.valid?.should == false
       auction.should have_at_least(1).errors_on(:min_price)
     end
-
+=begin
     it 'should not allow min price greater than 9999.00' do
       auction = SilentAuction.new(title: "a", description: "b")
 
@@ -91,6 +91,23 @@ describe SilentAuction do
     it "should have an automatic 2 weeks from now on end date" do
       auction = SilentAuction.make!
       auction.end_date.should == 2.weeks.from_now.to_date
+    end
+=end
+    it "should have an end date between the start date up to 2 months forwards" do
+      auction = SilentAuction.new(title: "a", description: "b", start_date: Date.today, end_date: Date.today - 1.day)
+      auction.check_dates.should == false
+      
+      auction = SilentAuction.new(title: "a", description: "b", start_date: Date.today, end_date: Date.today)
+      auction.check_dates.should == nil
+
+      auction = SilentAuction.new(title: "a", description: "b", start_date: Date.today + 15.days, end_date: Date.today + 76.days)
+      auction.check_dates.should == nil
+
+      auction = SilentAuction.new(title: "a", description: "b", start_date: Date.today, end_date: Date.today + 2.months)
+      auction.check_dates.should == nil
+
+      auction = SilentAuction.new(title: "a", description: "b", start_date: Date.today, end_date: Date.today + 2.months + 1.day)
+      auction.check_dates.should == false
     end
   end
 
