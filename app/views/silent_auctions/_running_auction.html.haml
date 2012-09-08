@@ -6,8 +6,8 @@
     %td.auction_info
       %p.itemTitle= auction.title
       = simple_format(auction.description, :class => 'itemDescription')
-    %td.region
-      = simple_format("Region:<br/><strong>#{auction.region.upcase}</strong>")
+    -#%td.region
+      -#= simple_format("Region:<br/><strong>#{auction.region.upcase}</strong>")
     %td.min_price
       -#= simple_format("Min Price:<br/><strong>#{(auction.region == "AUS" ? "AU$" : "NA") + " " + auction.min_price.to_s}</strong>")
       = simple_format("Min Price:<br/><strong>#{number_to_currency(auction.min_price, :locale => auction.region)}</strong>")
