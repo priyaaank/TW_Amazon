@@ -1,7 +1,8 @@
 %div{:class => 'well form-horizontal'}
   %legend Item Details
   = f.input :title, :label => 'Title', :input_html => {:class => "span6"}
-  -#= f.input :region, :label => 'Region', :collection => ["AUS", "IND"], :selected => "AUD"
+  -#= f.input :region, :label => 'Region', :collection => ["AUS", "IND"], :selected => "AUS"
+  = f.input :region, :label => 'Region', :collection => [["AUS","au"], ["IND","id"]], :selected => "AUS"
   = f.input :min_price, :label => 'Minimum Price',:wrapper => :prepend do
     = content_tag :span, "AU$", :class => "add-on", :id => "silent_auction_currency"
     = f.input_field :min_price

@@ -18,4 +18,12 @@ class UsersController < ApplicationController
       redirect_back_or(index_path)
     end
   end
+  
+  def update
+    @user = User.find(params[:id])
+    #@user.region = params[:current_user] 
+    #@user.save
+    @user.update_attributes(params[:user])
+    redirect_to silent_auctions_path
+  end
 end

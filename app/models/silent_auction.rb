@@ -1,7 +1,7 @@
 class SilentAuction < ActiveRecord::Base
   before_validation :strip_whitespace
   before_save :strip_whitespace
-  before_save :check_dates
+  before_save :check_dates, :if => :open?
 
   has_many :bids, :dependent => :destroy, :inverse_of => :silent_auction
 
@@ -28,7 +28,7 @@ class SilentAuction < ActiveRecord::Base
   scope :expired, includes(:bids).where("bids.id IS NULL AND open = ?", false)
 
   scope :recent, order('"silent_auctions"."created_at" desc')
-  scope :ending_today, lambda { where("end_date <= ?", Date.today ) }#Time.zone.now ) }
+  scope :ending_today, lambda { where("end_date <= ?", Date.today.to_s ) }#Time.zone.now ) }
   
   def initialize(*params)
     super(*params)

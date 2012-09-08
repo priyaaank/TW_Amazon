@@ -1,19 +1,21 @@
 - bid = user_bid_for_auction(auction)
-%tr{:class => "auction", :id => "silentAuction_#{auction.id}"}
-  %td.auction_photos
-    = render :partial => 'silent_auctions/auction_photos', :locals => {:auction => auction}
-  %td.auction_info
-    %p.itemTitle= auction.title
-    = simple_format(auction.description, :class => 'itemDescription')
-  %td.region
-    = simple_format("Region:<br/><strong>#{auction.region}</strong>")
-  %td.min_price
-    = simple_format("Min Price:<br/><strong>#{(auction.region == "AUS" ? "AU$" : "NA") + " " + auction.min_price.to_s}</strong>")
-  %td.start_date
-    = simple_format("Start date:<br /><strong>#{formatted_date(auction.start_date)}</strong>")
-  %td.end_date
-    = simple_format("End date:<br /><strong>#{formatted_date(auction.end_date)}</strong>")
-  - if current_user.admin?
-    = render :partial => "admin_auction_view", :locals => { :auction => auction }
-  - else
-    = render :partial => "bids/user_bid_view", :locals => { :auction => auction, :bid => bid }
+- if current_user.region == auction.region
+  %tr{:class => "auction", :id => "silentAuction_#{auction.id}"}
+    %td.auction_photos
+      = render :partial => 'silent_auctions/auction_photos', :locals => {:auction => auction}
+    %td.auction_info
+      %p.itemTitle= auction.title
+      = simple_format(auction.description, :class => 'itemDescription')
+    %td.region
+      = simple_format("Region:<br/><strong>#{auction.region.upcase}</strong>")
+    %td.min_price
+      -#= simple_format("Min Price:<br/><strong>#{(auction.region == "AUS" ? "AU$" : "NA") + " " + auction.min_price.to_s}</strong>")
+      = simple_format("Min Price:<br/><strong>#{number_to_currency(auction.min_price, :locale => auction.region)}</strong>")
+    %td.start_date
+      = simple_format("Start date:<br /><strong>#{formatted_date(auction.start_date)}</strong>")
+    %td.end_date
+      = simple_format("End date:<br /><strong>#{formatted_date(auction.end_date)}</strong>")
+    - if current_user.admin?
+      = render :partial => "admin_auction_view", :locals => { :auction => auction }
+    - else
+      = render :partial => "bids/user_bid_view", :locals => { :auction => auction, :bid => bid }

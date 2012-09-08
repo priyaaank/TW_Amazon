@@ -1,3 +1,11 @@
+#user_region {
+	float:left;
+	margin-right: 2.0em;
+	width: 5.0em;
+	position: relative;
+	top: 0.2em;
+}
+
 .container h3 {
   margin-top:20px;
 

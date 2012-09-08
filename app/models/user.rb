@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
   has_many :bids, :inverse_of => :user
 
   devise :omniauthable
-  attr_accessible :username, :admin
+  attr_accessible :username, :admin, :region
   validates :username, :presence => true, :length => { :maximum => 255 }
 
   # for dummy users

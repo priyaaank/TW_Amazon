@@ -1,15 +1,25 @@
-%h1
-  %span Running Auctions
-  - if current_user.admin?
-    = link_to 'Create NEW Auction', new_silent_auction_path, :class => 'btn btn-primary'
-
-- if @running_auctions.empty?
-  %h3= "No auctions found"
-  .empty_collection
-    %p.emptyMsg There are no running auctions.
-- else
-  %h3= "Displaying all #{pluralize(@running_auctions.count, "running auctions")}"
-  %table{:class => 'table table-simpleBordered', :id => 'runningAuctions'}
-    %tbody
-      - @running_auctions.each do |auction|
-        = render :partial => "running_auction", :locals => { :auction => auction }
+-#- if current_user.region == nil
+  -#%legend Your Region
+  -#%select{:current_user.region => "dropdown"}
+  -#%select{ :current_user.region => [["AUS","au"], ["IND","id"]] }
+- @user = current_user
+= simple_nested_form_for @user, :html => { :multipart => false } do |f|
+  = f.input :region, :label => 'Your Region', :collection => [[],["AUS","au"], ["IND","id"]], :selected => @user.region, :onchange => 'alert(@user);'
+  = submit_tag "Update Your Region and Refresh the Page", :name => "refresh", :id => 'submit_continue', :class => 'btn btn-primary form_action_btn', :disable_with => "Updating region and refreshing the page..."
+- if current_user.region != nil
+  %h1
+    %span Running Auctions
+    - if current_user.admin?
+      = link_to 'Create NEW Auction', new_silent_auction_path, :class => 'btn btn-primary'
+  
+  - @running_auctions = @running_auctions.where("region = '#{@user.region}'")
+  - if @running_auctions.empty?
+    %h3= "No auctions found"
+    .empty_collection
+      %p.emptyMsg There are no running auctions.
+  - else
+    %h3= "Displaying all #{pluralize(@running_auctions.count, "running auctions")}"
+    %table{:class => 'table table-simpleBordered', :id => 'runningAuctions'}
+      %tbody
+        - @running_auctions.each do |auction|
+          = render :partial => "running_auction", :locals => { :auction => auction }

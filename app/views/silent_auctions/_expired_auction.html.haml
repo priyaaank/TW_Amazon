@@ -1,21 +1,23 @@
 - bid = user_bid_for_auction(auction)
-%tr{:class => "auction", :id => "silentAuction_#{auction.id}"}
-  %td.auction_photos
-    = render :partial => 'silent_auctions/auction_photos', :locals => {:auction => auction}
-  %td.auction_info
-    %p.itemTitle= auction.title
-    = simple_format(auction.description, :class => 'itemDescription')
-  %td.min_price
-    -#= simple_format("Min Price:<br/><strong>#{number_to_currency(auction.min_price)}</strong>")
-    = simple_format("Min Price:<br/><strong>#{(auction.region == "AUS" ? "AU$" : "NA") + " " + auction.min_price.to_s}</strong>")
-  %td.end_date
-    = simple_format("End date:<br /><strong>#{formatted_date(auction.end_date)}</strong>")
-  %td.auction_bids
-    %span{:class => 'badge badge-error', :style => "font-weight:bold;"}
-      = "0 bids"
-  %td.auction_controls
-    .controls_holder
-      = link_to "x".html_safe, confirm_delete_silent_auction_path(auction),
-                              :method => 'post',
-                              :class => "btn btn-mini delete_btn",
-                              :title => "delete_auction"
+- if current_user.region == auction.region
+  %tr{:class => "auction", :id => "silentAuction_#{auction.id}"}
+    %td.auction_photos
+      = render :partial => 'silent_auctions/auction_photos', :locals => {:auction => auction}
+    %td.auction_info
+      %p.itemTitle= auction.title
+      = simple_format(auction.description, :class => 'itemDescription')
+    %td.min_price
+      -#= simple_format("Min Price:<br/><strong>#{number_to_currency(auction.min_price)}</strong>")
+      -#= simple_format("Min Price:<br/><strong>#{(auction.region == "AUS" ? "AU$" : "NA") + " " + auction.min_price.to_s}</strong>")
+      = simple_format("Min Price:<br/><strong>#{number_to_currency(auction.min_price, :locale => auction.region)}</strong>")
+    %td.end_date
+      = simple_format("End date:<br /><strong>#{formatted_date(auction.end_date)}</strong>")
+    %td.auction_bids
+      %span{:class => 'badge badge-error', :style => "font-weight:bold;"}
+        = "0 bids"
+    %td.auction_controls
+      .controls_holder
+        = link_to "x".html_safe, confirm_delete_silent_auction_path(auction),
+                                :method => 'post',
+                                :class => "btn btn-mini delete_btn",
+                                :title => "delete_auction"
