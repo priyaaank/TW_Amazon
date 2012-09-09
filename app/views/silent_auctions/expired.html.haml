@@ -6,15 +6,23 @@
   %h1
     %span Expired Auctions
   
-  - status = page_entries_info @expired_auctions
-  - replacements = [ ["silent", "expired"], ["entries", "auctions"] ]
-  - replacements.each {|replacement| status.gsub!(replacement[0], replacement[1])}
-  %h3= status.html_safe
+  -#- status = page_entries_info @expired_auctions
+  -#- replacements = [ ["silent", "expired"], ["entries", "auctions"] ]
+  -#- replacements.each {|replacement| status.gsub!(replacement[0], replacement[1])}
+  -#%h3= status.html_safe
   - @expired_auctions = @expired_auctions.where("region = '#{@user.region}'")
   - if @expired_auctions.empty?
+    - status = page_entries_info @expired_auctions
+    - replacements = [ ["silent", "expired"], ["entries", "auctions"] ]
+    - replacements.each {|replacement| status.gsub!(replacement[0], replacement[1])}
+    %h3= status.html_safe
     .empty_collection
       %p.emptyMsg There are no expired auctions.
   - else
+    - status = page_entries_info @expired_auctions
+    - replacements = [ ["silent", "expired"], ["entries", "auctions"] ]
+    - replacements.each {|replacement| status.gsub!(replacement[0], replacement[1])}
+    %h3= status.html_safe
     %table{:class => 'table table-simpleBordered', :id => 'expiredAuctions'}
       %tbody
         - @expired_auctions.each do |auction|

@@ -6,15 +6,23 @@
   %h1
     %span Future Auctions
   
-  - status = page_entries_info @future_auctions
-  - replacements = [ ["silent", "future"], ["entries", "auctions"] ]
-  - replacements.each {|replacement| status.gsub!(replacement[0], replacement[1])}
-  %h3= status.html_safe
+  -#- status = page_entries_info @future_auctions
+  -#- replacements = [ ["silent", "future"], ["entries", "auctions"] ]
+  -#- replacements.each {|replacement| status.gsub!(replacement[0], replacement[1])}
+  -#%h3= status.html_safe
   - @future_auctions = @future_auctions.where("region = '#{@user.region}'")
   - if @future_auctions.empty?
+    - status = page_entries_info @future_auctions
+    - replacements = [ ["silent", "future"], ["entries", "auctions"] ]
+    - replacements.each {|replacement| status.gsub!(replacement[0], replacement[1])}
+    %h3= status.html_safe
     .empty_collection
       %p.emptyMsg There are no future auctions.
   - else
+    - status = page_entries_info @future_auctions
+    - replacements = [ ["silent", "future"], ["entries", "auctions"] ]
+    - replacements.each {|replacement| status.gsub!(replacement[0], replacement[1])}
+    %h3= status.html_safe
     %table{:class => 'table table-simpleBordered', :id => 'futureAuctions'}
       %tbody
         - @future_auctions.each do |auction|
