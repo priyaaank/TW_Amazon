@@ -1,6 +1,6 @@
 class UserMailer < ActionMailer::Base
   #default :from => "the_ghost@email.com"
-  def registration_confirmation0(title,bids_count,winner_id,winner_amount)
+  def registration_confirmation(title,bids_count,winner_id,winner_amount)
     @title = title
     @bids_count = bids_count
     @winner_id = winner_id
