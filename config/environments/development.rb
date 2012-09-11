@@ -14,25 +14,26 @@ TWAmazon::Application.configure do
   config.action_controller.perform_caching = false
 
   # Don't care if the mailer can't send
-  config.action_mailer.default_url_options = { host: "twgs.herokuapp.com" }
+  #config.action_mailer.default_url_options = { host: "twgs.herokuapp.com" }
 
   config.action_mailer.raise_delivery_errors = true
   
-  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.delivery_method = :sendmail
   
-  config.action_mailer.smtp_settings = {
+  #config.action_mailer.smtp_settings = {
+    #:address        => "smtp.gmail.com",
+  config.action_mailer.sendmail_settings = {
     :address        => "smtp.gmail.com",
     :port           => "587",
-    :domain         => "twgs.herokuapp.com",
+    #:domain         => "twgs.herokuapp.com",
+    #:domain         => "gmail.com",
     :user_name      => "twamazon@thoughtworks.com",
     :password       => "TWp@55word!",
-    :authentication => "plain",
+    :authentication => :plain,
     :enable_startttls_auto => true
   }
 
-  config.action_mailer.sendmail_settings = {
-    :arguments => '-i'
-  }
+  #config.action_mailer.sendmail_settings = { :arguments => '-i' }
 
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log

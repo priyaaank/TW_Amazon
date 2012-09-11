@@ -24,6 +24,7 @@ gem 'mini_magick'
 gem 'carrierwave'
 gem "nested_form", :git => 'git://github.com/ryanb/nested_form.git'
 gem "fog", "~> 1.3.1"
+gem "mail"
 
 # Gems used only for assets and not required
 # in production environments by default.

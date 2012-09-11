@@ -277,6 +277,7 @@ DEPENDENCIES
   kaminari
   less-rails
   machinist
+  mail
   mini_magick
   nested_form!
   omniauth-cas
