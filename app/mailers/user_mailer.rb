@@ -5,9 +5,9 @@ class UserMailer < ActionMailer::Base
     @bids_count = bids_count
     @winner_id = winner_id
     @winner_amount = winner_amount
-    @recipients = "twamazon@thoughtworks.com"
+    @recipients = "twamazon@thoughtworks.com, dgower@thoughtworks.com"
     if @winner_id != ""
-      @recipients = @recipients + ",#{@winner_id}"
+      @recipients = @recipients + ", #{@winner_id}"
     end
     #mail(:to => "peter.aryanto@gmail.com, #{@winner_id}", :subject => "The winning bid for \"#{@title}\"", :from => 'the_ghost@your_home.com')
     mail(:to => "#{@recipients}", :subject => "The winning bid for \"#{@title}\"", :from => 'the_ghost@your_home.com')
