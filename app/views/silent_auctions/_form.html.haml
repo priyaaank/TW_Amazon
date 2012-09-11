@@ -2,7 +2,8 @@
   %legend Item Details
   = f.input :title, :label => 'Title', :input_html => {:class => "span6"}
   -#= f.input :region, :label => 'Region', :collection => ["AUS", "IND"], :selected => "AUS"
-  = f.input :region, :label => 'Region', :collection => [["AUS","au"], ["IND","id"]], :selected => current_user.region
+  -#= f.input :region, :label => 'Region', :collection => [["AUS","au"], ["IND","id"]], :selected => current_user.region
+  = f.input :region, :as => :hidden, :input_html => {:value => current_user.region}
   = f.input :min_price, :label => 'Minimum Price',:wrapper => :prepend do
     - @currency = number_to_currency(0, :locale => current_user.region)
     = content_tag :span, "#{@currency[0,@currency.length - 4]}", :class => "add-on", :id => "silent_auction_currency"

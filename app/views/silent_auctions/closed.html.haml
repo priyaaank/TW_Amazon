@@ -12,6 +12,8 @@
 - if @new_user == false
   %h1
     %span Closed Auctions
+    - if current_user.admin?
+      = link_to 'Create NEW Auction', new_silent_auction_path, :class => 'btn btn-primary'
   
   -#- status = page_entries_info @closed_auctions
   -#- replacements = [ ["silent", "closed"], ["entries", "auctions"] ]
