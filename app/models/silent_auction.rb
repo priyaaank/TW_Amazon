@@ -107,7 +107,7 @@ class SilentAuction < ActiveRecord::Base
       @winner_amount = @winner.amount
     end    
     #UserMailer.registration_confirmation(self.title,self.bids.active.count,@winner_id,@winner_amount).deliver
-    UserMailer.registration_confirmation(self.title,@count,@winner_id,@winner_amount)#.deliver  
+    UserMailer.registration_confirmation(self.title,@count,@winner_id,@winner_amount).deliver  
     self.save!
   end
 
