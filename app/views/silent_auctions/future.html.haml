@@ -1,8 +1,15 @@
 - @user = current_user
-= simple_nested_form_for @user, :html => { :multipart => false } do |f|
-  = f.input :region, :label => 'Your Region', :collection => [[],["AUS","au"], ["IND","id"]], :selected => @user.region, :onchange => 'alert(@user);'
-  = submit_tag "Update Your Region and Refresh the Page", :name => "refresh", :id => 'submit_continue', :class => 'btn btn-primary form_action_btn', :disable_with => "Updating region and refreshing the page..."
-- if current_user.region != nil
+-#= simple_nested_form_for @user, :html => { :multipart => false } do |f|
+  -#= f.input :region, :label => 'Your Region', :collection => [[],["AUS","au"], ["IND","id"]], :selected => @user.region, :onchange => 'alert(@user);'
+  -#= submit_tag "Update Your Region and Refresh the Page", :name => "refresh", :id => 'submit_continue', :class => 'btn btn-primary form_action_btn', :disable_with => "Updating region and refreshing the page..."
+- @new_user = false;
+- if current_user.region == nil
+  - @new_user = true
+- else 
+  - if current_user.region == ""
+    - @new_user = true
+-#- if current_user.region != nil
+- if @new_user == false
   %h1
     %span Future Auctions
   
@@ -31,3 +38,7 @@
       = paginate @future_auctions
       .pagination_info
         = (page_entries_info @future_auctions).sub("silent", "future").html_safe
+- else
+  = simple_nested_form_for @user, :html => { :multipart => false } do |f|
+    = f.input :region, :label => 'Your Region', :collection => [["Region:",""],["AUS","au"], ["IND","id"]], :selected => @user.region, :onchange => 'alert(@user);'
+    = submit_tag "Update Your Region and Refresh the Page", :name => "refresh", :id => 'submit_continue', :class => 'btn btn-primary form_action_btn', :disable_with => "Updating region and refreshing the page..."

@@ -24,6 +24,7 @@ class UsersController < ApplicationController
     #@user.region = params[:current_user] 
     #@user.save
     @user.update_attributes(params[:user])
-    redirect_to silent_auctions_path
+    #redirect_to silent_auctions_path
+    redirect_to(:back)
   end
 end

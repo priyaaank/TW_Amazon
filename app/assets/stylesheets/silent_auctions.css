@@ -1,7 +1,25 @@
+#region-selector {
+	font-size: 0.8em;
+	text-align: center;
+	height: 2.5em;
+}
+
+#region-selector select {
+	font-size: 1.0em;
+	height: 2.2em;
+	width: 6.5em;
+	background-color: #333;
+	color: #FFD406;
+	border: none;
+	position: relative;
+	top: -1.3em;
+	margin: 0 0;
+}
+
 #user_region {
 	float:left;
 	margin-right: 2.0em;
-	width: 5.0em;
+	width: 6.5em;
 	position: relative;
 	top: 0.2em;
 }

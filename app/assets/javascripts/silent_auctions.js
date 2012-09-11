@@ -8,7 +8,8 @@ $(document).ready( function() {
     document.getElementById("silent_auction_region").onchange = function()
     {
 		if ( document.getElementById("silent_auction_region").value == "au" )    document.getElementById("silent_auction_currency").innerHTML = "AU$";
-		else if ( document.getElementById("silent_auction_region").value == "id" )    document.getElementById("silent_auction_currency").innerHTML = "&#x20b9;";
+		//else if ( document.getElementById("silent_auction_region").value == "id" )    document.getElementById("silent_auction_currency").innerHTML = "&#x20b9;";
+		else if ( document.getElementById("silent_auction_region").value == "id" )    document.getElementById("silent_auction_currency").innerHTML = "Rs";
     };
     // to open auction photos in light box
     $('a.gallery').fancybox();

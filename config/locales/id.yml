@@ -141,7 +141,7 @@ id:
         separator: ! ','
         significant: false
         strip_insignificant_zeros: false
-        unit: Rp
+        unit: Rs
     format:
       delimiter: .
       precision: 3
