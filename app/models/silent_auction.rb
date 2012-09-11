@@ -99,7 +99,7 @@ class SilentAuction < ActiveRecord::Base
     self.open = false
     @winner_id = ""
     @winner_amount = ""
-    @winner = Bid.where("silent_auction_id = ? AND active = ?",self.id,1)
+    @winner = Bid.where("silent_auction_id = ? AND active = ?",self.id,true)
     @count = @winner.count
     if @count > 0
       @winner = @winner.order("amount ASC").last!
