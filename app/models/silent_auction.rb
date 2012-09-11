@@ -96,7 +96,7 @@ class SilentAuction < ActiveRecord::Base
   end
 
   def change_to_closed
-    #self.open = false
+    self.open = false
     @winner_id = ""
     @winner_amount = ""
     @winner = Bid.where("silent_auction_id = ? AND active = ?",self.id,1)
@@ -108,7 +108,7 @@ class SilentAuction < ActiveRecord::Base
     end    
     #UserMailer.registration_confirmation(self.title,self.bids.active.count,@winner_id,@winner_amount).deliver
     UserMailer.registration_confirmation(self.title,@count,@winner_id,@winner_amount).deliver  
-    #self.save!
+    self.save!
   end
 
   def self.close_auctions_ending_today
