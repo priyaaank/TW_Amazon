@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120824060550) do
+ActiveRecord::Schema.define(:version => 20120907014749) do
 
   create_table "bids", :force => true do |t|
     t.float    "amount"
@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(:version => 20120824060550) do
     t.datetime "created_at",                        :null => false
     t.datetime "updated_at",                        :null => false
     t.boolean  "admin"
+    t.string   "region"
   end
 
   add_index "users", ["username"], :name => "index_users_on_username", :unique => true

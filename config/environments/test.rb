@@ -27,7 +27,26 @@ TWAmazon::Application.configure do
   # Tell Action Mailer not to deliver emails to the real world.
   # The :test delivery method accumulates sent emails in the
   # ActionMailer::Base.deliveries array.
-  config.action_mailer.delivery_method = :test
+  #config.action_mailer.delivery_method = :test
+  config.action_mailer.default_url_options = { host: "twgs.herokuapp.com" }
+
+  config.action_mailer.raise_delivery_errors = true
+  
+  config.action_mailer.delivery_method = :smtp
+  
+  config.action_mailer.smtp_settings = {
+    :address        => "smtp.gmail.com",
+    :port           => "587",
+    :domain         => "twgs.herokuapp.com",
+    :user_name      => "peter.aryanto@gmail.com",
+    :password       => "24091980",
+    :authentication => "plain",
+    :enable_startttls_auto => true
+  }
+
+  config.action_mailer.sendmail_settings = {
+    :arguments => '-i'
+  }  
 
   # Raise exception on mass assignment protection for Active Record models
   config.active_record.mass_assignment_sanitizer = :strict

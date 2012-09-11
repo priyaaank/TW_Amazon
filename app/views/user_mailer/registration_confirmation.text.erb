@@ -1,0 +1,17 @@
+TW Garage Sale reporting in...   :)
+
+
+
+The auction "<%= @title %>" has ended.
+<%
+	@add = ""
+	if (@bids_count > 0)
+		@add = " and the winner is #{@winner_id} with the bid amount of #{@winner_amount}."
+	end
+%>
+We have got <%= @bids_count %> bidder(s) <%= @add %> 
+
+
+
+Kind regards,
+TW Garage Sale

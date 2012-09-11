@@ -96,8 +96,19 @@ class SilentAuction < ActiveRecord::Base
   end
 
   def change_to_closed
-    self.open = false
-    self.save!
+    #self.open = false
+    @winner_id = ""
+    @winner_amount = ""
+    @winner = Bid.where("silent_auction_id = ? AND active = ?",self.id,1)
+    @count = @winner.count
+    if @count > 0
+      @winner = @winner.order("amount ASC").last!
+      @winner_id = User.find(@winner.user_id).username + "@thoughtworks.com"
+      @winner_amount = @winner.amount
+    end    
+    #UserMailer.registration_confirmation(self.title,self.bids.active.count,@winner_id,@winner_amount).deliver
+    UserMailer.registration_confirmation(self.title,@count,@winner_id,@winner_amount).deliver  
+    #self.save!
   end
 
   def self.close_auctions_ending_today
