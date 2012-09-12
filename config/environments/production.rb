@@ -63,9 +63,9 @@ TWAmazon::Application.configure do
     :address        => "smtp.gmail.com",
     :port           => 587,
     #:domain         => "twgs.herokuapp.com",
-    :domain         => "gmail.com",
-    :user_name      => "twgs.twgs@gmail.com",#twamazon@thoughtworks.com",
-    :password       => "twgs.twgs",#TWp@55word!",
+    :domain         => "mail.thoughtworks.com",#gmail.com",
+    :user_name      => "twamazon@thoughtworks.com",#twgs.twgs@gmail.com",#,
+    :password       => "TWp@55word!",#twgs.twgs",#,
     :authentication => "plain",
     :enable_startttls_auto => true
   }
