@@ -1,37 +1,38 @@
 require 'spec_helper'
 
 describe SilentAuction do
-
-  describe 'to be valid' do
+  describe 'to be valid' do    
     it 'should have a title' do
-      auction = SilentAuction.new(:description => "my description", :min_price => 250.00)
+      auction = SilentAuction.make
+      auction.title = nil
       auction.valid?.should == false
       auction.title = "my title"
       auction.valid?.should == true
     end
 
     it "should have a unique title" do
-      auction1 = SilentAuction.create(:title => "a", :description => "my description", :min_price => 250.00)
+      auction1 = auction = SilentAuction.make!
       auction1.should be_valid
-      auction2 = SilentAuction.create(:title => "a  ", :description => "my description", :min_price => 250.00)
+      auction2 = auction = SilentAuction.make(:title => auction1.title)
       auction2.should_not be_valid
       auction2.should have_at_least(1).errors_on(:title)
     end
     
     it 'should have a description' do 
-      auction = SilentAuction.new(:title => "my title", :min_price => 250.00)
+      auction = SilentAuction.make
+      auction.description = nil
       auction.valid?.should == false
       auction.description = "this is default description"
       auction.valid?.should == true
     end
     
     it 'should default to open' do
-      auction = SilentAuction.create!(:title => "my title", :description => "my description", :min_price => 250.00)
+      auction = SilentAuction.make!
       auction.open.should == true 
     end
     
     it 'should not allow titles longer than 255' do
-      auction = SilentAuction.new(:description => "my description", :min_price => 250.00)
+      auction = SilentAuction.make
       
       auction.title = "A" * 256
       auction.valid?.should == false
@@ -41,7 +42,7 @@ describe SilentAuction do
     end
     
     it 'should not allow descriptions longer than 500' do
-      auction = SilentAuction.new(:title => "my title", :min_price => 250.00)
+      auction = SilentAuction.make
       auction.description = "A" * 501
       auction.valid?.should == false
       
@@ -50,7 +51,8 @@ describe SilentAuction do
     end
 
     it 'should have a minimum price' do
-      auction = SilentAuction.new(title: "a", description: "b")
+      auction = SilentAuction.make
+      auction.min_price = nil
       auction.valid?.should == false
       auction.should have_at_least(1).errors_on(:min_price)
       auction.min_price = 250.00
@@ -58,7 +60,7 @@ describe SilentAuction do
     end
 
     it 'should not allow minimum price less or equal to 0' do
-      auction = SilentAuction.new(title: "a", description: "b")
+      auction = SilentAuction.make
 
       auction.min_price = -99
       auction.valid?.should == false
@@ -70,44 +72,52 @@ describe SilentAuction do
     end
 
     it 'should not allow invalid number for min price' do
-      auction = SilentAuction.new(title: "a", description: "b")
+      auction = SilentAuction.make
 
       auction.min_price = "ddsaas"
       auction.valid?.should == false
       auction.should have_at_least(1).errors_on(:min_price)
     end
-=begin
-    it 'should not allow min price greater than 9999.00' do
-      auction = SilentAuction.new(title: "a", description: "b")
-
-      auction.min_price = 34322.32
-      auction.valid?.should == false
-      auction.should have_at_least(1).errors_on(:min_price)
-
-      auction.min_price = 9999.99
-      auction.valid?.should == true
+    
+    it 'should not allow a nil start date' do
+      auction = SilentAuction.make(:start_date => nil)
+      auction.valid?.should be_false
+      auction.should have_at_least(1).errors_on(:start_date) 
     end
-
-    it "should have an automatic 2 weeks from now on end date" do
-      auction = SilentAuction.make!
-      auction.end_date.should == 2.weeks.from_now.to_date
+    
+    it 'should not allow a nil end date' do
+      auction = SilentAuction.make(:end_date => nil)
+      auction.valid?.should be_false
+      auction.should have_at_least(1).errors_on(:end_date)       
     end
-=end
-    it "should have an end date between the start date up to 2 months forwards" do
-      auction = SilentAuction.new(title: "a", description: "b", start_date: Date.today, end_date: Date.today - 1.day)
-      auction.check_dates.should == false
-      
-      auction = SilentAuction.new(title: "a", description: "b", start_date: Date.today, end_date: Date.today)
-      auction.check_dates.should == nil
-
-      auction = SilentAuction.new(title: "a", description: "b", start_date: Date.today + 15.days, end_date: Date.today + 76.days)
-      auction.check_dates.should == nil
-
-      auction = SilentAuction.new(title: "a", description: "b", start_date: Date.today, end_date: Date.today + 2.months)
-      auction.check_dates.should == nil
-
-      auction = SilentAuction.new(title: "a", description: "b", start_date: Date.today, end_date: Date.today + 2.months + 1.day)
-      auction.check_dates.should == false
+    
+    it 'should not allow a start date before today' do
+      auction = SilentAuction.make(:start_date => Date.yesterday)
+      auction.valid?.should be_false
+      auction.should have_at_least(1).errors_on(:start_date)  
+    end
+    it 'should not allow an end date on or equal to the start date' do
+      auction = SilentAuction.make
+      auction.start_date=Date.tomorrow
+      auction.end_date=auction.start_date-1.day
+      auction.valid?.should be_false
+      auction.should have_at_least(1).errors_on(:end_date) 
+    end
+    
+    it 'should not allow an end date more than 2 months from the start date' do
+      auction = SilentAuction.make
+      auction.start_date=Date.today
+      auction.end_date=auction.start_date+2.month+1.day
+      auction.valid?.should be_false
+      auction.should have_at_least(1).errors_on(:end_date) 
+    end
+    
+    it 'should default region to AUS' do
+      auction=SilentAuction.make
+      auction.region=nil
+      auction.save!
+      auction.reload
+      auction.region.should=="AUS"
     end
   end
 
@@ -116,25 +126,29 @@ describe SilentAuction do
       @auction = SilentAuction.make!
     end
     it 'should automatically close auctions with bids that are ending today' do
-      @auction.end_date = Date.today
-      user = User.make!(:user)
-      user.bids.create(:silent_auction_id => @auction.id, :amount => 100)
-
-      @auction.save!
-      SilentAuction.close_auctions_ending_today
-      @auction.reload
-
-      @auction.open.should be_false
+      Timecop.freeze(Date.tomorrow) do
+        @auction.end_date = Date.today
+        user = User.make!(:user)
+        user.bids.create(:silent_auction_id => @auction.id, :amount => 100)
+  
+        @auction.save!
+        SilentAuction.close_auctions_ending_today
+        @auction.reload
+  
+        @auction.open.should be_false
+      end
     end
 
     it 'should automatically close auctions that do not have any bids and are ending today' do
-      @auction.end_date = Date.today
+      Timecop.freeze(Date.tomorrow) do
+        @auction.end_date = Date.today
+  
+        @auction.save!
+        SilentAuction.close_auctions_ending_today
+        @auction.reload
 
-      @auction.save!
-      SilentAuction.close_auctions_ending_today
-      @auction.reload
-
-      @auction.open.should be_false
+        @auction.open.should be_false
+      end
     end
 
     it 'should not automatically close auctions with bids that are not ending today' do
@@ -258,5 +272,4 @@ describe SilentAuction do
       @expired_auctions.should_not include @auction4
     end
   end
-
 end

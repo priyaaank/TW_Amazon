@@ -1,8 +1,7 @@
 class SilentAuction < ActiveRecord::Base
   before_validation :strip_whitespace
   before_save :strip_whitespace
-  before_save :check_dates, :if => :open?
-
+  before_save :set_default_region
   has_many :bids, :dependent => :destroy, :inverse_of => :silent_auction
 
   has_many :photos, :dependent => :destroy, :inverse_of => :silent_auction
@@ -20,10 +19,14 @@ class SilentAuction < ActiveRecord::Base
   validates :min_price, :presence => { :message => "is required"},
                         :numericality => { :greater_than => 0, :greater_than_or_equal_to => 0.01}, #:less_than_or_equal_to => 9999.99},
                         :format => { :with => /^\d+?(?:\.\d{0,2})?$/, :message => "can only have 2 decimal places" }
+                        
+  validates :start_date, :presence => {:message => "Start date is required"}
+  validates_date :start_date, :on => :create, :on_or_after => :today
+  
+  validates :end_date, :presence => {:message => "End date is required"}
+  validates_datetime :end_date, :after => :start_date
+  validates_datetime :end_date, :before => lambda {Time.zone.now + 2.months}
  
-  #validates_format_of :start_date, :with => /\A[0-9]+\z/, :message => "Only numbers are allowed"                     
- 
-  #scope :running, where(:open => true)
   scope :running, where(["start_date < :tomorrow AND open = :is_open", :tomorrow => Date.tomorrow, :is_open => true])
   scope :future, where("start_date > ? AND open = ?", Date.today.to_s, true)
   scope :closed, includes(:bids).where("bids.id IS NOT NULL AND open = ?", false)
@@ -47,42 +50,11 @@ class SilentAuction < ActiveRecord::Base
       self.description = self.description.strip
     end
   end
-
-  #def validate_on_create
-  #def check_end_date
-  def check_dates
-    if self.region == nil then 
-      self.region = "AUS"
-    end
-
-    isvalid = true
-    if self.start_date == nil then 
-      isvalid = false
-      errors.add(:start_date, "Star Date is required")
-    else  
-    max_end_date = self.start_date + 2.months
-    if self.start_date < Date.today  then 
-      isvalid = false
-      errors.add(:start_date, "The earliest acceptable start date is today's date")
-    
-    end
-  end
-     
-    if self.end_date == nil then
-     isvalid = false
-     errors.add(:end_date, "End Date is required")
-    elsif self.end_date < self.start_date || max_end_date < self.end_date then 
-     
-      isvalid = false
-      errors.add(:end_date, "End date must be between the start date and 2 months after it")
-      
-    end
-    if isvalid == false
-      false
-    end
-    #elsif (self.end_date > (2.months.from_now.to_date))
-  end
   
+ def set_default_region
+     self.region ||= :AUS
+ end
+ 
   def close
     if self.bids.active.count == 0
       errors.add :message, "Auction with no active bid cannot be closed"

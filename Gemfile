@@ -5,6 +5,7 @@ gem 'jquery-rails'
 gem 'jquery_datepicker'
 gem 'coffee-rails', '~> 3.2.1'
 gem "heroku"
+gem "validates_timeliness", "~> 3.0"
 
 #CAS OAUTH gems
 gem 'devise'
@@ -43,6 +44,7 @@ end
 
 group :development, :test do
   gem 'rspec-rails'
+  gem 'timecop'
 end
 
 group :development do
