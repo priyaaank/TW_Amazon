@@ -2,7 +2,7 @@ class Bid < ActiveRecord::Base
   belongs_to :silent_auction, :inverse_of => :bids
   belongs_to :user, :inverse_of => :bids
 
-  validates :amount, :presence => { :message => "is required" } , :numericality => {:less_than_or_equal_to => 9999.99}
+  validates :amount, :presence => { :message => "is required" } #, :numericality => {:less_than_or_equal_to => 9999.99}
   validate :amount_must_not_be_less_than_auction_min_price
   validates :amount, :format => { :with => /^\d+?(?:\.\d{0,2})?$/, :message => "can only have 2 decimal places" }
   validate :auction_must_not_be_closed

@@ -2,7 +2,18 @@ Feature: picture
 
 Scenario: upload images
 
-Given I am admin
+Given I'm logged in as an admin
 When I create a valid silent auction
-Then I upload image files
-Then I can see images in the silent auction
+And I want to upload <image> as following:
+| image |
+| image1.jpg |
+| image2.jpg |
+| image3.jpg |
+| image4.jpg |
+Then the <image> is attached
+
+Scenario: delete images
+
+Given I'm logged in as an admin
+When I delete "image1.jpg"
+Then I cannot see "image1.jpg"

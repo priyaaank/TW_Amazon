@@ -19,7 +19,6 @@ class SilentAuction < ActiveRecord::Base
   validates :min_price, :presence => { :message => "is required"},
                         :numericality => { :greater_than => 0, :greater_than_or_equal_to => 0.01}, #:less_than_or_equal_to => 9999.99},
                         :format => { :with => /^\d+?(?:\.\d{0,2})?$/, :message => "can only have 2 decimal places" }
-                        
   validates :start_date, :presence => {:message => "Start date is required"}
   validates_date :start_date, :on => :create, :on_or_after => :today
   
@@ -79,9 +78,12 @@ class SilentAuction < ActiveRecord::Base
       @winner = @winner.order("amount ASC").last!
       @winner_id = User.find(@winner.user_id).username + "@thoughtworks.com"
       @winner_amount = @winner.amount
-    end    
-    #UserMailer.registration_confirmation(self.title,self.bids.active.count,@winner_id,@winner_amount).deliver
-    UserMailer.registration_confirmation(self.title,@count,@winner_id,@winner_amount).deliver  
+      UserMailer.winner_notification(self.title,@count,@winner_id,@winner_amount).deliver
+      UserMailer.administrator_notification_close(self.title,@count,@winner_id,@winner_amount).deliver
+    else
+      UserMailer.administrator_notification_expired(self.title).deliver
+    end
+      
     self.save!
   end
 
