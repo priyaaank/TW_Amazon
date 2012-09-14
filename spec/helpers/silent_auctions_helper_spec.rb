@@ -15,7 +15,7 @@ describe SilentAuctionsHelper do
   end
 
   describe 'won_bid_for_auction' do
-    before (:each) do
+    before(:each) do
       @auction = SilentAuction.make!
       user1 = User.make!(:user)
       user2 = User.make!(:user)
@@ -47,6 +47,18 @@ describe SilentAuctionsHelper do
       tbid1 = user1.bids.create(:silent_auction_id => test_auction.id, :amount => 200, :created_at => bid_create_time)
       tbid2 = user2.bids.create(:silent_auction_id => test_auction.id, :amount => 200, :created_at => bid_create_time)
       helper.won_bid_for_auction(test_auction).should eql tbid1
+    end
+  end
+  
+  describe 'get_region_config' do
+    describe 'when region code is passed in' do
+      it 'gives me the currency' do
+        helper.get_region_config("au")["currency"].should == "AU$"
+      end
+      
+      it 'gives me the timezone' do
+        helper.get_region_config("au")["timezone"].should == "EST"
+      end
     end
   end
 end

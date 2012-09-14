@@ -13,3 +13,4 @@ coverage
 public/uploads/**/*
 .env
 Procfile
+.project

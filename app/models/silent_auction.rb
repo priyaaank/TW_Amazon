@@ -2,6 +2,7 @@ class SilentAuction < ActiveRecord::Base
   before_validation :strip_whitespace
   before_save :strip_whitespace
   before_save :set_default_region
+  
   has_many :bids, :dependent => :destroy, :inverse_of => :silent_auction
 
   has_many :photos, :dependent => :destroy, :inverse_of => :silent_auction

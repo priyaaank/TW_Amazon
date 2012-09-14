@@ -14,4 +14,12 @@ module SilentAuctionsHelper
     date.to_s(:day_date_and_month)
   end
 
+  def get_region_config(region)
+    config_file = "#{Rails.root}/config/region.yml"
+    yaml = YAML.load_file(config_file)
+    #pp "*" * 80
+    #pp yaml
+    #pp yaml[region]
+    yaml[region]
+  end
 end
