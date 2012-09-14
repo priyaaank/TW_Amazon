@@ -24,8 +24,8 @@ class SilentAuction < ActiveRecord::Base
   validates_date :start_date, :on => :create, :on_or_after => :today
   
   validates :end_date, :presence => {:message => "End date is required"}
-  validates_datetime :end_date, :after => :start_date
-  validates_datetime :end_date, :before => lambda {Time.zone.now + 2.months}
+  validates_datetime :end_date, :on_or_after => :start_date
+  validates :end_date, :timeliness => {:on_or_before => lambda{|auction| auction.start_date + 2.months}, :type => :date}
  
   scope :running, where(["start_date < :tomorrow AND open = :is_open", :tomorrow => Date.tomorrow, :is_open => true])
   scope :future, where("start_date > ? AND open = ?", Date.today.to_s, true)
@@ -49,6 +49,7 @@ class SilentAuction < ActiveRecord::Base
     if self.description != nil
       self.description = self.description.strip
     end
+   # @max=Date.today+2.months
   end
   
  def set_default_region

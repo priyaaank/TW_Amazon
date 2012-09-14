@@ -96,7 +96,7 @@ describe SilentAuction do
       auction.valid?.should be_false
       auction.should have_at_least(1).errors_on(:start_date)  
     end
-    it 'should not allow an end date on or equal to the start date' do
+    it 'should not allow an end date before start date' do
       auction = SilentAuction.make
       auction.start_date=Date.tomorrow
       auction.end_date=auction.start_date-1.day
@@ -106,7 +106,7 @@ describe SilentAuction do
     
     it 'should not allow an end date more than 2 months from the start date' do
       auction = SilentAuction.make
-      auction.start_date=Date.today
+      auction.start_date=Date.today+2.months
       auction.end_date=auction.start_date+2.month+1.day
       auction.valid?.should be_false
       auction.should have_at_least(1).errors_on(:end_date) 

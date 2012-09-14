@@ -30,8 +30,6 @@ describe SilentAuctionsController do
       describe 'list all running auctions' do
         before(:each) do
           @auction1 = SilentAuction.make!(:created_at => 1.day.ago, :start_date => Time.now, :end_date => 7.days.from_now)
-          ap @auction1.check_dates
-          ap @auction1.errors
           @auction2 = SilentAuction.make!(:created_at => Time.now)
           @auction3 = SilentAuction.make!(:created_at => 1.minute.from_now)
           @close_auction = SilentAuction.make!(:open => false)
@@ -48,9 +46,9 @@ describe SilentAuctionsController do
         end
 
         it 'should order running auctions by most recent first' do
-          assigns[:running_auctions][0].should eql @auction1
-          assigns[:running_auctions][1].should eql @auction3
-          assigns[:running_auctions][2].should eql @auction2
+          assigns[:running_auctions][0].should eql @auction3
+          assigns[:running_auctions][1].should eql @auction2
+          assigns[:running_auctions][2].should eql @auction1
         end
       end
     end
@@ -237,7 +235,7 @@ describe SilentAuctionsController do
     context 'given valid auction details' do
 
       before(:each) do
-        @valid_details = { :title => 'a', :description => 'b', :min_price => 250, :photos_attributes => {}}
+        @valid_details = { :title => 'a', :description => 'b', :min_price => 250, :photos_attributes => {}, :start_date=>Date.today, :end_date=>7.days.from_now}
       end
 
       it 'should save new silent auction' do
