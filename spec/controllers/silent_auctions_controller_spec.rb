@@ -29,14 +29,17 @@ describe SilentAuctionsController do
 
       describe 'list all running auctions' do
         before(:each) do
-          @auction1 = SilentAuction.make!(:created_at => Time.now + 100)
+          @auction1 = SilentAuction.make!(:created_at => 1.day.ago, :start_date => Time.now, :end_date => 7.days.from_now)
+          ap @auction1.check_dates
+          ap @auction1.errors
           @auction2 = SilentAuction.make!(:created_at => Time.now)
-          @auction3 = SilentAuction.make!(:created_at => Time.now + 50)
+          @auction3 = SilentAuction.make!(:created_at => 1.minute.from_now)
           @close_auction = SilentAuction.make!(:open => false)
           get :index
         end
 
         it 'should assign the running auctions to the view' do
+          ap SilentAuction.running
           assigns[:running_auctions].should include @auction1
           assigns[:running_auctions].should include @auction2
           assigns[:running_auctions].should include @auction3

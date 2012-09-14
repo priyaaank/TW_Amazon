@@ -4,6 +4,7 @@ SilentAuction.blueprint do
   title { Faker::Lorem.sentence }
   description { Faker::Lorem.paragraph }
   min_price { 1.00 }
+  start_date { Date.today }
 end
 
 User.blueprint do

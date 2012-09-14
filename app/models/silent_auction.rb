@@ -20,9 +20,11 @@ class SilentAuction < ActiveRecord::Base
   validates :min_price, :presence => { :message => "is required"},
                         :numericality => { :greater_than => 0, :greater_than_or_equal_to => 0.01}, #:less_than_or_equal_to => 9999.99},
                         :format => { :with => /^\d+?(?:\.\d{0,2})?$/, :message => "can only have 2 decimal places" }
-                        
+ 
+  #validates_format_of :start_date, :with => /\A[0-9]+\z/, :message => "Only numbers are allowed"                     
+ 
   #scope :running, where(:open => true)
-  scope :running, where("start_date <= ? AND open = ?", Date.today.to_s, true)
+  scope :running, where(["start_date < :tomorrow AND open = :is_open", :tomorrow => Date.tomorrow, :is_open => true])
   scope :future, where("start_date > ? AND open = ?", Date.today.to_s, true)
   scope :closed, includes(:bids).where("bids.id IS NOT NULL AND open = ?", false)
   scope :expired, includes(:bids).where("bids.id IS NULL AND open = ?", false)

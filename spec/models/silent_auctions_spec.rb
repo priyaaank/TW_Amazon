@@ -170,21 +170,36 @@ describe SilentAuction do
   end
 
   describe "scope 'running'" do
-    before(:each) do
-      @auction1 = SilentAuction.make!
-      @auction2 = SilentAuction.make!
-      @auction3 = SilentAuction.make!(:open => false)
-
-      @running_auctions = SilentAuction.running
-    end
-
     it 'should return all auctions that are open' do
-      @running_auctions.should include @auction1
-      @running_auctions.should include @auction2
+      auction = SilentAuction.make!(:open => true)
+      
+      running_auctions = SilentAuction.running
+      
+      running_auctions.should include auction
     end
 
     it 'should not return any closed auctions' do
-      @running_auctions.should_not include @auction3
+      auction = SilentAuction.make!(:open => false)
+      
+      running_auctions = SilentAuction.running
+      
+      running_auctions.should_not include auction
+    end
+    
+    it 'should return auctions created today' do
+      start = SilentAuction.make!(:start_date => Time.now.beginning_of_day)
+      last = SilentAuction.make!(:start_date => Time.now.end_of_day)
+      
+      running = SilentAuction.running
+      running.should include start
+      running.should include last
+    end
+    
+    it 'should not return auctions created tomorrow' do
+      tomorrow = SilentAuction.make!(:start_date => Date.tomorrow)
+      
+      running = SilentAuction.running
+      running.should_not include tomorrow
     end
   end
 
