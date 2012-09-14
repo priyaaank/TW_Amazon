@@ -21,7 +21,7 @@ $(function(){
   $(".datePicker").datepicker();
   $('#ui-datepicker-div').hide();
    
-  $.datepicker._defaults.dateFormat = 'dd M yy' 
+  $.datepicker._defaults.dateFormat = 'dd/mm/yy' 
   
 });
 

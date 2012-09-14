@@ -17,20 +17,17 @@ TWAmazon::Application.configure do
   #config.action_mailer.default_url_options = { host: "twgs.herokuapp.com" }
 
   config.action_mailer.raise_delivery_errors = true
-  
-  config.action_mailer.delivery_method = :sendmail
-  
-  #config.action_mailer.smtp_settings = {
-    #:address        => "smtp.gmail.com",
-  config.action_mailer.sendmail_settings = {
-    :address        => "smtp.gmail.com",
-    :port           => "587",
-    #:domain         => "twgs.herokuapp.com",
-    :domain         => "gmail.com",
-    :user_name      => "twgs.twgs@gmail.com",#twamazon@thoughtworks.com",
-    :password       => "twgs.twgs",#TWp@55word!",
-    :authentication => :plain,
-    :enable_startttls_auto => true
+  config.action_mailer.perform_deliveries = true
+  ActionMailer::Base.delivery_method = :smtp
+
+  ActionMailer::Base.smtp_settings = {
+    :address              => "smtp.mandrillapp.com",
+    :port                 => "587",
+    :domain               => "mandrillapp.com",
+    :user_name            => "app6942104@heroku.com",
+    :password             => "3bc71a78-915d-4be0-9a84-2c1d135c4c49",
+    :authentication       => "plain",
+    :enable_starttls_auto => true
   }
 
   #config.action_mailer.sendmail_settings = { :arguments => '-i' }

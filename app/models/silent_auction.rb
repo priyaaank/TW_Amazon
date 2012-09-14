@@ -20,7 +20,7 @@ class SilentAuction < ActiveRecord::Base
   validates :min_price, :presence => { :message => "is required"},
                         :numericality => { :greater_than => 0, :greater_than_or_equal_to => 0.01}, #:less_than_or_equal_to => 9999.99},
                         :format => { :with => /^\d+?(?:\.\d{0,2})?$/, :message => "can only have 2 decimal places" }
-                        
+  
   #scope :running, where(:open => true)
   scope :running, where("start_date <= ? AND open = ?", Date.today.to_s, true)
   scope :future, where("start_date > ? AND open = ?", Date.today.to_s, true)
@@ -46,39 +46,37 @@ class SilentAuction < ActiveRecord::Base
     end
   end
 
-  #def validate_on_create
-  #def check_end_date
   def check_dates
-    if self.region == nil then 
-      self.region = "AUS"
-    end
+    #if self.region == nil then 
+    #  self.region = "AUS"
+    #end
 
     isvalid = true
-    if self.start_date == nil then 
+    if self.start_date.nil? then 
       isvalid = false
-      errors.add(:start_date, "Star Date is required")
+      errors.add(:start_date, "Start Date is required")
     else  
-    max_end_date = self.start_date + 2.months
-    if self.start_date < Date.today  then 
-      isvalid = false
-      errors.add(:start_date, "The earliest acceptable start date is today's date")
-    
+      max_end_date = self.start_date + 2.months
+      if self.start_date < Date.today  then 
+        isvalid = false
+        errors.add(:start_date, "The earliest acceptable start date is today's date")
+      end
     end
-  end
-     
     if self.end_date == nil then
      isvalid = false
      errors.add(:end_date, "End Date is required")
-    elsif self.end_date < self.start_date || max_end_date < self.end_date then 
-     
-      isvalid = false
-      errors.add(:end_date, "End date must be between the start date and 2 months after it")
-      
+    else
+      unless self.start_date.nil? then
+        if self.end_date < self.start_date || max_end_date < self.end_date then 
+          isvalid = false
+          errors.add(:end_date, "End date must be between the start date and 2 months after it")
+        end
+      end
     end
+    # This is the conclusion, VALID or NOT VALID, and the decision is...
     if isvalid == false
       false
     end
-    #elsif (self.end_date > (2.months.from_now.to_date))
   end
   
   def close
@@ -105,9 +103,12 @@ class SilentAuction < ActiveRecord::Base
       @winner = @winner.order("amount ASC").last!
       @winner_id = User.find(@winner.user_id).username + "@thoughtworks.com"
       @winner_amount = @winner.amount
-    end    
-    #UserMailer.registration_confirmation(self.title,self.bids.active.count,@winner_id,@winner_amount).deliver
-    UserMailer.registration_confirmation(self.title,@count,@winner_id,@winner_amount).deliver  
+      UserMailer.winner_notification(self.title,@count,@winner_id,@winner_amount).deliver
+      UserMailer.administrator_notification_close(self.title,@count,@winner_id,@winner_amount).deliver
+    else
+      UserMailer.administrator_notification_expired(self.title).deliver
+    end
+      
     self.save!
   end
 
