@@ -258,7 +258,6 @@ describe SilentAuctionsController do
         post :create, :silent_auction => @valid_details, :done => true
         response.should redirect_to(silent_auctions_path)
       end
-
     end
 
     context 'given invalid auction details' do

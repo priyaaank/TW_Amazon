@@ -30,6 +30,8 @@ describe Bid do
       bid.should_not be_valid
       bid.amount = "$343"
       bid.should_not be_valid
+      bid.amount = "$343.123"
+      bid.should_not be_valid
       bid.amount = "$^%&%"
       bid.should_not be_valid
     end
@@ -44,7 +46,7 @@ describe Bid do
       bid.amount = 100
       bid.should be_valid
     end
-
+=begin
     it 'should not allow bid amount more than 9999.99' do
       bid = @user.bids.new(:silent_auction_id => @auction.id, :amount => 450000)
       bid.should_not be_valid
@@ -52,7 +54,7 @@ describe Bid do
       bid.amount = 9999.99
       bid.should be_valid
     end
-
+=end
     it 'should only allow bid amount with 2 decimal places' do
       bid = @user.bids.new(:silent_auction_id => @auction.id, :amount => 33.555)
       bid.should_not be_valid
