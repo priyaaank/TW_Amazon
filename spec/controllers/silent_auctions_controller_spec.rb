@@ -37,7 +37,6 @@ describe SilentAuctionsController do
         end
 
         it 'should assign the running auctions to the view' do
-          ap SilentAuction.running
           assigns[:running_auctions].should include @auction1
           assigns[:running_auctions].should include @auction2
           assigns[:running_auctions].should include @auction3

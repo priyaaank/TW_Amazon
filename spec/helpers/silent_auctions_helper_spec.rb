@@ -53,11 +53,11 @@ describe SilentAuctionsHelper do
   describe 'get_region_config' do
     describe 'when region code is passed in' do
       it 'gives me the currency' do
-        helper.get_region_config("au")["currency"].should == "AU$"
+        helper.get_region_config("AUS")["currency"].should == "AU$"
       end
       
       it 'gives me the timezone' do
-        helper.get_region_config("au")["timezone"].should == "EST"
+        helper.get_region_config("AUS")["timezone"].should == "Melbourne"
       end
     end
   end

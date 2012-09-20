@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe SilentAuction do
+  timezone = "Melbourne"
   describe 'to be valid' do    
     it 'should have a title' do
       auction = SilentAuction.make
@@ -152,7 +153,7 @@ describe SilentAuction do
     end
 
     it 'should not automatically close auctions with bids that are not ending today' do
-      @auction.end_date = Date.tomorrow
+      @auction.end_date = Date.today + 1.day
       user = User.make!(:user)
       user.bids.create(:silent_auction_id => @auction.id, :amount => 100)
 
@@ -201,8 +202,8 @@ describe SilentAuction do
     end
     
     it 'should return auctions created today' do
-      start = SilentAuction.make!(:start_date => Time.now.beginning_of_day)
-      last = SilentAuction.make!(:start_date => Time.now.end_of_day)
+      start = SilentAuction.make!(:start_date => Time.now.beginning_of_day.to_date.to_s)
+      last = SilentAuction.make!(:start_date => Time.now.end_of_day.to_date.to_s)
       
       running = SilentAuction.running
       running.should include start

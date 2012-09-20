@@ -19,12 +19,23 @@ class UsersController < ApplicationController
     end
   end
   
+  def new_region
+    @user = User.find(params[:id])
+  end
+  
+  def update_region
+    @user.region = params[:user][:region]
+    @user.save!
+    redirect_to index_path
+  end
+  
   def update
     @user = User.find(params[:id])
     #@user.region = params[:current_user] 
     #@user.save
     @user.update_attributes(params[:user])
     #redirect_to silent_auctions_path
+    # timezone = get_region_config(@user.region)["timezone"]
     redirect_to(:back)
   end
 end

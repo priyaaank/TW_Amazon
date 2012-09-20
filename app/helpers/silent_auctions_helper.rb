@@ -15,11 +15,20 @@ module SilentAuctionsHelper
   end
 
   def get_region_config(region)
-    config_file = "#{Rails.root}/config/region.yml"
-    yaml = YAML.load_file(config_file)
-    #pp "*" * 80
-    #pp yaml
-    #pp yaml[region]
+    yaml = get_regions
     yaml[region]
   end
+  
+  def get_regions
+    config_file = "#{Rails.root}/config/region.yml"
+    YAML.load_file(config_file)    
+  end
+  
+  # def ensure_user_has_a_region
+    # unless current_user.region
+      # new_region_user_path(current_user)
+    # else
+      # index_path
+    # end
+  # end    
 end

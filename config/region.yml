@@ -1,7 +1,7 @@
-au:
+AUS:
   currency: "AU$"
-  timezone: "EST"
-id:
+  timezone: "Melbourne"
+IND:
   currency: "Rs"
-  timezone:   
-    
+  timezone: "New Delhi"
+  

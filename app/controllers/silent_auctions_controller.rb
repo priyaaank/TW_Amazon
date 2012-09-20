@@ -1,17 +1,32 @@
 class SilentAuctionsController < ApplicationController
   include ApplicationHelper
+  include SilentAuctionsHelper
+  include UsersHelper
 
   before_filter :authenticate_user!
   before_filter :authorize_admin, :except => [:index, :closed]
+  before_filter :ensure_user_has_a_region, :only => [:index, :closed, :expired, :future]
 
   # GET /silent_auctions/running
   def index
     @title = "Running Auctions Listing"
-    @running_auctions = SilentAuction.running.recent.includes(:bids)
-
-    respond_to do |format|
-      format.html
-    end
+    # @region = current_user.region
+    # puts "*" * 15
+    # puts "user's region: #{current_user.region}"
+    # if current_user.region.nil?
+      # puts "*" * 15
+      # puts "region is nil"
+    # else
+      # puts "*" * 15
+      # puts "good user   :))"      
+    # end
+    #@region ||= "AUS"
+    # if current_user.region
+      # @running_auctions = SilentAuction.running(get_region_config(@region)["timezone"]).recent.includes(:bids)
+    # else
+      # ensure_user_has_a_region
+    # end
+    @running_auctions = SilentAuction.running(get_region_config(current_user.region)["timezone"]).recent.includes(:bids)
   end
 
   # GET /silent_auctions/closed

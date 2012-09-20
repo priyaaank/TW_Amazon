@@ -42,5 +42,8 @@
         = (page_entries_info @closed_auctions).sub("silent", "closed").html_safe
 - else
   = simple_nested_form_for @user, :html => { :multipart => false } do |f|
-    = f.input :region, :label => 'Your Region', :collection => [["Region:",""],["AUS","au"], ["IND","id"]], :selected => @user.region, :onchange => 'alert(@user);'
+    -#= f.input :region, :label => 'Your Region', :collection => [["Region:",""],["AUS","au"], ["IND","id"]], :selected => @user.region, :onchange => 'alert(@user);'
+    - config_file = "#{Rails.root}/config/region.yml"
+    - yaml = YAML.load_file(config_file)
+    = f.input :region, :label => 'Your Region', :collection => yaml, :selected => @user.region, :onchange => 'alert(@user);'
     = submit_tag "Update Your Region and Refresh the Page", :name => "refresh", :id => 'submit_continue', :class => 'btn btn-primary form_action_btn', :disable_with => "Updating region and refreshing the page..."

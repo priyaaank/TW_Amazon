@@ -27,13 +27,19 @@ class SilentAuction < ActiveRecord::Base
   validates_datetime :end_date, :on_or_after => :start_date
   validates :end_date, :timeliness => {:on_or_before => lambda{|auction| auction.start_date + 2.months}, :type => :date}
  
-  scope :running, where(["start_date < :tomorrow AND open = :is_open", :tomorrow => Date.tomorrow, :is_open => true])
-  scope :future, where("start_date > ? AND open = ?", Date.today.to_s, true)
+  #scope :running, where(["start_date < :tomorrow AND open = :is_open", :tomorrow => Date.tomorrow, :is_open => true])
+  #timezone = "Melbourne"
+  #timezone = self
+  #scope :running, where(["start_date < :today AND open = :is_open", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true])
+  scope :running, lambda { |timezone| where(["start_date < :today AND open = :is_open", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true]) }
+  #scope :future, where("start_date > ? AND open = ?", Date.today.to_s, true)
+  scope :future, where("start_date > ? AND open = ?", Time.zone.now.in_time_zone("Melbourne").to_date, true)
   scope :closed, includes(:bids).where("bids.id IS NOT NULL AND open = ?", false)
   scope :expired, includes(:bids).where("bids.id IS NULL AND open = ?", false)
 
   scope :recent, order('"silent_auctions"."created_at" desc')
-  scope :ending_today, lambda { where("end_date <= ?", Date.today.to_s ) }#Time.zone.now ) }
+  #scope :ending_today, lambda { where("end_date <= ?", Date.today.to_s ) }#Time.zone.now ) }
+  scope :ending_today, lambda { where("end_date <= ?", Time.zone.now.in_time_zone(timezone).to_date ) }#Time.zone.now ) }
   
   def initialize(*params)
     super(*params)
@@ -72,6 +78,7 @@ class SilentAuction < ActiveRecord::Base
 
   def change_to_closed
     self.open = false
+=begin    
     @winner_id = ""
     @winner_amount = ""
     @winner = Bid.where("silent_auction_id = ? AND active = ?",self.id,true)
@@ -85,13 +92,31 @@ class SilentAuction < ActiveRecord::Base
     else
       UserMailer.administrator_notification_expired(self.title).deliver
     end
-      
+=end      
     self.save!
   end
 
   def self.close_auctions_ending_today
     self.ending_today.each do | auction |
-      auction.change_to_closed if auction.open? 
+      #auction.change_to_closed if auction.open?
+      if auction.open == true
+        auction.change_to_closed
+=begin
+        @winner_id = ""
+        @winner_amount = ""
+        @winner = Bid.where("silent_auction_id = ? AND active = ?",auction.id,true)
+        @count = @winner.count
+        if @count > 0
+          @winner = @winner.order("amount ASC").last!
+          @winner_id = User.find(@winner.user_id).username + "@thoughtworks.com"
+          @winner_amount = @winner.amount
+          UserMailer.winner_notification(auction.title,@count,@winner_id,@winner_amount).deliver
+          UserMailer.administrator_notification_close(auction.title,@count,@winner_id,@winner_amount).deliver
+        else
+          UserMailer.administrator_notification_expired(auction.title).deliver
+        end
+=end        
+      end 
     end
   end
 end
