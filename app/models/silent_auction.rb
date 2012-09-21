@@ -43,7 +43,7 @@ class SilentAuction < ActiveRecord::Base
 
   scope :recent, order('"silent_auctions"."created_at" desc')
   #scope :ending_today, lambda { where("end_date <= ?", Date.today.to_s ) }#Time.zone.now ) }
-  scope :ending_today, lambda { |timezone| where("end_date <= ?", Time.zone.now.in_time_zone(timezone).to_date ) }
+  scope :ending_today, lambda { |timezone| where("end_date <= ?", (Time.zone.now.in_time_zone(timezone) + 10.minutes).to_date ) }
   
   def initialize(*params)
     super(*params)
@@ -100,35 +100,39 @@ class SilentAuction < ActiveRecord::Base
     self.save!
   end
 
-  def get_all_regions
+  def get_regions
     config_file = "#{Rails.root}/config/region.yml"
     YAML.load_file(config_file)    
   end
 
   def get_region_config(region)
-    yaml = get_regions
+    yaml = self.get_regions
     yaml[region]
   end
 
   def self.close_auctions_ending_today
-    pp "*" * 15
     self.where("open = ?", true).each do |auction|
+      puts "*" * 15
       region = auction.region
-      pp auction.region
-      timezone = get_region_config(region)
-      if auction.end_date <= Time.zone.now.in_time_zone(timezone)
-        pp "CLOSED!!!"
+      puts region
+      timezone = auction.get_region_config(region)["timezone"]
+      puts timezone
+      puts auction.end_date
+      puts (Time.zone.now.in_time_zone(timezone) + 10.minutes).to_date
+      if auction.end_date < (Time.zone.now.in_time_zone(timezone) + 10.minutes).to_date        
+        puts "CLOSED!!!"
+        auction.change_to_closed
       end
     end
   end
   
-  def self.close_auctions_ending_toda
+  def self.close_auctions_ending_today_OLD
   #def self.close_auctions_ending_today_OLD(timezone)
     timezone = "Melbourne"
     self.ending_today(timezone).each do | auction |
       #auction.change_to_closed if auction.open?
       if auction.open == true
-        #auction.change_to_closed
+        auction.change_to_closed
 =begin
         @winner_id = ""
         @winner_amount = ""

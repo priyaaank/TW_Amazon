@@ -124,16 +124,17 @@ describe SilentAuction do
 
   describe 'close_auctions_ending_today' do
     before(:each) do
-      @auction = SilentAuction.make!
+      @auction = SilentAuction.make!(:region => "AUS")
+      @auction.end_date = Date.today
     end
     it 'should automatically close auctions with bids that are ending today' do
-      Timecop.freeze(Date.tomorrow) do
-        @auction.end_date = Date.today
+      Timecop.freeze(Date.today + 1.day) do
+        #@auction.end_date = Date.today
         user = User.make!(:user)
         user.bids.create(:silent_auction_id => @auction.id, :amount => 100)
   
         @auction.save!
-        SilentAuction.close_auctions_ending_today(timezone)
+        SilentAuction.close_auctions_ending_today
         @auction.reload
   
         @auction.open.should be_false
@@ -141,11 +142,11 @@ describe SilentAuction do
     end
 
     it 'should automatically close auctions that do not have any bids and are ending today' do
-      Timecop.freeze(Date.tomorrow) do
-        @auction.end_date = Date.today
+      Timecop.freeze(Date.today + 1.day) do
+        #@auction.end_date = Date.today
   
         @auction.save!
-        SilentAuction.close_auctions_ending_today(timezone)
+        SilentAuction.close_auctions_ending_today
         @auction.reload
 
         @auction.open.should be_false
@@ -158,7 +159,7 @@ describe SilentAuction do
       user.bids.create(:silent_auction_id => @auction.id, :amount => 100)
 
       @auction.save!
-      SilentAuction.close_auctions_ending_today(timezone)
+      SilentAuction.close_auctions_ending_today
       @auction.reload
 
       @auction.open.should be_true

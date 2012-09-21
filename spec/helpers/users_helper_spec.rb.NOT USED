@@ -1,0 +1,51 @@
+require 'spec_helper'
+
+describe UsersHelper do
+  include Devise::TestHelpers
+
+  describe 'ensure_signed_in_user_has_a_region' do
+    before(:each) do
+      @auction = SilentAuction.make!(:start_date => Date.today)
+      @user = User.make!(:user)
+      sign_in @user
+    end
+
+    it 'it should ask the user first to choose a region (redirect to new_region_user)' do
+      current_user = @user
+      ensure_signed_in_user_has_a_region
+      puts "*" * 20
+      pp response
+      response.should redirect_to(new_region_user_path)
+    end
+
+    it 'it should redirect a user who has had a region selected to the index page' do
+      @user.region = "AUS"
+      @user.save!
+      index_path
+      puts "*" * 20
+      pp response
+      response.should_not redirect_to(new_region_user_path)
+    end
+  end
+
+  describe 'ensure_user_has_a_region' do
+    before(:each) do
+      @auction = SilentAuction.make!(:start_date => Date.today)
+      @user = User.make!(:user)
+    end
+
+    it 'it should ask the user first to choose a region' do
+      sign_in @user
+      index_path
+      response.should redirect_to(new_region_user_path)
+    end
+
+    it 'it should redirect a user who has had a region selected to the index page' do
+      @user.region = "AUS"
+      @user.save!
+      index_path
+      response.should redirect_to(index_path)
+    end
+  end
+  
+end
