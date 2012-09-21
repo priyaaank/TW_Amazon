@@ -122,8 +122,25 @@ class SilentAuction < ActiveRecord::Base
       if auction.end_date < (Time.zone.now.in_time_zone(timezone) + 10.minutes).to_date        
         puts "CLOSED!!!"
         auction.change_to_closed
+        auction.send_notification_email(auction)
       end
     end
+  end
+  
+  def send_notification_email(auction)
+    @winner_id = ""
+    @winner_amount = ""
+    @winner = Bid.where("silent_auction_id = ? AND active = ?",auction.id,true)
+    @count = @winner.count
+    if @count > 0
+      @winner = @winner.order("amount ASC").last!
+      @winner_id = User.find(@winner.user_id).username + "@thoughtworks.com"
+      @winner_amount = @winner.amount
+      UserMailer.winner_notification(auction.title,@count,@winner_id,@winner_amount).deliver
+      UserMailer.administrator_notification_close(auction.title,@count,@winner_id,@winner_amount).deliver
+    else
+      UserMailer.administrator_notification_expired(auction.title).deliver
+    end  
   end
   
   def self.close_auctions_ending_today_OLD

@@ -136,7 +136,7 @@ describe SilentAuction do
         @auction.save!
         SilentAuction.close_auctions_ending_today
         @auction.reload
-  
+        
         @auction.open.should be_false
       end
     end

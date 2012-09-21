@@ -20,12 +20,21 @@ TWAmazon::Application.configure do
   config.action_mailer.perform_deliveries = true
   ActionMailer::Base.delivery_method = :smtp
 
+  # ActionMailer::Base.smtp_settings = {
+    # :address              => "smtp.mandrillapp.com",
+    # :port                 => "587",
+    # :domain               => "mandrillapp.com",
+    # :user_name            => "app6942104@heroku.com",
+    # :password             => "3bc71a78-915d-4be0-9a84-2c1d135c4c49",
+    # :authentication       => "plain",
+    # :enable_starttls_auto => true
+  # }
   ActionMailer::Base.smtp_settings = {
-    :address              => "smtp.mandrillapp.com",
+    :address              => "smtp.gmail.com",
     :port                 => "587",
-    :domain               => "mandrillapp.com",
-    :user_name            => "app6942104@heroku.com",
-    :password             => "3bc71a78-915d-4be0-9a84-2c1d135c4c49",
+    :domain               => "gmail.com",
+    :user_name            => "twgs.twgs@gmail.com",
+    :password             => "twgs.twgs",
     :authentication       => "plain",
     :enable_starttls_auto => true
   }

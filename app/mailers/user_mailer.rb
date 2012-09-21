@@ -18,7 +18,7 @@ class UserMailer < ActionMailer::Base
     #@recipients = "twamazon@thoughtworks.com, dgower@thoughtworks.com"
     @recipients = "twgs.twgs@gmail.com"
     #mail(:to => "peter.aryanto@gmail.com, #{@winner_id}", :subject => "The winning bid for \"#{@title}\"", :from => 'the_ghost@your_home.com')
-    mail(:to => "#{@recipients}", :subject => "Auction results for \"#{@title}\"", :from => 'GarageSale@no-reply.thoughtworks.com')
+    mail(:to => "#{@recipients}", :subject => "Auction results for \"#{@title}\"", :from => 'GarageSale@no-reply.thoughtworks.com')    
   end
 
   def administrator_notification_expired(title)
