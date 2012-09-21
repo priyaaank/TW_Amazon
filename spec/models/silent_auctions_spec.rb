@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe SilentAuction do
-  timezone = "Melbourne"
+  Time.zone = timezone = "Melbourne"
   describe 'to be valid' do    
     it 'should have a title' do
       auction = SilentAuction.make
@@ -133,7 +133,7 @@ describe SilentAuction do
         user.bids.create(:silent_auction_id => @auction.id, :amount => 100)
   
         @auction.save!
-        SilentAuction.close_auctions_ending_today
+        SilentAuction.close_auctions_ending_today(timezone)
         @auction.reload
   
         @auction.open.should be_false
@@ -145,7 +145,7 @@ describe SilentAuction do
         @auction.end_date = Date.today
   
         @auction.save!
-        SilentAuction.close_auctions_ending_today
+        SilentAuction.close_auctions_ending_today(timezone)
         @auction.reload
 
         @auction.open.should be_false
@@ -158,7 +158,7 @@ describe SilentAuction do
       user.bids.create(:silent_auction_id => @auction.id, :amount => 100)
 
       @auction.save!
-      SilentAuction.close_auctions_ending_today
+      SilentAuction.close_auctions_ending_today(timezone)
       @auction.reload
 
       @auction.open.should be_true
@@ -188,7 +188,7 @@ describe SilentAuction do
     it 'should return all auctions that are open' do
       auction = SilentAuction.make!(:open => true)
       
-      running_auctions = SilentAuction.running
+      running_auctions = SilentAuction.running(timezone)
       
       running_auctions.should include auction
     end
@@ -196,7 +196,7 @@ describe SilentAuction do
     it 'should not return any closed auctions' do
       auction = SilentAuction.make!(:open => false)
       
-      running_auctions = SilentAuction.running
+      running_auctions = SilentAuction.running(timezone)
       
       running_auctions.should_not include auction
     end
@@ -205,7 +205,7 @@ describe SilentAuction do
       start = SilentAuction.make!(:start_date => Time.now.beginning_of_day.to_date.to_s)
       last = SilentAuction.make!(:start_date => Time.now.end_of_day.to_date.to_s)
       
-      running = SilentAuction.running
+      running = SilentAuction.running(timezone)
       running.should include start
       running.should include last
     end
@@ -213,7 +213,7 @@ describe SilentAuction do
     it 'should not return auctions created tomorrow' do
       tomorrow = SilentAuction.make!(:start_date => Date.tomorrow)
       
-      running = SilentAuction.running
+      running = SilentAuction.running(timezone)
       running.should_not include tomorrow
     end
   end

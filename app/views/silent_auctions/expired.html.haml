@@ -1,49 +1,31 @@
 - @user = current_user
--#= simple_nested_form_for @user, :html => { :multipart => false } do |f|
-  -#= f.input :region, :label => 'Your Region', :collection => [[],["AUS","au"], ["IND","id"]], :selected => @user.region, :onchange => 'alert(@user);'
-  -#= submit_tag "Update Your Region and Refresh the Page", :name => "refresh", :id => 'submit_continue', :class => 'btn btn-primary form_action_btn', :disable_with => "Updating region and refreshing the page..."
-- @new_user = false;
-- if current_user.region == nil
-  - @new_user = true
-- else 
-  - if current_user.region == ""
-    - @new_user = true
--#- if current_user.region != nil
-- if @new_user == false
-  %h1
-    %span Expired Auctions
-    - if current_user.admin?
-      = link_to 'Create NEW Auction', new_silent_auction_path, :class => 'btn btn-primary'
-  
-  -#- status = page_entries_info @expired_auctions
-  -#- replacements = [ ["silent", "expired"], ["entries", "auctions"] ]
-  -#- replacements.each {|replacement| status.gsub!(replacement[0], replacement[1])}
-  -#%h3= status.html_safe
-  - @expired_auctions = @expired_auctions.where("region = '#{@user.region}'")
-  - if @expired_auctions.empty?
-    - status = page_entries_info @expired_auctions
-    - replacements = [ ["silent", "expired"], ["entries", "auctions"] ]
-    - replacements.each {|replacement| status.gsub!(replacement[0], replacement[1])}
-    %h3= status.html_safe
-    .empty_collection
-      %p.emptyMsg There are no expired auctions.
-  - else
-    - status = page_entries_info @expired_auctions
-    - replacements = [ ["silent", "expired"], ["entries", "auctions"] ]
-    - replacements.each {|replacement| status.gsub!(replacement[0], replacement[1])}
-    %h3= status.html_safe
-    %table{:class => 'table table-simpleBordered', :id => 'expiredAuctions'}
-      %tbody
-        - @expired_auctions.each do |auction|
-          = render :partial => "expired_auction", :locals => { :auction => auction }
-    %div{:class => 'index_footer clearfix'}
-      = paginate @expired_auctions
-      .pagination_info
-        = (page_entries_info @expired_auctions).sub("silent", "expired").html_safe
+%h1
+  %span Expired Auctions
+  - if current_user.admin?
+    = link_to 'Create NEW Auction', new_silent_auction_path, :class => 'btn btn-primary'
+
+-#- status = page_entries_info @expired_auctions
+-#- replacements = [ ["silent", "expired"], ["entries", "auctions"] ]
+-#- replacements.each {|replacement| status.gsub!(replacement[0], replacement[1])}
+-#%h3= status.html_safe
+- @expired_auctions = @expired_auctions.where("region = '#{@user.region}'")
+- if @expired_auctions.empty?
+  - status = page_entries_info @expired_auctions
+  - replacements = [ ["silent", "expired"], ["entries", "auctions"] ]
+  - replacements.each {|replacement| status.gsub!(replacement[0], replacement[1])}
+  %h3= status.html_safe
+  .empty_collection
+    %p.emptyMsg There are no expired auctions.
 - else
-  = simple_nested_form_for @user, :html => { :multipart => false } do |f|
-    -#= f.input :region, :label => 'Your Region', :collection => [["Region:",""],["AUS","au"], ["IND","id"]], :selected => @user.region, :onchange => 'alert(@user);'
-    - config_file = "#{Rails.root}/config/region.yml"
-    - yaml = YAML.load_file(config_file)
-    = f.input :region, :label => 'Your Region', :collection => yaml, :selected => @user.region, :onchange => 'alert(@user);'
-    = submit_tag "Update Your Region and Refresh the Page", :name => "refresh", :id => 'submit_continue', :class => 'btn btn-primary form_action_btn', :disable_with => "Updating region and refreshing the page..."
+  - status = page_entries_info @expired_auctions
+  - replacements = [ ["silent", "expired"], ["entries", "auctions"] ]
+  - replacements.each {|replacement| status.gsub!(replacement[0], replacement[1])}
+  %h3= status.html_safe
+  %table{:class => 'table table-simpleBordered', :id => 'expiredAuctions'}
+    %tbody
+      - @expired_auctions.each do |auction|
+        = render :partial => "expired_auction", :locals => { :auction => auction }
+  %div{:class => 'index_footer clearfix'}
+    = paginate @expired_auctions
+    .pagination_info
+      = (page_entries_info @expired_auctions).sub("silent", "expired").html_safe

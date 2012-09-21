@@ -5,7 +5,7 @@ class SilentAuctionsController < ApplicationController
 
   before_filter :authenticate_user!
   before_filter :authorize_admin, :except => [:index, :closed]
-  before_filter :ensure_user_has_a_region, :only => [:index, :closed, :expired, :future]
+  before_filter :ensure_signed_in_user_has_a_region, :only => [:index, :closed, :expired, :future]
 
   # GET /silent_auctions/running
   def index
@@ -52,7 +52,8 @@ class SilentAuctionsController < ApplicationController
   # GET /silent_auctions/future
   def future
     @title = "Future Auctions Listing"
-    @future_auctions = SilentAuction.future.recent.page(params[:page])
+    #@future_auctions = SilentAuction.future.recent.page(params[:page])
+    @future_auctions = SilentAuction.future(get_region_config(current_user.region)["timezone"]).recent.page(params[:page])
 
     respond_to do |format|
       format.html

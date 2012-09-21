@@ -32,14 +32,18 @@ class SilentAuction < ActiveRecord::Base
   #timezone = self
   #scope :running, where(["start_date < :today AND open = :is_open", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true])
   scope :running, lambda { |timezone| where(["start_date < :today AND open = :is_open", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true]) }
+  
   #scope :future, where("start_date > ? AND open = ?", Date.today.to_s, true)
-  scope :future, where("start_date > ? AND open = ?", Time.zone.now.in_time_zone("Melbourne").to_date, true)
+  #scope :future, where("start_date > ? AND open = ?", Time.zone.now.in_time_zone("Melbourne").to_date, true)
+  scope :future, lambda { |timezone| where("start_date > ? AND open = ?", Time.zone.now.in_time_zone(timezone).to_date, true) }
+  
   scope :closed, includes(:bids).where("bids.id IS NOT NULL AND open = ?", false)
+  
   scope :expired, includes(:bids).where("bids.id IS NULL AND open = ?", false)
 
   scope :recent, order('"silent_auctions"."created_at" desc')
   #scope :ending_today, lambda { where("end_date <= ?", Date.today.to_s ) }#Time.zone.now ) }
-  scope :ending_today, lambda { where("end_date <= ?", Time.zone.now.in_time_zone(timezone).to_date ) }#Time.zone.now ) }
+  scope :ending_today, lambda { |timezone| where("end_date <= ?", Time.zone.now.in_time_zone(timezone).to_date ) }
   
   def initialize(*params)
     super(*params)
@@ -96,11 +100,35 @@ class SilentAuction < ActiveRecord::Base
     self.save!
   end
 
+  def get_all_regions
+    config_file = "#{Rails.root}/config/region.yml"
+    YAML.load_file(config_file)    
+  end
+
+  def get_region_config(region)
+    yaml = get_regions
+    yaml[region]
+  end
+
   def self.close_auctions_ending_today
-    self.ending_today.each do | auction |
+    pp "*" * 15
+    self.where("open = ?", true).each do |auction|
+      region = auction.region
+      pp auction.region
+      timezone = get_region_config(region)
+      if auction.end_date <= Time.zone.now.in_time_zone(timezone)
+        pp "CLOSED!!!"
+      end
+    end
+  end
+  
+  def self.close_auctions_ending_toda
+  #def self.close_auctions_ending_today_OLD(timezone)
+    timezone = "Melbourne"
+    self.ending_today(timezone).each do | auction |
       #auction.change_to_closed if auction.open?
       if auction.open == true
-        auction.change_to_closed
+        #auction.change_to_closed
 =begin
         @winner_id = ""
         @winner_amount = ""

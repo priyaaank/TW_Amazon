@@ -15,8 +15,21 @@ describe SilentAuctionsController do
       before(:each) do
         @user = User.make!(:user)
         sign_in @user
+        @user.region = "AUS"
+        @user.save!
       end
 
+      it 'should not open the index page when the user has not selected a region' do
+        @user.region = nil
+        @user.save!
+        get :index
+        response.should_not be_success
+        @user.region = ""
+        @user.save!
+        get :index
+        response.should_not be_success
+      end
+      
       it 'should return http success' do
         get :index
         response.should be_success
@@ -66,6 +79,8 @@ describe SilentAuctionsController do
       before(:each) do
         @user = User.make!(:user)
         sign_in @user
+        @user.region = "AUS"
+        @user.save!
       end
 
       it 'should return http success' do
@@ -135,6 +150,8 @@ describe SilentAuctionsController do
       before(:each) do
         @admin = User.make!(:admin)
         sign_in @admin
+        @admin.region = "AUS"
+        @admin.save!
       end
 
       it 'should return http success' do
@@ -176,6 +193,59 @@ describe SilentAuctionsController do
           assigns[:expired_auctions][1].should eql @auction3
           assigns[:expired_auctions][2].should eql @auction2
         end
+      end
+    end
+  end
+
+  describe "GET 'future'" do
+
+    describe "for unauthorized users" do
+      it 'should redirect to login page if not sign-in' do
+        get :future
+        redirect_to_login
+      end
+
+      it 'should not display the page, redirect back with "unauthorized" error message if user is not admin' do
+        sign_in User.make!(:user)
+        get :future
+        flash[:error].should include("Unauthorized Access")
+        response.should redirect_to(index_path)
+      end
+    end
+
+    describe "for sign-in admin" do
+      before(:each) do
+        @admin = User.make!(:admin)
+        sign_in @admin
+        @admin.region = "AUS"
+        @admin.save!
+      end
+
+      it 'should return http success' do
+        get :future
+        response.should be_success
+      end
+
+      it 'should render the index template' do
+        get :future
+        response.should render_template 'future'
+      end
+
+      describe 'list all future auctions' do
+        before(:each) do
+          @future = SilentAuction.make!(:start_date => Date.today + 1.day)
+
+          @today = SilentAuction.make!(:start_date => Date.today)
+
+          get :future
+        end
+
+        it 'should assign the closed auctions to the view' do
+          assigns[:future_auctions].should include @future
+          assigns[:future_auctions].should_not include @today
+          assigns[:future_auctions].count.should == 1
+        end
+
       end
     end
   end
