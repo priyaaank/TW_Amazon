@@ -10,6 +10,11 @@ class SilentAuctionsController < ApplicationController
   # GET /silent_auctions/running
   def index
     @title = "Running Auctions Listing"
+    # current_user = User.find(1)
+    # sign_in current_user
+    # puts ">" * 20
+    # puts current_user.region    
+
     # @region = current_user.region
     # puts "*" * 15
     # puts "user's region: #{current_user.region}"
