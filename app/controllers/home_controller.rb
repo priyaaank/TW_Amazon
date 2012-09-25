@@ -13,6 +13,7 @@ class HomeController < ApplicationController
         end
       else
         redirect_to user_omniauth_authorize_path(:cas)
+        # redirect_to index_path
       end
     end
   end
