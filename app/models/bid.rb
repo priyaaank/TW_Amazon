@@ -32,7 +32,8 @@ class Bid < ActiveRecord::Base
     isvalid = true
     if self.amount > maximum
       isvalid = false
-      errors.add(:amount, " can't exceed #{currency} #{number_with_delimiter(maximum, :delimiter => ',')}")
+      warning = number_with_delimiter(maximum, :delimiter => ",").to_s
+      errors.add(:amount, " can't exceed #{currency} #{warning}")
     end 
     return isvalid
   end

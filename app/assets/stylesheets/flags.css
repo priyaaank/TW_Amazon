@@ -1,0 +1,117 @@
+#countryselect {
+	position: relative;
+/*	bottom: 10px;*/
+	vertical-align: center;
+	height: 2.5em; 
+/*	right: 5px;*/
+/*	width: 600px;*/
+	}
+
+/* rought form styles for when JS is disabled */
+
+#countryselect form {
+/*	width: 360px;*/
+	padding: 0;
+	}
+
+#countryselect select,
+#countryselect input {
+	display: inline;
+	padding: 0;
+	margin: 0;
+	}
+	
+/* JS-created definition list */
+
+.dropdown dd { position: relative; }
+
+.dropdown a {
+	text-decoration: none;
+	outline: 0;
+	font: 12px Arial, Helvetica, sans-serif;
+	display: block;
+/*	width: 130px;*/
+	overflow: hidden;
+	}
+
+.dropdown dt a {
+	background: #2C2C2C;
+	border: 1px solid grey;
+	padding: 3px 1px 4px 1px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	color: #fff;
+	}
+
+	.dropdown dt a.active {
+		background: black;
+		-webkit-border-bottom-left-radius: 0;
+		-webkit-border-bottom-right-radius: 0;
+		-moz-border-radius-bottomleft: 0;
+		-moz-border-radius-bottomright: 0;
+		border-bottom-left-radius: 0;
+		border-bottom-right-radius: 0;
+		border-bottom: 1px dotted #676768;
+		-moz-box-shadow: 0 3px 10px rgba(0,0,0,.5);
+		-webkit-box-shadow: 0 3px 10px rgba(0,0,0,.5);
+		box-shadow: 0 3px 7px rgba(0,0,0,.5);
+		color: #fff;
+		}
+
+.dropdown dd ul {
+	background: black;
+	border: 1px solid #676768;
+	color: #C5C0B0;
+	display: none;
+	position: absolute;
+	z-index: 990;
+	top: 0;
+	left: -9px;
+	padding: 1px 0 1px 0;
+	list-style: none;
+	border-top: none;
+	margin: 0;
+	-webkit-border-bottom-right-radius: 5px;
+	-webkit-border-bottom-left-radius: 5px;
+	-moz-border-radius-bottomright: 5px;
+	-moz-border-radius-bottomleft: 5px;
+	border-bottom-right-radius: 5px;
+	border-bottom-left-radius: 5px;
+	-moz-box-shadow: 0 1px 1px rgba(0,0,0,.5);
+	-webkit-box-shadow: 0 1px 1px rgba(0,0,0,.5);
+/*	box-shadow: 0 3px 1px rgba(0,0,0,.5);*/
+	}
+
+	.dropdown dd ul li a {
+		padding: 1px 1px;
+		}
+
+	.dropdown dd ul li a span,
+	.dropdown dt a span {
+		float: left;
+		width: 16px;
+		height: 11px;
+		margin: 2px 4px 0 0;
+		background-image: url(flags.png);
+		background-repeat: no-repeat;
+		cursor: pointer;
+		}
+
+		.AUS a span { background-position: 0 0 }
+		.IND a span { background-position: -16px 0 }
+		
+	.dropdown dd ul li a em,
+	.dropdown dt a em {
+		font-style: normal;
+		float: left;
+		width: 50px;
+		cursor: pointer;
+		}
+
+	.dropdown dd ul li a em {
+		color: #dbc3b5;
+		}
+
+		.dropdown dd ul li a:hover { background-color: rgba(255,255,255,.1); }
+		.dropdown dd ul li a:hover em { color: #fff; }
