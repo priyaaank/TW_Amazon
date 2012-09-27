@@ -1,4 +1,5 @@
-= simple_format("Your bid: <b>#{number_to_currency(bid.amount)}</b><span class='success'></span>")
+-#= simple_format("Your bid: <b>#{number_to_currency(bid.amount)}</b><span class='success'></span>")
+= simple_format("Your bid: <b>#{get_region_config(current_user.region)['currency']} #{number_with_delimiter(bid.amount)}</b><span class='success'></span>")
 = link_to "Withdraw Bid", withdraw_bid_path(bid),
       :method => 'put',
       :confirm => "You won't be able to bid on this auction again after withdrawing. Continue?",

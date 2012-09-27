@@ -1,7 +1,10 @@
 class Bid < ActiveRecord::Base
+  include UsersHelper
+  
   belongs_to :silent_auction, :inverse_of => :bids
   belongs_to :user, :inverse_of => :bids
 
+  before_save :validate_bid_limit
 
   validates :amount, :presence => { :message => "is required" }, :numericality => true #, :numericality => {:less_than_or_equal_to => 9999.99}
   validate :amount_must_not_be_less_than_auction_min_price
@@ -16,6 +19,37 @@ class Bid < ActiveRecord::Base
   scope :highFirst, order('amount DESC')
   scope :earlier, order('created_at ASC')
   scope :recent, order('"silent_auctions"."created_at" desc')
+
+  def validate_bid_limit
+    puts "*" * 20
+    item = SilentAuction.find(silent_auction_id)
+    region = item.region
+    #region = self.region
+    puts region
+    maximum = item.get_region_config(region)["maximum"].to_f
+    puts maximum
+    currency = item.get_region_config(region)["currency"]
+    isvalid = true
+    if self.amount > maximum
+      isvalid = false
+      errors.add(:amount, " can't exceed #{currency} #{number_with_delimiter(maximum, :delimiter => ',')}")
+    end 
+    return isvalid
+  end
+  
+  def number_with_delimiter(number, options = {})
+    options.symbolize_keys!
+
+    begin
+      Float(number)
+    rescue ArgumentError, TypeError
+      if options[:raise]
+        raise InvalidNumberError, number
+      else
+        return number
+      end
+    end
+  end
 
   def auction_must_not_be_closed
     # not allow placing bid for closed auction

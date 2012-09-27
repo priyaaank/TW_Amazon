@@ -1,7 +1,9 @@
 AUS:
   currency: "AU$"
   timezone: "Melbourne"
+  maximum: "10000"
 IND:
   currency: "Rs"
   timezone: "New Delhi"
+  maximum: "565000"
   

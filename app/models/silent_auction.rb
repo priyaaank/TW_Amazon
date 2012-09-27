@@ -2,6 +2,7 @@ class SilentAuction < ActiveRecord::Base
   before_validation :strip_whitespace
   before_save :strip_whitespace
   before_save :set_default_region
+  before_save :validate_price_limit
   
   has_many :bids, :dependent => :destroy, :inverse_of => :silent_auction
 
@@ -62,9 +63,48 @@ class SilentAuction < ActiveRecord::Base
    # @max=Date.today+2.months
   end
   
- def set_default_region
-     self.region ||= :AUS
- end
+  def validate_price_limit
+    region = self.region
+    puts region
+    maximum = self.get_region_config(region)["maximum"].to_f
+    puts maximum
+    currency = self.get_region_config(region)["currency"]
+    isvalid = true
+    if self.min_price > maximum
+      isvalid = false
+      errors.add(:min_price, " can't exceed #{currency} #{number_with_delimiter(maximum, :delimiter => ',')}")
+    end 
+    return isvalid
+  end
+  
+  def number_with_delimiter(number, options = {})
+    options.symbolize_keys!
+
+    begin
+      Float(number)
+    rescue ArgumentError, TypeError
+      if options[:raise]
+        raise InvalidNumberError, number
+      else
+        return number
+      end
+    end
+
+    defaults = I18n.translate(:'number.format', :locale => options[:locale], :default => {})
+    options = options.reverse_merge(defaults)
+
+    parts = number.to_s.to_str.split('.')
+    parts[0].gsub!(/(\d)(?=(\d\d\d)+(?!\d))/, "\\1#{options[:delimiter]}")
+    parts.join(options[:separator]).html_safe
+
+  end
+    
+  def set_default_region
+     #self.region ||= :AUS
+     if self.region.nil? then
+       self.region = "AUS"
+     end
+  end
  
   def close
     if self.bids.active.count == 0
@@ -135,7 +175,8 @@ class SilentAuction < ActiveRecord::Base
     if @count > 0
       @winner = @winner.order("amount ASC").last!
       @winner_id = User.find(@winner.user_id).username + "@thoughtworks.com"
-      @winner_amount = @winner.amount
+      #@winner_amount = @winner.amount
+      @winner_amount = get_region_config(self.region)['currency'] + " " + number_with_delimiter(@winner.amount)
       UserMailer.winner_notification(auction.title,@count,@winner_id,@winner_amount).deliver
       UserMailer.administrator_notification_close(auction.title,@count,@winner_id,@winner_amount).deliver
     else

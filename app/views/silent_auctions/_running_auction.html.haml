@@ -11,7 +11,7 @@
     %td.min_price
       -#= simple_format("Min Price:<br/><strong>#{(auction.region == "AUS" ? "AU$" : "NA") + " " + auction.min_price.to_s}</strong>")
       -#= simple_format("Min Price:<br/><strong>#{number_to_currency(auction.min_price, :locale => auction.region)}</strong>")
-      = simple_format("Min Price:<br/><strong>#{get_region_config(current_user.region)['currency']} #{auction.min_price}</strong>")
+      = simple_format("Min Price:<br/><strong>#{get_region_config(current_user.region)['currency']} #{number_with_delimiter(auction.min_price)}</strong>")
     %td.start_date
       = simple_format("Start date:<br /><strong>#{formatted_date(auction.start_date)}</strong>")
     %td.end_date
