@@ -1,18 +1,19 @@
 #region-selector {
 	font-size: 0.8em;
-	text-align: center;
-	height: 2.5em;
+/*	text-align: center;*/
+	height: 1em;
 }
 
 #region-selector select {
 	font-size: 1.0em;
-	height: 2.2em;
-	width: 6.5em;
+/*	height: 2.2em;*/
+	width: 16.5em;
 	background-color: #333;
 	color: #FFD406;
 	border: none;
-	position: relative;
-	top: -1.3em;
+/*	position: relative;*/
+	padding-top: 10em; 
+/*	top: -1.3em;*/
 	margin: 0 0;
 }
 
