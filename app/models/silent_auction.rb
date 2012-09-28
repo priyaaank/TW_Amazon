@@ -9,7 +9,7 @@ class SilentAuction < ActiveRecord::Base
   has_many :photos, :dependent => :destroy, :inverse_of => :silent_auction
   accepts_nested_attributes_for :photos, :allow_destroy => true, :reject_if => proc { |attributes| attributes['image'].blank? && attributes['image_cache'].blank? && attributes['caption'].blank? }
 
-  attr_accessible :title, :description, :open, :min_price, :start_date, :end_date, :photos_attributes, :region
+  attr_accessible :title, :description, :open, :min_price, :start_date, :end_date, :photos_attributes, :region, :category, :creator, :item_type
 
   validates :title, :presence => { :message => "Title is required" } ,
                     :length => { :maximum => 255, :message => "Title is too long (Maximum 255 characters)" },
@@ -27,15 +27,13 @@ class SilentAuction < ActiveRecord::Base
   validates :end_date, :presence => {:message => "End date is required"}
   validates_datetime :end_date, :on_or_after => :start_date
   validates :end_date, :timeliness => {:on_or_before => lambda{|auction| auction.start_date + 2.months}, :type => :date}
- 
-  #scope :running, where(["start_date < :tomorrow AND open = :is_open", :tomorrow => Date.tomorrow, :is_open => true])
-  #timezone = "Melbourne"
-  #timezone = self
-  #scope :running, where(["start_date < :today AND open = :is_open", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true])
-  scope :running, lambda { |timezone| where(["start_date < :today AND open = :is_open", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true]) }
   
-  #scope :future, where("start_date > ? AND open = ?", Date.today.to_s, true)
-  #scope :future, where("start_date > ? AND open = ?", Time.zone.now.in_time_zone("Melbourne").to_date, true)
+  validates :category, :presence => { :message => "Please select a category" }
+ 
+  scope :running, lambda { |timezone| where(["start_date < :today AND open = :is_open", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true]) }
+  scope :running_auction_for_admin, lambda { |timezone| where(["start_date < :today AND open = :is_open", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true]) }
+  scope :running_auction_for_user, lambda { |timezone,username| where(["start_date < :today AND open = :is_open AND creator <> :user_name", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true, :user_name => username]) }
+  
   scope :future, lambda { |timezone| where("start_date > ? AND open = ?", Time.zone.now.in_time_zone(timezone).to_date, true) }
   
   scope :closed, includes(:bids).where("bids.id IS NOT NULL AND open = ?", false)

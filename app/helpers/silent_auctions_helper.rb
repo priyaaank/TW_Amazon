@@ -24,6 +24,10 @@ module SilentAuctionsHelper
     YAML.load_file(config_file)    
   end
   
+  def get_categories
+    config_file = "#{Rails.root}/config/category.yml"
+    categories = YAML.load_file(config_file)
+  end
   # def ensure_user_has_a_region
     # unless current_user.region
       # new_region_user_path(current_user)

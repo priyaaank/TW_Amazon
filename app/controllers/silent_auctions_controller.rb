@@ -4,7 +4,7 @@ class SilentAuctionsController < ApplicationController
   include UsersHelper
 
   before_filter :authenticate_user!
-  before_filter :authorize_admin, :except => [:index, :closed]
+  #before_filter :authorize_admin, :except => [:index, :closed]
   before_filter :ensure_signed_in_user_has_a_region, :only => [:index, :closed, :expired, :future]
 
   # GET /silent_auctions/running
@@ -31,7 +31,12 @@ class SilentAuctionsController < ApplicationController
     # else
       # ensure_user_has_a_region
     # end
-    @running_auctions = SilentAuction.running(get_region_config(current_user.region)["timezone"]).recent.includes(:bids)
+    if current_user.admin?
+      @running_auctions = SilentAuction.running_auction_for_admin(get_region_config(current_user.region)["timezone"]).recent.includes(:bids)
+    else
+      @running_auctions = SilentAuction.running_auction_for_user(get_region_config(current_user.region)["timezone"],current_user.username).recent.includes(:bids)  
+    end
+    #@running_auctions = SilentAuction.running(get_region_config(current_user.region)["timezone"]).recent.includes(:bids)
   end
 
   # GET /silent_auctions/closed

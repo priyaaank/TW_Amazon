@@ -29,5 +29,6 @@
           %li=link_to("Logout from CAS", destroy_cas_user_session_path)
       - else
         - if not(current_user.admin?)
-          %li=link_to("My Auctions", user_path(current_user))
+          %li=link_to("My Bids", user_path(current_user))
+          %li=link_to("My Items", list_my_items_user_path(current_user))
         %li=link_to("Logout", destroy_cas_user_session_path)

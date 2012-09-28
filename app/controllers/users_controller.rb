@@ -5,10 +5,23 @@ class UsersController < ApplicationController
   before_filter :correct_user
 
   def show
-    @title = "My Auctions"
+    @title = "My Bids"
     @user = User.find(params[:id])
     @running_bids = @user.bids.joins(:silent_auction).where(:silent_auctions => {:open => true}).recent
     @closed_bids = @user.bids.joins(:silent_auction).where(:silent_auctions => {:open => false}).recent
+  end
+
+  def list_my_items
+    @title = "My Items"
+    @user = User.find(params[:id])
+    puts "*" * 40
+    puts @user.username
+    @items = SilentAuction.where("creator = ?", @user.username)#.find_by_creator(@user.username)
+    #@items = @user.creator.joins(:silent_auction)
+    puts "*" * 40
+    puts @items.count
+    @running_bids = @items.where({:open => true}).recent
+    @future_bids = @items.where({:open => true}).recent#need timezone to filter the future auction items
   end
 
   def correct_user

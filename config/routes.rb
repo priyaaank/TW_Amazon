@@ -35,6 +35,7 @@ TWAmazon::Application.routes.draw do
   resources :users, :only => [:show]
   resources :users do
     member do
+      get :list_my_items
       post :create
       get :new_region
       post :update_region
