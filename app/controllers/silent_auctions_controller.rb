@@ -102,6 +102,7 @@ class SilentAuctionsController < ApplicationController
               format.html {redirect_to silent_auctions_path}
              end
         end
+        #UserMailer.send_announcement_to_other_users(@silent_auction).deliver
       else
         format.html {
           # to force error message for minimum price has a subject
@@ -115,7 +116,7 @@ class SilentAuctionsController < ApplicationController
       end
     end
   end
-
+  
   # PUT to close auction
   def close
     @silent_auction = SilentAuction.find(params[:id])

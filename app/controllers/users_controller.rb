@@ -9,8 +9,8 @@ class UsersController < ApplicationController
     @title = "My Bids"
     @user = User.find(params[:id])
     @running_bids = @user.bids.joins(:silent_auction).where(:silent_auctions => {:open => true}).recent
-    #@closed_bids = @user.bids.joins(:silent_auction).where(:silent_auctions => {:open => false}).recent
-    @closed_bids = SilentAuction.closed.where("user_id = ?", @user.id).recent
+    @closed_bids = @user.bids.joins(:silent_auction).where(:silent_auctions => {:open => false}).where("bids.active = ?", true).recent
+    #@closed_bids = SilentAuction.closed.where("user_id = ?", @user.id).recent
   end
 
   def list_my_items
