@@ -1,5 +1,6 @@
 - bid = user_bid_for_auction(auction)
-- if current_user.region == auction.region
+- wonBid = won_bid_for_auction(auction)
+- if current_user.region == auction.region && wonBid == nil
   %tr{:class => "auction", :id => "silentAuction_#{auction.id}"}
     %td.auction_photos
       = render :partial => 'silent_auctions/auction_photos', :locals => {:auction => auction}

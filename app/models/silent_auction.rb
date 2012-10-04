@@ -36,9 +36,19 @@ class SilentAuction < ActiveRecord::Base
   
   scope :future, lambda { |timezone| where("start_date > ? AND open = ?", Time.zone.now.in_time_zone(timezone).to_date, true) }
   
-  scope :closed, includes(:bids).where("bids.id IS NOT NULL AND open = ?", false)
+  #scope :closed, includes(:bids).where("bids.id IS NOT NULL AND open = ?", false)
+  scope :closed, includes(:bids).where("bids.id IS NOT NULL AND bids.active = ? AND open = ?", true, false)
   
-  scope :expired, includes(:bids).where("bids.id IS NULL AND open = ?", false)
+  #scope :expired, includes(:bids).where("bids.id IS NULL AND open = ?", false)
+  #scope :expired, includes(:bids).where("(bids.id IS NULL OR (bids.id IS NOT NULL AND bids.active = ?)) AND open = ?", false, false)
+  #Local  SQL command: SilentAuction.includes(:bids).select("*,count(*)").where("(bids.id is null or bids.active='f') and silent_auctions.open='f'").group("silent_auctions.id").having("count(*)>0").count
+  #Heroku SQL command: SilentAuction.includes(:bids).select("*,count(*)").where("bids.id is not null AND bids.active='t' AND silent_auctions.open='f'").group("silent_auctions.id,bids.id").having("count(*)<1")
+  #scope :expired, includes(:bids).select("*,count(*)").where("(bids.id IS NULL OR bids.active = ?) AND silent_auctions.open = ?", false, false).group("silent_auctions.id").having("count(*)>0")
+  #scope :expired, includes(:bids).select("*,count(bids.id)").where("(bids.id IS NULL OR (bids.id IS NOT NULL AND bids.active=?)) AND silent_auctions.open=?",false, false).group("silent_auctions.id")
+  scope :expired, includes(:bids).where("silent_auctions.open = ? AND silent_auctions.id NOT IN (select distinct silent_auction_id from bids where active = ?)", false, true)  
+  #SilentAuction.joins(:bids).select("*,count(bids.id)").where("bids.active=?",true).group("silent_auctions.id").count
+  #SilentAuction.joins(:bids).select("*,count(bids.id)").where("bids.active=?",false).group("silent_auctions.id").count
+  #silent_auctions.id 13 & 9 are in both
 
   scope :recent, order('"silent_auctions"."created_at" desc')
   #scope :ending_today, lambda { where("end_date <= ?", Date.today.to_s ) }#Time.zone.now ) }
