@@ -103,6 +103,9 @@ class SilentAuctionsController < ApplicationController
              end
         end
         #UserMailer.send_announcement_to_other_users(@silent_auction).deliver
+        unless Rails.application.config.test_mode 
+          UserMailer.send_announcement_to_other_users(@silent_auction).deliver
+        end        
       else
         format.html {
           # to force error message for minimum price has a subject

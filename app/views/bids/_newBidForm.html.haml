@@ -1,4 +1,7 @@
 = simple_form_for (Bid.new), :remote => true, :html => { :class => 'form-inline bid_form' } do |f|
-  = f.input :amount, :label => "Your Bid", :input_html => {:class => "span1", :type => "text"}
+  -#= f.input :amount, :label => "Your Bid", :input_html => {:class => "span1", :type => "text"}
+  = f.input :amount, :label => "Your Bid", :wrapper => :prepend do
+    = content_tag :span, "#{get_region_config(current_user.region)['currency']}", :class => "add-on", :id => "bid_amount_currency"
+    = f.input_field :amount, :class => 'span1'
   = f.hidden_field :silent_auction_id, :value => auction.id
   = submit_tag "Place Bid", :class => 'btn btn-primary btn-mini', :disable_with => "Submitting..."

@@ -197,9 +197,9 @@ class SilentAuction < ActiveRecord::Base
       #@winner_amount = @winner.amount
       @winner_amount = get_region_config(self.region)['currency'] + " " + number_with_delimiter(@winner.amount)
       UserMailer.winner_notification(auction.title,@count,@winner_id,@winner_amount,auction.creator).deliver
-      UserMailer.administrator_notification_close(auction.title,@count,@winner_id,@winner_amount,@alladmins).deliver
+      UserMailer.administrator_notification_close(auction.title,@count,@winner_id,@winner_amount,@alladmins,auction.creator).deliver
     else
-      UserMailer.administrator_notification_expired(auction.title,@alladmins).deliver
+      UserMailer.administrator_notification_expired(auction.title,@alladmins,auction.creator).deliver
     end  
   end
   
