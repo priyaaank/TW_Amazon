@@ -30,6 +30,14 @@ class UsersController < ApplicationController
     @expired_bids = SilentAuction.expired.where("creator = ?", @user.username).recent
     @future_bids = SilentAuction.future(@timezone).where({:open => true}).where("").recent#need timezone to filter the future auction items
   end
+  
+  def notification
+    if @user.email == nil
+      @user.email = 'on'
+      @user.save
+    end
+    @user = current_user
+  end
 
   def correct_user
     @user = User.find(params[:id])
@@ -50,6 +58,10 @@ class UsersController < ApplicationController
   end
   
   def update
+    puts "*" * 20
+    puts "nilnilnil" if params[:email] == nil
+    puts "*" * 20
+    puts params
     @user = User.find(params[:id])
     #@user.region = params[:current_user] 
     #@user.save

@@ -7,6 +7,20 @@ $(document).ready( function() {
 		{ document.forms[0].submit(); }
 	}
 
+	if (document.getElementById("user_email_on"))
+	{
+		document.getElementById("user_email_on").onchange = function() 
+		//{ alert("Hey!"); }
+		{ document.forms[1].submit(); }
+	}
+
+	if (document.getElementById("user_email_off"))
+	{
+		document.getElementById("user_email_off").onchange = function() 
+		//{ alert("Hey!"); }
+		{ document.forms[1].submit(); }
+	}
+
     // to open auction photos in light box
     $('a.gallery').fancybox();
 

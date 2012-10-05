@@ -1,0 +1,9 @@
+%h1{:style => 'margin-bottom:20px;'} Email Notification
+
+= simple_form_for @user do |f|
+  %div{:class => 'well form-horizontal'}
+    -#%legend Item Details
+    - current_setting = @user.email
+    - if current_setting == nil
+      - current_setting = 'on'
+    = f.input :email, :label=> 'Setting: ', :as => :radio, :collection => [['ON', 'on'],['OFF', 'off']], :checked => current_setting, :input_html => {:class => "span"}
