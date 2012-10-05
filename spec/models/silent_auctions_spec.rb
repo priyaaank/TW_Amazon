@@ -218,7 +218,7 @@ describe SilentAuction do
     end
     
     it 'should not return auctions created tomorrow' do
-      tomorrow = SilentAuction.make!(:start_date => Date.tomorrow)
+      tomorrow = SilentAuction.make!(:start_date => Date.today + 1.day)
       @timezone = "Melbourne"
       running = SilentAuction.running(@timezone)
       running.should_not include tomorrow
