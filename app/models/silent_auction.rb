@@ -175,7 +175,17 @@ class SilentAuction < ActiveRecord::Base
         auction.change_to_closed
         #auction.send_notification_email(auction)
       end
-    end
+      
+      
+      # to send email notification when the auction of an item STARTS
+      current_time = Time.zone.now.in_time_zone(timezone) + 10.minutes
+      if current_time.hour == 0 && auction.start_date == current_time.to_date
+        @silent_auction = auction
+        unless Rails.application.config.test_mode 
+          UserMailer.send_announcement_to_other_users(@silent_auction).deliver
+        end                
+      end
+    end    
   end
   
   def send_notification_email(auction)

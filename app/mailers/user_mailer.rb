@@ -8,7 +8,7 @@ class UserMailer < ActionMailer::Base
     @winner_id = winner_id
     @winner_amount = winner_amount
     @recipients =  "#{@winner_id}"
-    mail(:to => "#{@recipients}", :subject => "Auction results for \"#{@title}\"", :from => 'GarageSale@no-reply.thoughtworks.com')
+    mail(:to => "#{@recipients}", :subject => "[TW Garage Sale] [SPAM] [Testing ONLY] Auction results for \"#{@title}\"", :from => 'GarageSale@no-reply.thoughtworks.com')
   end
   
   def administrator_notification_close(title,bids_count,winner_id,winner_amount,alladmins,creator)
@@ -22,7 +22,7 @@ class UserMailer < ActionMailer::Base
     @recipients = "twgs.twgs@gmail.com"
     #@recipients = alladmins
     #mail(:to => "peter.aryanto@gmail.com, #{@winner_id}", :subject => "The winning bid for \"#{@title}\"", :from => 'the_ghost@your_home.com')
-    mail(:to => "#{@recipients}", :subject => "Auction results for \"#{@title}\"", :from => 'GarageSale@no-reply.thoughtworks.com')    
+    mail(:to => "#{@recipients}", :subject => "[TW Garage Sale] [SPAM] [Testing ONLY] Auction results for \"#{@title}\"", :from => 'GarageSale@no-reply.thoughtworks.com')    
   end
 
   def administrator_notification_expired(title,alladmins,creator)
@@ -32,7 +32,7 @@ class UserMailer < ActionMailer::Base
     @recipients = "twgs.twgs@gmail.com"
     #@recipients = alladmins
     #mail(:to => "peter.aryanto@gmail.com, #{@winner_id}", :subject => "The winning bid for \"#{@title}\"", :from => 'the_ghost@your_home.com')
-    mail(:to => "#{@recipients}", :subject => "Auction for \"#{@title}\" has expired", :from => 'GarageSale@no-reply.thoughtworks.com')
+    mail(:to => "#{@recipients}", :subject => "[TW Garage Sale] [SPAM] [Testing ONLY] Auction for \"#{@title}\" has expired", :from => 'GarageSale@no-reply.thoughtworks.com')
     #mail(:to => "#{@alladmins}", :subject => "Auction for \"#{@title}\" has expired -- \">>>#{@alladmins}<<<\"", :from => 'GarageSale@no-reply.thoughtworks.com')
   end
   
@@ -49,6 +49,6 @@ class UserMailer < ActionMailer::Base
       end
       @all_recipients = @all_recipients + user.username + "@thoughtworks.com"
     end
-    mail(:to => "#{@all_recipients}", :subject => "[TW Garage Sale] New auction for \"#{@title}\"", :from => 'GarageSale@no-reply.thoughtworks.com')
+    mail(:to => "#{@all_recipients}", :subject => "[TW Garage Sale] [SPAM] [Testing ONLY] New auction for \"#{@title}\"", :from => 'GarageSale@no-reply.thoughtworks.com')
   end
 end

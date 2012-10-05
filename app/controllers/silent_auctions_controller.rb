@@ -102,8 +102,10 @@ class SilentAuctionsController < ApplicationController
               format.html {redirect_to silent_auctions_path}
              end
         end
-        unless Rails.application.config.test_mode 
-          UserMailer.send_announcement_to_other_users(@silent_auction).deliver
+        unless Rails.application.config.test_mode
+          if @silent_auction.start_date.to_date == Time.zone.now.in_time_zone(get_region_config(@silent_auction.region)["timezone"]).to_date
+            UserMailer.send_announcement_to_other_users(@silent_auction).deliver
+          end
         end        
       else
         format.html {
