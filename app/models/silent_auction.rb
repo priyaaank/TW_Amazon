@@ -182,7 +182,7 @@ class SilentAuction < ActiveRecord::Base
       if current_time.hour == 0 && auction.start_date == current_time.to_date
         @silent_auction = auction
         unless Rails.application.config.test_mode 
-          #UserMailer.send_announcement_to_other_users(@silent_auction).deliver
+          UserMailer.send_announcement_to_other_users(@silent_auction).deliver
         end                
       end
     end    
