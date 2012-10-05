@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
 
     return user.first unless user.empty?
 
-    User.create!(:username => auth_hash[:uid], :admin => self.is_admin?(auth_hash[:uid]))
+    User.create!(:username => auth_hash[:uid], :admin => self.is_admin?(auth_hash[:uid]), :email => 'on')
   end
 
   def self.is_admin?(uid)
