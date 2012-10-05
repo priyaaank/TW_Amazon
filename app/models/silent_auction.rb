@@ -49,6 +49,9 @@ class SilentAuction < ActiveRecord::Base
   #SilentAuction.joins(:bids).select("*,count(bids.id)").where("bids.active=?",true).group("silent_auctions.id").count
   #SilentAuction.joins(:bids).select("*,count(bids.id)").where("bids.active=?",false).group("silent_auctions.id").count
   #silent_auctions.id 13 & 9 are in both
+  ###Selecting inActive Users###
+  #ActiveRecord::Base.connection.execute("SELECT distinct users.id FROM users INNER JOIN bids ON bids.user_id = users.id").count
+  #ActiveRecord::Base.connection.execute("SELECT * FROM users WHERE id NOT IN (SELECT distinct users.id FROM users INNER JOIN bids ON bids.user_id = users.id)").count
 
   scope :recent, order('"silent_auctions"."created_at" desc')
   #scope :ending_today, lambda { where("end_date <= ?", Date.today.to_s ) }#Time.zone.now ) }

@@ -18,8 +18,8 @@ class UserMailer < ActionMailer::Base
     @winner_id = winner_id
     @winner_amount = winner_amount
     #@recipients = "twamazon@thoughtworks.com, dgower@thoughtworks.com"
-    #@recipients = "#{@creator}@thoughtworks.com"
-    @recipients = "twgs.twgs@gmail.com"
+    @recipients = "#{@creator}@thoughtworks.com"
+    #@recipients = "twgs.twgs@gmail.com"
     #@recipients = alladmins
     #mail(:to => "peter.aryanto@gmail.com, #{@winner_id}", :subject => "The winning bid for \"#{@title}\"", :from => 'the_ghost@your_home.com')
     mail(:to => "#{@recipients}", :subject => "[TW Garage Sale] [SPAM] [Testing ONLY] Auction results for \"#{@title}\"", :from => 'GarageSale@no-reply.thoughtworks.com')    
@@ -28,8 +28,8 @@ class UserMailer < ActionMailer::Base
   def administrator_notification_expired(title,alladmins,creator)
     @creator = creator
     @title = title
-    #@recipients = "#{@creator}@thoughtworks.com"
-    @recipients = "twgs.twgs@gmail.com"
+    @recipients = "#{@creator}@thoughtworks.com"
+    #@recipients = "twgs.twgs@gmail.com"
     #@recipients = alladmins
     #mail(:to => "peter.aryanto@gmail.com, #{@winner_id}", :subject => "The winning bid for \"#{@title}\"", :from => 'the_ghost@your_home.com')
     mail(:to => "#{@recipients}", :subject => "[TW Garage Sale] [SPAM] [Testing ONLY] Auction for \"#{@title}\" has expired", :from => 'GarageSale@no-reply.thoughtworks.com')
