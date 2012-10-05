@@ -1,7 +1,7 @@
 %div{:class => 'well form-horizontal'}
   %legend Item Details
   = f.input :title, :label => 'Title', :input_html => {:class => "span6"}
-  -#= f.input :category, :label => 'Category', :collection => get_categories, :include_blank => false, :selected =>"Laptops & Computers"
+  = f.input :category, :label => 'Category', :collection => get_categories, :include_blank => false, :selected =>"Laptops & Computers"
   = f.input :region, :as => :hidden, :input_html => {:value => current_user.region}
   = f.input :creator, :as => :hidden, :input_html => {:value => current_user.username}
   = f.input :item_type, :as => :hidden, :input_html => {:value => 'Silent Auction'}
