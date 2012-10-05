@@ -102,7 +102,6 @@ class SilentAuctionsController < ApplicationController
               format.html {redirect_to silent_auctions_path}
              end
         end
-        #UserMailer.send_announcement_to_other_users(@silent_auction).deliver
         unless Rails.application.config.test_mode 
           UserMailer.send_announcement_to_other_users(@silent_auction).deliver
         end        
