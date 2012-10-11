@@ -4,7 +4,7 @@ class SilentAuctionsController < ApplicationController
   include UsersHelper
 
   before_filter :authenticate_user!
-  before_filter :authorize_admin, :except => [:index, :closed]
+  #before_filter :authorize_admin, :except => [:index, :closed]
   before_filter :ensure_signed_in_user_has_a_region, :only => [:index, :closed, :expired, :future]
 
   # GET /silent_auctions/running
