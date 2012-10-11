@@ -154,7 +154,7 @@ class SilentAuctionsController < ApplicationController
     @auction = SilentAuction.find(params[:id])
     title = @auction.title
     @auction.destroy
-    redirect_back_with_success(index_path, "Auction <strong>#{title}</strong> has been successfully deleted.".html_safe)
+    redirect_back_with_success(index_path, "Item <strong>#{title}</strong> has been successfully deleted.".html_safe)
   end
 
   # Edit Auction

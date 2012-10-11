@@ -25,10 +25,10 @@ class UsersController < ApplicationController
     #puts @items.count
     #@running_bids = @items.where({:open => true}).recent
     #@future_bids = @items.where({:open => true}).where("").recent#need timezone to filter the future auction items
-    @running_bids = SilentAuction.running(@timezone).where("creator = ? AND item_type = 'Silent Auction'", @user.username).where({:open => true}).recent
-    @closed_bids = SilentAuction.closed.where("creator = ?", @user.username).recent
-    @expired_bids = SilentAuction.expired.where("creator = ?", @user.username).recent
-    @future_bids = SilentAuction.future(@timezone).where({:open => true}).where("item_type = 'Silent Auction'").recent#need timezone to filter the future auction items
+    @running_bids = SilentAuction.running(@timezone).where("creator = ? AND item_type = 'Silent Auction' AND region = ?", @user.username, @user.region).where({:open => true}).recent
+    @closed_bids = SilentAuction.closed.where("creator = ? AND region = ?", @user.username, @user.region).recent
+    @expired_bids = SilentAuction.expired.where("creator = ? AND region = ?", @user.username, @user.region).recent
+    @future_bids = SilentAuction.future(@timezone).where({:open => true}).where("item_type = 'Silent Auction' AND region = ?", @user.region).recent#need timezone to filter the future auction items
   end
   
   def list_my_sales
@@ -43,8 +43,8 @@ class UsersController < ApplicationController
     #puts @items.count
     #@running_bids = @items.where({:open => true}).recent
     #@future_bids = @items.where({:open => true}).where("").recent#need timezone to filter the future auction items
-    @running_bids = SilentAuction.running(@timezone).where("creator = ? AND item_type = 'Quick Sale'", @user.username).where({:open => true}).recent
-    @future_bids = SilentAuction.future(@timezone).where({:open => true}).where("item_type = 'Quick Sale'").recent#need timezone to filter the future auction items
+    @running_bids = SilentAuction.running(@timezone).where("creator = ? AND item_type = 'Quick Sale' AND region = ?", @user.username, @user.region).where({:open => true}).recent
+    @future_bids = SilentAuction.future(@timezone).where({:open => true}).where("item_type = 'Quick Sale' AND region = ?", @user.region).recent#need timezone to filter the future auction items
   end
   
   def notification
