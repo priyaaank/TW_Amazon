@@ -306,6 +306,21 @@ legend.file_upload span {font-size:13px;}
   min-width:130px;
 }
 
+.dropdown a {
+  font-size: 13px;
+  line-height: 18px;	
+}
+
+.auctions_sales_menu {
+  background-color: #222;
+}
+
+.auctions_sales_menu a {
+  color: #999;
+  font-size: 13px;
+  line-height: 18px;
+}
+
 #submit-overlay {
   position: fixed;
   top: 0;

@@ -1,0 +1,141 @@
+@import "twitter/bootstrap/bootstrap";
+body { padding-top: 70px; }
+
+@import "twitter/bootstrap/responsive";
+
+// Set the correct sprite paths
+@iconSpritePath: asset-path('twitter/bootstrap/glyphicons-halflings.png');
+@iconWhiteSpritePath: asset-path('twitter/bootstrap/glyphicons-halflings-white.png');
+
+// Your custom LESS stylesheets goes here
+//
+// Since bootstrap was imported above you have access to its mixins which
+// you may use and inherit here
+//
+// If you'd like to override bootstrap's own variables, you can do so here as well
+// See http://twitter.github.com/bootstrap/less.html for their names and documentation
+//
+// Example:
+// @linkColor: #ff0000;
+
+.navbar { margin-bottom:30px;}
+.navbar-inner {border-radius: 0}
+.navbar .brand {
+    font-weight: bold;
+    //color:#CCCCCC;
+    color:#FFD406;
+    text-shadow: 0 1px 0 #000, 0 0 30px #000;
+}
+
+.navbar .nav > li > a {
+    color:#cccccc;
+}
+
+.navbar .nav > li > a.active {
+    color: #fff;
+    background-color: #222222;
+}
+
+.navbar .divider-left {
+    margin-right:0;
+}
+
+.dropdown-menu a {font-size:13px;}
+.dropdown-menu li a i { margin-right:2px;}
+
+form.form-bordered {
+    background: none repeat scroll 0 0 #F9F9F9;
+    padding-top: 20px;
+    border: 1px solid #E7E7E7;
+}
+
+.form-actions {
+    margin-bottom: 0;
+}
+
+.table-simpleBordered {
+    border: 1px solid #dddddd;
+    margin-bottom: 20px;
+}
+
+.table-simpleBordered td {
+    border:none;
+    border-bottom: 1px solid #dddddd;
+    padding: 10px;
+    padding-top:20px;
+    background: #fff;
+}
+
+.table tbody tr:hover td, .table tbody tr:hover th {
+    background: #fff;
+}
+.container h1 {margin-bottom:20px;}
+.container h1 span {display:inline-block; margin-right:20px;}
+
+.loginStatus {color:#fff;}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.auction form {
+    margin-bottom:5px;
+}
+
+.index_footer {
+    text-align: right;
+}
+
+.index_footer .pagination_info {
+    float: right;
+    margin-bottom: 5px;
+    margin-top:6px;
+}
+
+.index_footer .pagination{
+    float: right;
+    margin:0;
+    margin-left: 10px;
+}
+
+.index_footer .pagination a {
+    font-weight:bold;
+    font-size: 12px;
+    line-height: 27px;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+    background-color: #f5f5f5;
+    *background-color: #e6e6e6;
+    background-image: -ms-linear-gradient(top, #ffffff, #e6e6e6);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));
+    background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
+    background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
+    background-image: linear-gradient(top, #ffffff, #e6e6e6);
+    background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
+    border-bottom-color: #c3c3c3;
+}
+
+.btn {
+    margin-bottom: 5px;
+}
+
+.form-horizontal .help-block {
+    color:#888;
+    font-size:0.9em;
+}
+
+.input-prepend input {
+    display: inline-block;
+    position: relative; left: -4px;
+}
+
+.fields .control-group {
+    margin-bottom: 5px;
+}
+
+.form-horizontal .form-actions {
+    padding-left:180px;
+}
+
+

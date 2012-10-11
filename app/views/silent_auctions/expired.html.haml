@@ -2,7 +2,7 @@
 %h1
   %span Expired Auctions
   - if current_user.admin?
-    = link_to 'Create NEW Auction', new_silent_auction_path, :class => 'btn btn-primary'
+    = link_to 'Create NEW Auction/Sale', new_silent_auction_path, :class => 'btn btn-primary'
 
 -#- status = page_entries_info @expired_auctions
 -#- replacements = [ ["silent", "expired"], ["entries", "auctions"] ]

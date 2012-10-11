@@ -31,30 +31,22 @@ class SilentAuction < ActiveRecord::Base
   validates :category, :presence => { :message => "Please select a category" }
  
   scope :running, lambda { |timezone| where(["start_date < :today AND open = :is_open", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true]) }
-  scope :running_auction_for_admin, lambda { |timezone| where(["start_date < :today AND open = :is_open", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true]) }
-  scope :running_auction_for_user, lambda { |timezone,username| where(["start_date < :today AND open = :is_open AND creator <> :user_name", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true, :user_name => username]) }
+  #scope :running_auction_for_admin, lambda { |timezone| where(["start_date < :today AND open = :is_open", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true]) }
+  #scope :running_auction_for_user, lambda { |timezone,username| where(["start_date < :today AND open = :is_open AND creator <> :user_name", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true, :user_name => username]) }
+  scope :running_auction_for_admin, lambda { |timezone| where(["start_date < :today AND open = :is_open AND item_type = 'Silent Auction'", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true]) }
+  scope :running_quick_sales_for_admin, lambda { |timezone| where(["start_date < :today AND open = :is_open AND item_type = 'Quick Sale'", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true]) }
+  scope :running_auction_for_user, lambda { |timezone,username| where(["start_date < :today AND open = :is_open AND creator <> :user_name AND item_type = 'Silent Auction'", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true, :user_name => username]) }
+  scope :running_quick_sales_for_user, lambda { |timezone,username| where(["start_date < :today AND open = :is_open AND creator <> :user_name AND item_type = 'Quick Sale'", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true, :user_name => username]) }
   
-  scope :future, lambda { |timezone| where("start_date > ? AND open = ?", Time.zone.now.in_time_zone(timezone).to_date, true) }
+  #scope :future, lambda { |timezone| where("start_date > ? AND open = ?", Time.zone.now.in_time_zone(timezone).to_date, true) }
+  scope :future, lambda { |timezone| where("start_date > ? AND open = ? AND item_type = 'Silent Auction'", Time.zone.now.in_time_zone(timezone).to_date, true) }
   
-  #scope :closed, includes(:bids).where("bids.id IS NOT NULL AND open = ?", false)
   scope :closed, includes(:bids).where("bids.id IS NOT NULL AND bids.active = ? AND open = ?", true, false)
   
-  #scope :expired, includes(:bids).where("bids.id IS NULL AND open = ?", false)
-  #scope :expired, includes(:bids).where("(bids.id IS NULL OR (bids.id IS NOT NULL AND bids.active = ?)) AND open = ?", false, false)
-  #Local  SQL command: SilentAuction.includes(:bids).select("*,count(*)").where("(bids.id is null or bids.active='f') and silent_auctions.open='f'").group("silent_auctions.id").having("count(*)>0").count
-  #Heroku SQL command: SilentAuction.includes(:bids).select("*,count(*)").where("bids.id is not null AND bids.active='t' AND silent_auctions.open='f'").group("silent_auctions.id,bids.id").having("count(*)<1")
-  #scope :expired, includes(:bids).select("*,count(*)").where("(bids.id IS NULL OR bids.active = ?) AND silent_auctions.open = ?", false, false).group("silent_auctions.id").having("count(*)>0")
-  #scope :expired, includes(:bids).select("*,count(bids.id)").where("(bids.id IS NULL OR (bids.id IS NOT NULL AND bids.active=?)) AND silent_auctions.open=?",false, false).group("silent_auctions.id")
   scope :expired, includes(:bids).where("silent_auctions.open = ? AND silent_auctions.id NOT IN (select distinct silent_auction_id from bids where active = ?)", false, true)  
-  #SilentAuction.joins(:bids).select("*,count(bids.id)").where("bids.active=?",true).group("silent_auctions.id").count
-  #SilentAuction.joins(:bids).select("*,count(bids.id)").where("bids.active=?",false).group("silent_auctions.id").count
-  #silent_auctions.id 13 & 9 are in both
-  ###Selecting inActive Users###
-  #ActiveRecord::Base.connection.execute("SELECT distinct users.id FROM users INNER JOIN bids ON bids.user_id = users.id").count
-  #ActiveRecord::Base.connection.execute("SELECT * FROM users WHERE id NOT IN (SELECT distinct users.id FROM users INNER JOIN bids ON bids.user_id = users.id)").count
 
   scope :recent, order('"silent_auctions"."created_at" desc')
-  #scope :ending_today, lambda { where("end_date <= ?", Date.today.to_s ) }#Time.zone.now ) }
+
   scope :ending_today, lambda { |timezone| where("end_date <= ?", (Time.zone.now.in_time_zone(timezone) + 10.minutes).to_date ) }
   
   def initialize(*params)
@@ -118,6 +110,16 @@ class SilentAuction < ActiveRecord::Base
   end
  
   def close
+    if self.bids.active.count == 0 && self.item_type != 'Silent Auction'
+      errors.add :message, "Auction with no active bid cannot be closed"
+      false
+    else
+      change_to_closed
+      true
+    end
+  end
+
+  def close_OLD
     if self.bids.active.count == 0
       errors.add :message, "Auction with no active bid cannot be closed"
       false
@@ -132,9 +134,21 @@ class SilentAuction < ActiveRecord::Base
   end
 
   def change_to_closed
+    if self.item_type == 'Silent Auction'
+      self.open = false
+      unless Rails.application.config.test_mode 
+        #self.send_notification_email(self)
+      end
+      self.save!
+    else
+      self.destroy
+    end
+  end
+
+  def change_to_closed_OLD
     self.open = false
     unless Rails.application.config.test_mode 
-      self.send_notification_email(self)
+      #self.send_notification_email(self)
     end
     self.save!
   end

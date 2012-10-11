@@ -1,8 +1,10 @@
-%h1 My Items
+%h1
+  %span My Silent Auctions
+  = link_to 'Create NEW Auction/Sale', new_silent_auction_path, :class => 'btn btn-primary'
 %h3 Running Auctions
 - if @running_bids.empty?
   .empty_collection
-    %p.emptyMsg You currently have no item on sale/auction.
+    %p.emptyMsg You currently have no item on auction.
 -else
   %table{:class => 'table table-simpleBordered', :id => 'currentBids'}
     %tbody
@@ -34,7 +36,7 @@
 %h3 Future Auctions
 - if @future_bids.empty?
   .empty_collection
-    %p.emptyMsg You currently have no item to be put on sale/auction.
+    %p.emptyMsg You currently have no item to be put on auction.
 -else
   %table{:class => 'table table-simpleBordered', :id => 'closedBids'}
     %tbody

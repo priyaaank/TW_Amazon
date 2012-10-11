@@ -1,10 +1,16 @@
 %div{:class => 'well form-horizontal'}
   %legend Item Details
   = f.input :title, :label => 'Title', :input_html => {:class => "span6"}
-  = f.input :category, :label => 'Category', :collection => get_categories, :include_blank => false, :selected =>"Computers"
+  -#= f.input :category, :label => 'Category', :collection => get_categories, :include_blank => false, :selected =>"Computers"
+  = f.input :category, :as => :hidden, :input_html => {:value => 'Computers'}
   = f.input :region, :as => :hidden, :input_html => {:value => current_user.region}
-  = f.input :creator, :as => :hidden, :input_html => {:value => current_user.username}
-  = f.input :item_type, :as => :hidden, :input_html => {:value => 'Silent Auction'}
+  - if @silent_auction.creator == nil
+    = f.input :creator, :as => :hidden, :input_html => {:value => current_user.username}
+  - else
+    = f.input :creator, :as => :hidden, :input_html => {:value => @silent_auction.creator}
+  -#= f.input :creator, :as => :hidden, :input_html => {:value => current_user.username}
+  -#= f.input :item_type, :as => :hidden, :input_html => {:value => 'Silent Auction'}
+  = f.input :item_type, :as => :radio, :collection => [['Silent Auction','Silent Auction'],['Quick Sale','Quick Sale']], :label_method => :last, :value_method => :first
   = f.input :min_price, :label => 'Minimum Price',:wrapper => :prepend do
     = content_tag :span, "#{get_region_config(current_user.region)['currency']}", :class => "add-on", :id => "silent_auction_currency"
     = f.input_field :min_price

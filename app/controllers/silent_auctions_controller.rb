@@ -10,33 +10,22 @@ class SilentAuctionsController < ApplicationController
   # GET /silent_auctions/running
   def index
     @title = "Running Auctions Listing"
-    # current_user = User.find(1)
-    # sign_in current_user
-    # puts ">" * 20
-    # puts current_user.region    
-
-    # @region = current_user.region
-    # puts "*" * 15
-    # puts "user's region: #{current_user.region}"
-    # if current_user.region.nil?
-      # puts "*" * 15
-      # puts "region is nil"
-    # else
-      # puts "*" * 15
-      # puts "good user   :))"      
-    # end
-    #@region ||= "AUS"
-    # if current_user.region
-      # @running_auctions = SilentAuction.running(get_region_config(@region)["timezone"]).recent.includes(:bids)
-    # else
-      # ensure_user_has_a_region
-    # end
     if current_user.admin?
       @running_auctions = SilentAuction.running_auction_for_admin(get_region_config(current_user.region)["timezone"]).recent.includes(:bids)
     else
       @running_auctions = SilentAuction.running_auction_for_user(get_region_config(current_user.region)["timezone"],current_user.username).recent.includes(:bids)  
     end
     #@running_auctions = SilentAuction.running(get_region_config(current_user.region)["timezone"]).recent.includes(:bids)
+  end
+
+  # GET /silent_auctions/quick_sales
+  def sales
+    @title = "Quick Sales Board"
+    if current_user.admin?
+      @running_sales = SilentAuction.running_quick_sales_for_admin(get_region_config(current_user.region)["timezone"]).recent      
+    else
+      @running_sales = SilentAuction.running_quick_sales_for_user(get_region_config(current_user.region)["timezone"],current_user.username).recent      
+    end
   end
 
   # GET /silent_auctions/closed
@@ -94,21 +83,31 @@ class SilentAuctionsController < ApplicationController
     @silent_auction = SilentAuction.new(params[:silent_auction])
     respond_to do |format|
       if @silent_auction.save
-        flash[:success] = "New auction for <b>#{@silent_auction.title}</b> was successfully created!".html_safe
+        flash[:success] = "New item for <b>#{@silent_auction.title}</b> was successfully created!".html_safe
 
         if params['continue']
           format.html { redirect_to new_silent_auction_path }
         else if params['done']
-              if current_user.admin?
-                format.html {redirect_to silent_auctions_path}
+              if current_user.admin == true
+                #format.html {redirect_to silent_auctions_path}
+                if @silent_auction.item_type == 'Silent Auction'
+                  format.html {redirect_to silent_auctions_path}
+                else
+                  format.html {redirect_to sales_silent_auctions_path}
+                end
               else
-                format.html {redirect_to list_my_items_user_path(current_user)}                  
+                #format.html {redirect_to list_my_items_user_path(current_user)}
+                if @silent_auction.item_type == 'Silent Auction'
+                  format.html {redirect_to list_my_items_user_path(current_user)}
+                else
+                  format.html {redirect_to list_my_sales_user_path(current_user)}
+                end
               end
             end
         end
         unless Rails.application.config.test_mode
           if @silent_auction.start_date.to_date == Time.zone.now.in_time_zone(get_region_config(@silent_auction.region)["timezone"]).to_date
-            UserMailer.send_announcement_to_other_users(@silent_auction).deliver
+            #UserMailer.send_announcement_to_other_users(@silent_auction).deliver
           end
         end        
       else
@@ -177,8 +176,25 @@ class SilentAuctionsController < ApplicationController
     respond_to do |format|
       if @silent_auction.update_attributes(params[:silent_auction])
         format.html {
-          flash[:success] = "Auction <b>#{@silent_auction.title}</b> was successfully updated!".html_safe
-          redirect_to silent_auctions_path
+          #flash[:success] = "Auction <b>#{@silent_auction.title}</b> was successfully updated!".html_safe
+          #redirect_to silent_auctions_path
+          if current_user.admin == true
+            flash[:success] = "<b>#{@silent_auction.title}</b> was successfully updated!".html_safe
+            #redirect_to sales_silent_auctions_path
+            if @silent_auction.item_type == 'Silent Auction'
+              redirect_to silent_auctions_path
+            else
+              redirect_to sales_silent_auctions_path
+            end
+          else
+            flash[:success] = "<b>#{@silent_auction.title}</b> was successfully updated!".html_safe
+            #redirect_to sales_silent_auctions_path
+            if @silent_auction.item_type == 'Silent Auction'
+              redirect_to list_my_items_user_path(current_user)
+            else
+              redirect_to list_my_sales_user_path(current_user)
+            end
+          end
         }
       else
         format.html {

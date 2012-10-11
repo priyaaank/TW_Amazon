@@ -17,6 +17,7 @@ TWAmazon::Application.routes.draw do
       get 'closed'
       get 'expired'
       get 'future'
+      get 'sales'
     end
 
     resources :photos, :only => [:index, :create, :destroy]
@@ -37,6 +38,7 @@ TWAmazon::Application.routes.draw do
     member do
       get :notification
       get :list_my_items
+      get :list_my_sales
       post :create
       get :new_region
       post :update_region

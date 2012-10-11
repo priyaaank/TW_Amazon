@@ -1,0 +1,23 @@
+%h1
+  %span My Sales
+  = link_to 'Create NEW Auction/Sale', new_silent_auction_path, :class => 'btn btn-primary'
+
+%h3 Current Sales
+- if @running_bids.empty?
+  .empty_collection
+    %p.emptyMsg You currently have no item on sale.
+-else
+  %table{:class => 'table table-simpleBordered', :id => 'currentBids'}
+    %tbody
+      - @running_bids.each do |auction|
+        = render :partial => "silent_auctions/my_sale", :locals => {:auction => auction }
+
+%h3 Future Sales
+- if @future_bids.empty?
+  .empty_collection
+    %p.emptyMsg You currently have no item to be put on sale.
+-else
+  %table{:class => 'table table-simpleBordered', :id => 'closedBids'}
+    %tbody
+      - @future_bids.each do |auction|
+        = render :partial => "silent_auctions/my_sale", :locals => {:auction => auction }

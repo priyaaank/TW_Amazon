@@ -1,0 +1,12 @@
+%td.auction_controls
+  .controls_holder
+    %div{:class=>'btn-group manage_auction'}
+      %button{:class => 'btn btn-mini btn-inverse dropdown-toggle', 'data-toggle' => 'dropdown'}
+        %i{:class=>'icon-cog icon-white'}
+        = "Manage"
+        %span.caret
+      %ul{:class => "dropdown-menu pull-right"}
+        %li
+          = link_to "<i class='icon-edit'></i> Edit Sale".html_safe, edit_silent_auction_path(auction)
+        %li
+          = link_to "<i class='icon-remove'></i> Delete".html_safe, confirm_delete_silent_auction_path(auction), :method => 'post'
