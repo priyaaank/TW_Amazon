@@ -8,8 +8,10 @@ class UsersController < ApplicationController
   def show
     @title = "My Bids"
     @user = User.find(params[:id])
-    @running_bids = @user.bids.joins(:silent_auction).where(:silent_auctions => {:open => true}).recent
-    @closed_bids = @user.bids.joins(:silent_auction).where(:silent_auctions => {:open => false}).where("bids.active = ?", true).recent
+    #@running_bids = @user.bids.joins(:silent_auction).where(:silent_auctions => {:open => true}).recent
+    #@closed_bids = @user.bids.joins(:silent_auction).where(:silent_auctions => {:open => false}).where("bids.active = ?", true).recent
+    @running_bids = @user.bids.joins(:silent_auction).where(:silent_auctions => {:open => true}).where("region = ?", @user.region).recent
+    @closed_bids = @user.bids.joins(:silent_auction).where(:silent_auctions => {:open => false}).where("bids.active = ? AND region = ?", true, @user.region).recent
     #@closed_bids = SilentAuction.closed.where("user_id = ?", @user.id).recent
   end
 
