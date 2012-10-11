@@ -99,12 +99,16 @@ class SilentAuctionsController < ApplicationController
         if params['continue']
           format.html { redirect_to new_silent_auction_path }
         else if params['done']
-              format.html {redirect_to silent_auctions_path}
-             end
+              if current_user.admin?
+                format.html {redirect_to silent_auctions_path}
+              else
+                format.html {redirect_to list_my_items_user_path(current_user)}                  
+              end
+            end
         end
         unless Rails.application.config.test_mode
           if @silent_auction.start_date.to_date == Time.zone.now.in_time_zone(get_region_config(@silent_auction.region)["timezone"]).to_date
-            #UserMailer.send_announcement_to_other_users(@silent_auction).deliver
+            UserMailer.send_announcement_to_other_users(@silent_auction).deliver
           end
         end        
       else

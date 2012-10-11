@@ -136,21 +136,6 @@ class SilentAuction < ActiveRecord::Base
     unless Rails.application.config.test_mode 
       self.send_notification_email(self)
     end
-=begin    
-    @winner_id = ""
-    @winner_amount = ""
-    @winner = Bid.where("silent_auction_id = ? AND active = ?",self.id,true)
-    @count = @winner.count
-    if @count > 0
-      @winner = @winner.order("amount ASC").last!
-      @winner_id = User.find(@winner.user_id).username + "@thoughtworks.com"
-      @winner_amount = @winner.amount
-      UserMailer.winner_notification(self.title,@count,@winner_id,@winner_amount).deliver
-      UserMailer.administrator_notification_close(self.title,@count,@winner_id,@winner_amount).deliver
-    else
-      UserMailer.administrator_notification_expired(self.title).deliver
-    end
-=end      
     self.save!
   end
 
@@ -176,7 +161,6 @@ class SilentAuction < ActiveRecord::Base
       if auction.end_date < (Time.zone.now.in_time_zone(timezone) + 10.minutes).to_date        
         puts "CLOSED!!!"
         auction.change_to_closed
-        #auction.send_notification_email(auction)
       end
       
       

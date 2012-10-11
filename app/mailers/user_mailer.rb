@@ -54,6 +54,7 @@ class UserMailer < ActionMailer::Base
         end                  
       end
     end
-    mail(:to => "#{@all_recipients}", :subject => "[TW Garage Sale] [SPAM] [Testing ONLY] New auction for \"#{@title}\"", :from => 'GarageSale@no-reply.thoughtworks.com')
+    # send the email only when there is at least 1 recipient
+    mail(:to => "#{@all_recipients}", :subject => "[TW Garage Sale] [SPAM] [Testing ONLY] New auction for \"#{@title}\"", :from => 'GarageSale@no-reply.thoughtworks.com')      
   end
 end
