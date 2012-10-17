@@ -22,12 +22,15 @@ $(document).ready( function() {
 	}
 
     // to open auction photos in light box
+    $('a.gallery').fancybox();
+    /*
     $('a.gallery').fancybox({
         beforeLoad: function() {
             this.title = 'Image ' + (this.index + 1) + ' of ' + this.group.length + (this.title ? ' - ' + this.title : '');
         }
     });
-
+	*/
+	
     //have dynamic character count for description
     $("#description").charCount({
         allowed: 500,
