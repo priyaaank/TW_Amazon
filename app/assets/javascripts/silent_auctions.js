@@ -25,9 +25,12 @@ $(document).ready( function() {
     //$('a.gallery').fancybox();
     
     $('a.gallery').fancybox({
-        beforeShow: function() {
+        beforeShow: function() {        	
             this.title = 'Image ' + (this.index + 1) + ' of ' + this.group.length + (this.title ? ' - ' + this.title : '');
-        }
+        }/*,
+        helpers: {
+        		title: { type: 'inside'}
+        }*/
     });
 	
 	

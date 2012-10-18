@@ -33,4 +33,5 @@
           %li=link_to("My Auctions", list_my_items_user_path(current_user))
           %li=link_to("My Sales", list_my_sales_user_path(current_user))
         %li=link_to("Email Notification Setting", notification_user_path(current_user))
+        %li=link_to("Frequently Asked Questions", faq_page_user_path(current_user))
         %li=link_to("Logout", destroy_cas_user_session_path)

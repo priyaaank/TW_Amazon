@@ -184,11 +184,6 @@ describe SilentAuction do
       @auction.open.should == false
     end
 
-    it 'should not be closed if have no active bid' do
-      @auction.close
-      @auction.open.should == true
-      @auction.should have_at_least(1).errors
-    end
   end
 
   describe "scope 'running'" do

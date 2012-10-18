@@ -36,6 +36,7 @@ TWAmazon::Application.routes.draw do
   resources :users, :only => [:show]
   resources :users do
     member do
+      get :faq_page
       get :notification
       get :list_my_items
       get :list_my_sales

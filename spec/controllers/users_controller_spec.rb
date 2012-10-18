@@ -18,7 +18,7 @@ describe UsersController do
 
     describe "for signed-in non-admin users" do
       before(:each) do
-        @user = User.make!(:user)
+        @user = User.make!(:user, :region => 'AUS')
         sign_in @user
       end
 

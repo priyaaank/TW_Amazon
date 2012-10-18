@@ -8,7 +8,6 @@ class Bid < ActiveRecord::Base
 
   validates :amount, :presence => { :message => "is required" }, :numericality => true #, :numericality => {:less_than_or_equal_to => 9999.99}
   validate :amount_must_not_be_less_than_auction_min_price
-  #validates :amount, :format => { :with => /^\d+?(?:\.\d{0,2})?$/, :message => "can only have 2 decimal places" }
   validates :amount, :format => { :with => /^\d+(\.\d{0,2})?$/, :message => "can only have 2 decimal places" }
   validate :auction_must_not_be_closed
   validates :silent_auction_id, :presence => true, :uniqueness => {:scope => :user_id, :message => 'You cannot place multiple bids for an auction.'}
@@ -21,13 +20,9 @@ class Bid < ActiveRecord::Base
   scope :recent, order('"silent_auctions"."created_at" desc')
 
   def validate_bid_limit
-    puts "*" * 20
     item = SilentAuction.find(silent_auction_id)
     region = item.region
-    #region = self.region
-    puts region
     maximum = item.get_region_config(region)["maximum"].to_f
-    puts maximum
     currency = item.get_region_config(region)["currency"]
     isvalid = true
     if self.amount > maximum

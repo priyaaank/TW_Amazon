@@ -4,7 +4,6 @@ class SilentAuctionsController < ApplicationController
   include UsersHelper
 
   before_filter :authenticate_user!
-  #before_filter :authorize_admin, :except => [:index, :closed]
   before_filter :ensure_signed_in_user_has_a_region, :only => [:index, :closed, :expired, :future]
 
   # GET /silent_auctions/running
@@ -15,7 +14,6 @@ class SilentAuctionsController < ApplicationController
     else
       @running_auctions = SilentAuction.running_auction_for_user(get_region_config(current_user.region)["timezone"],current_user.username).recent.includes(:bids)  
     end
-    #@running_auctions = SilentAuction.running(get_region_config(current_user.region)["timezone"]).recent.includes(:bids)
   end
 
   # GET /silent_auctions/quick_sales
@@ -41,7 +39,8 @@ class SilentAuctionsController < ApplicationController
   # GET /silent_auctions/expired
   def expired
     @title = "Expired Auctions Listing"
-    @expired_auctions = SilentAuction.expired.recent.page(params[:page])
+    #@expired_auctions = SilentAuction.expired.recent.page(params[:page])
+    @expired_auctions = SilentAuction.expired.order("end_date DESC").page(params[:page])
 
     respond_to do |format|
       format.html
@@ -51,7 +50,6 @@ class SilentAuctionsController < ApplicationController
   # GET /silent_auctions/future
   def future
     @title = "Future Auctions Listing"
-    #@future_auctions = SilentAuction.future.recent.page(params[:page])
     @future_auctions = SilentAuction.future(get_region_config(current_user.region)["timezone"]).recent.page(params[:page])
 
     respond_to do |format|
@@ -63,7 +61,6 @@ class SilentAuctionsController < ApplicationController
   # An HTTP GET to /resources/new is intended to render a form suitable for creating a new resource,
   # which it does by calling the new action within the controller,
   # which creates a new unsaved record and renders the form.
-
   def new
     @title = "Create new auction"
     @silent_auction = SilentAuction.new
@@ -78,7 +75,6 @@ class SilentAuctionsController < ApplicationController
   # POST /silent_auctions
   # An HTTP POST to /resources takes the record created as part of the new action
   # and passes it to te create action within the controller which then attempts to save it to the database.
-
   def create
     @silent_auction = SilentAuction.new(params[:silent_auction])
     respond_to do |format|
@@ -96,7 +92,6 @@ class SilentAuctionsController < ApplicationController
                   format.html {redirect_to sales_silent_auctions_path}
                 end
               else
-                #format.html {redirect_to list_my_items_user_path(current_user)}
                 if @silent_auction.item_type == 'Silent Auction'
                   format.html {redirect_to list_my_items_user_path(current_user)}
                 else
@@ -176,11 +171,8 @@ class SilentAuctionsController < ApplicationController
     respond_to do |format|
       if @silent_auction.update_attributes(params[:silent_auction])
         format.html {
-          #flash[:success] = "Auction <b>#{@silent_auction.title}</b> was successfully updated!".html_safe
-          #redirect_to silent_auctions_path
           if current_user.admin == true
             flash[:success] = "<b>#{@silent_auction.title}</b> was successfully updated!".html_safe
-            #redirect_to sales_silent_auctions_path
             if @silent_auction.item_type == 'Silent Auction'
               redirect_to silent_auctions_path
             else

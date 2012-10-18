@@ -1,34 +1,26 @@
 module UsersHelper
   def ensure_signed_in_user_has_a_region
-    puts "*****u_helper*****"
     unless current_user.region.nil?
       unless current_user.region == ""
-        puts " region selected "
+        # there is no alternative redirection required in this case, the system will go straight to the requested link
+        #puts " region has been selected for this particular user "
       else
-        puts " region is empty "
         redirect_to new_region_user_path(current_user)
       end
     else
-      puts "  region is nil  "
       redirect_to new_region_user_path(current_user)
-      #index_path
     end
   end  
   
   def ensure_user_has_a_region
-    puts "*****u_helper*****"
     unless current_user.region.nil?
       unless current_user.region == ""
-        puts " region selected "
         index_path
       else
-        puts " region is empty "
         new_region_user_path(current_user)
       end
     else
-      puts "  region is nil  "
       new_region_user_path(current_user)
-      #index_path
     end
   end  
 end

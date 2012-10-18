@@ -42,10 +42,10 @@ describe SilentAuctionsController do
 
       describe 'list all running auctions' do
         before(:each) do
-          @auction1 = SilentAuction.make!(:created_at => 1.day.ago, :start_date => Time.now, :end_date => 7.days.from_now)
-          @auction2 = SilentAuction.make!(:created_at => Time.now)
-          @auction3 = SilentAuction.make!(:created_at => 1.minute.from_now)
-          @close_auction = SilentAuction.make!(:open => false)
+          @auction1 = SilentAuction.make!(:created_at => 1.day.ago, :start_date => Time.now, :end_date => 7.days.from_now, :creator => 'dummy_creator')
+          @auction2 = SilentAuction.make!(:created_at => Time.now, :creator => 'dummy_creator')
+          @auction3 = SilentAuction.make!(:created_at => 1.minute.from_now, :creator => 'dummy_creator')
+          @close_auction = SilentAuction.make!(:open => false, :creator => 'dummy_creator')
           get :index
         end
 
@@ -137,13 +137,6 @@ describe SilentAuctionsController do
         get :expired
         redirect_to_login
       end
-
-      it 'should not display the page, redirect back with "unauthorized" error message if user is not admin' do
-        sign_in User.make!(:user)
-        get :expired
-        flash[:error].should include("Unauthorized Access")
-        response.should redirect_to(index_path)
-      end
     end
 
     describe "for sign-in admin" do
@@ -166,9 +159,9 @@ describe SilentAuctionsController do
 
       describe 'list all expired auctions (closed auctions with no bid)' do
         before(:each) do
-          @auction1 = SilentAuction.make!(:open => false, :created_at => Time.now + 100)
-          @auction2 = SilentAuction.make!(:open => false, :created_at => Time.now)
-          @auction3 = SilentAuction.make!(:open => false, :created_at => Time.now + 50)
+          @auction1 = SilentAuction.make!(:open => false, :end_date => Time.now + 10.hours + 2.days)
+          @auction2 = SilentAuction.make!(:open => false, :end_date => Time.now + 10.hours + 1.days)
+          @auction3 = SilentAuction.make!(:open => false, :end_date => Time.now + 10.hours)
 
           @run_auction = SilentAuction.make!
 
@@ -190,8 +183,8 @@ describe SilentAuctionsController do
 
         it 'should order auctions by most recent first' do
           assigns[:expired_auctions][0].should eql @auction1
-          assigns[:expired_auctions][1].should eql @auction3
-          assigns[:expired_auctions][2].should eql @auction2
+          assigns[:expired_auctions][1].should eql @auction2
+          assigns[:expired_auctions][2].should eql @auction3
         end
       end
     end
@@ -205,12 +198,6 @@ describe SilentAuctionsController do
         redirect_to_login
       end
 
-      it 'should not display the page, redirect back with "unauthorized" error message if user is not admin' do
-        sign_in User.make!(:user)
-        get :future
-        flash[:error].should include("Unauthorized Access")
-        response.should redirect_to(index_path)
-      end
     end
 
     describe "for sign-in admin" do
@@ -278,11 +265,6 @@ describe SilentAuctionsController do
         sign_in @user
       end
 
-      it 'should not display the page, redirect back with "unauthorized" error message' do
-        get :new
-        flash[:error].should include("Unauthorized Access")
-        response.should redirect_to(index_path)
-      end
     end
 
     describe "for non-signed-in users" do
@@ -357,13 +339,6 @@ describe SilentAuctionsController do
       @auction = SilentAuction.make!
     end
 
-    it 'should not close auction with no active bid' do
-      put :close, :id => @auction.id
-      SilentAuction.find(@auction.id).open.should == true
-
-      # TEST RENDER CLOSE FAIL PARTIALS
-    end
-
     it 'should close auction with at least one active bid' do
       user1 = User.make!(:user)
       user1.bids.create(:amount => 100, :silent_auction_id => @auction.id)
@@ -373,18 +348,6 @@ describe SilentAuctionsController do
       # TEST RENDER CLOSE_AUCTION PARTIALS
     end
 
-    it 'should not close auction with only withdrawn bids' do
-      user1 = User.make!(:user)
-      user1.bids.create(:amount => 100, :silent_auction_id => @auction.id, :active => false)
-
-      user2 = User.make!(:user)
-      user2.bids.create(:amount => 200, :silent_auction_id => @auction.id, :active => false)
-
-      put :close, :id => @auction.id
-      SilentAuction.find(@auction.id).open.should == true
-
-      # TEST RENDER CLOSE FAIL PARTIALS
-    end
   end
 
   describe "POST 'confirm_delete'" do
@@ -452,11 +415,6 @@ describe SilentAuctionsController do
         sign_in @user
       end
 
-      it 'should not display the page, redirect back with "unauthorized" error message' do
-        post :confirm_delete, :id => @auction.id
-        flash[:error].should include("Unauthorized Access")
-        response.should redirect_to(index_path)
-      end
     end
 
     describe "for non-signed-in users" do
@@ -512,11 +470,6 @@ describe SilentAuctionsController do
         sign_in @user
       end
 
-      it 'should not display the page, redirect back with "unauthorized" error message' do
-        delete :destroy, :id => @auction.id
-        flash[:error].should include("Unauthorized Access")
-        response.should redirect_to(index_path)
-      end
     end
 
     describe "for non-signed-in users" do

@@ -31,15 +31,13 @@ class SilentAuction < ActiveRecord::Base
   validates :category, :presence => { :message => "Please select a category" }
  
   scope :running, lambda { |timezone| where(["start_date < :today AND open = :is_open", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true]) }
-  #scope :running_auction_for_admin, lambda { |timezone| where(["start_date < :today AND open = :is_open", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true]) }
-  #scope :running_auction_for_user, lambda { |timezone,username| where(["start_date < :today AND open = :is_open AND creator <> :user_name", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true, :user_name => username]) }
   scope :running_auction_for_admin, lambda { |timezone| where(["start_date < :today AND open = :is_open AND item_type = 'Silent Auction'", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true]) }
   scope :running_quick_sales_for_admin, lambda { |timezone| where(["start_date < :today AND open = :is_open AND item_type = 'Quick Sale'", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true]) }
   scope :running_auction_for_user, lambda { |timezone,username| where(["start_date < :today AND open = :is_open AND creator <> :user_name AND item_type = 'Silent Auction'", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true, :user_name => username]) }
   scope :running_quick_sales_for_user, lambda { |timezone,username| where(["start_date < :today AND open = :is_open AND creator <> :user_name AND item_type = 'Quick Sale'", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true, :user_name => username]) }
   
-  #scope :future, lambda { |timezone| where("start_date > ? AND open = ?", Time.zone.now.in_time_zone(timezone).to_date, true) }
   scope :future, lambda { |timezone| where("start_date > ? AND open = ? AND item_type = 'Silent Auction'", Time.zone.now.in_time_zone(timezone).to_date, true) }
+  scope :future_sale, lambda { |timezone| where("start_date > ? AND open = ? AND item_type = 'Quick Sale'", Time.zone.now.in_time_zone(timezone).to_date, true) }
   
   scope :closed, includes(:bids).where("bids.id IS NOT NULL AND bids.active = ? AND open = ?", true, false)
   
@@ -51,9 +49,6 @@ class SilentAuction < ActiveRecord::Base
   
   def initialize(*params)
     super(*params)
-    #self.end_date = 2.weeks.from_now.to_date
-    #self.end_date = Time.zone.now
-    #self.end_date = Time.now
   end
 
   def strip_whitespace
@@ -63,14 +58,11 @@ class SilentAuction < ActiveRecord::Base
     if self.description != nil
       self.description = self.description.strip
     end
-   # @max=Date.today+2.months
   end
   
   def validate_price_limit
     region = self.region
-    puts region
     maximum = self.get_region_config(region)["maximum"].to_f
-    puts maximum
     currency = self.get_region_config(region)["currency"]
     isvalid = true
     if self.min_price > maximum
@@ -99,7 +91,6 @@ class SilentAuction < ActiveRecord::Base
     parts = number.to_s.to_str.split('.')
     parts[0].gsub!(/(\d)(?=(\d\d\d)+(?!\d))/, "\\1#{options[:delimiter]}")
     parts.join(options[:separator]).html_safe
-
   end
     
   def set_default_region
@@ -145,14 +136,6 @@ class SilentAuction < ActiveRecord::Base
     end
   end
 
-  def change_to_closed_OLD
-    self.open = false
-    unless Rails.application.config.test_mode 
-      #self.send_notification_email(self)
-    end
-    self.save!
-  end
-
   def get_regions
     config_file = "#{Rails.root}/config/region.yml"
     YAML.load_file(config_file)    
@@ -165,21 +148,23 @@ class SilentAuction < ActiveRecord::Base
 
   def self.close_auctions_ending_today
     self.where("open = ?", true).each do |auction|
-      puts "*" * 15
       region = auction.region
-      puts region
       timezone = auction.get_region_config(region)["timezone"]
-      puts timezone
-      puts auction.end_date
-      puts (Time.zone.now.in_time_zone(timezone) + 10.minutes).to_date
       if auction.end_date < (Time.zone.now.in_time_zone(timezone) + 10.minutes).to_date        
-        puts "CLOSED!!!"
         auction.change_to_closed
       end
+            
+      current_time = Time.zone.now.in_time_zone(timezone) + 10.minutes
       
+      # to send email notification to the item's owner 2 days before a sale ends
+      if current_time.hour == 0 && auction.end_date == (current_time.to_date + 2.days) && auction.item_type == 'Quick Sale'
+        @silent_auction = auction
+        unless Rails.application.config.test_mode 
+          UserMailer.seller_notification_quick_sale_almost_ends(@silent_auction.title,@silent_auction.creator).deliver
+        end                        
+      end
       
       # to send email notification when the auction of an item STARTS
-      current_time = Time.zone.now.in_time_zone(timezone) + 10.minutes
       if current_time.hour == 0 && auction.start_date == current_time.to_date
         @silent_auction = auction
         unless Rails.application.config.test_mode 
@@ -229,29 +214,4 @@ class SilentAuction < ActiveRecord::Base
     end  
   end
   
-  def self.close_auctions_ending_today_OLD
-  #def self.close_auctions_ending_today_OLD(timezone)
-    timezone = "Melbourne"
-    self.ending_today(timezone).each do | auction |
-      #auction.change_to_closed if auction.open?
-      if auction.open == true
-        auction.change_to_closed
-=begin
-        @winner_id = ""
-        @winner_amount = ""
-        @winner = Bid.where("silent_auction_id = ? AND active = ?",auction.id,true)
-        @count = @winner.count
-        if @count > 0
-          @winner = @winner.order("amount ASC").last!
-          @winner_id = User.find(@winner.user_id).username + "@thoughtworks.com"
-          @winner_amount = @winner.amount
-          UserMailer.winner_notification(auction.title,@count,@winner_id,@winner_amount).deliver
-          UserMailer.administrator_notification_close(auction.title,@count,@winner_id,@winner_amount).deliver
-        else
-          UserMailer.administrator_notification_expired(auction.title).deliver
-        end
-=end        
-      end 
-    end
-  end
 end
