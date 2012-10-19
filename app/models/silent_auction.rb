@@ -147,7 +147,7 @@ class SilentAuction < ActiveRecord::Base
     
     fake_yaml = yaml
     #fake_yaml['USA'] = "new content\n\r\tlabel: value"
-    new_content = {'currency'=>'US$', 'timezon'=>'PST', 'maximum'=>10000}
+    new_content = {'currency'=>'US$', 'timezone'=>'PST', 'maximum'=>10000}
     fake_yaml['USA'] = new_content
     #puts "*" * 20
     #puts fake_yaml
