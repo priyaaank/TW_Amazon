@@ -7,7 +7,4 @@ IND:
   currency: Rs
   timezone: New Delhi
   maximum: '100000'
-USA:
-  currency: US$
-  timezon: PST
-  maximum: 10000
+

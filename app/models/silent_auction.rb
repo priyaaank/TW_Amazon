@@ -143,18 +143,17 @@ class SilentAuction < ActiveRecord::Base
 
   def get_region_config(region)
     yaml = self.get_regions
-    
-    
     fake_yaml = yaml
     #fake_yaml['USA'] = "new content\n\r\tlabel: value"
-    new_content = {'currency'=>'US$', 'timezon'=>'PST', 'maximum'=>10000}
-    fake_yaml['USA'] = new_content
+    new_content = {'currency'=>'US$', 'timezon'=>'PST', 'maximum'=>'10000'}
+    fake_yaml['PER'] = new_content
     #puts "*" * 20
     #puts fake_yaml
     File.open( "#{Rails.root}/config/region.yml", 'w' ) do |out|
-      YAML.dump(fake_yaml, out)
+    YAML.dump(fake_yaml, out)
     end
-
+    
+   
     
     yaml[region]
   end
