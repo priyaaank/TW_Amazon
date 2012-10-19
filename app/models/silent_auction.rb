@@ -128,7 +128,7 @@ class SilentAuction < ActiveRecord::Base
     if self.item_type == 'Silent Auction'
       self.open = false
       unless Rails.application.config.test_mode 
-        #self.send_notification_email(self)
+        self.send_notification_email(self)
       end
       self.save!
     else
@@ -160,7 +160,7 @@ class SilentAuction < ActiveRecord::Base
       if current_time.hour == 0 && auction.end_date == (current_time.to_date + 2.days) && auction.item_type == 'Quick Sale'
         @silent_auction = auction
         unless Rails.application.config.test_mode 
-          #UserMailer.seller_notification_quick_sale_almost_ends(@silent_auction.title,@silent_auction.creator).deliver
+          UserMailer.seller_notification_quick_sale_almost_ends(@silent_auction.title,@silent_auction.creator).deliver
         end                        
       end
       
@@ -168,7 +168,7 @@ class SilentAuction < ActiveRecord::Base
       if current_time.hour == 0 && auction.start_date == current_time.to_date
         @silent_auction = auction
         unless Rails.application.config.test_mode 
-          #UserMailer.send_announcement_to_other_users(@silent_auction).deliver
+          UserMailer.send_announcement_to_other_users(@silent_auction).deliver
         end                
       end
     end    
