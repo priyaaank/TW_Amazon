@@ -305,10 +305,6 @@ describe SilentAuctionsController do
         response.should redirect_to(new_silent_auction_path)
       end
 
-      it 'should redirect to listing page if select "Save and return to listing"'  do
-        post :create, :silent_auction => @valid_details, :done => true
-        response.should redirect_to(silent_auctions_path)
-      end
     end
 
     context 'given invalid auction details' do
