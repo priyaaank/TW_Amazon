@@ -1,0 +1,14 @@
+%h1{:style => 'margin-bottom:20px;'} Create New Item
+
+%form{:action => "update_region_YAML"}
+  %label{:value => "uno"} Region name
+  %input{:type => "text", :name=>"region_name",:value=>"#{@regionname}"}
+  %label{:value => "uno"} Region currency
+  %input{:type => "text", :name=>"region_currency" ,:value=>"#{@regioncurrency}"}
+  %label{:value => "uno"} Region timezone 
+  %input{:type => "text", :name=>"region_timezone" ,:value=>"#{@regiontimezone}"}
+  %label{:value => "uno"} Region Maximun 
+  %input{:type => "text", :name=>"region_maximum",:value=>"#{@regionmaximum}"}
+  %br/
+  %input{:type=>"submit", :value=>"New Region"}
+ 

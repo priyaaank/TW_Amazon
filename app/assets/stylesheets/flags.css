@@ -100,6 +100,7 @@
 
 		.AUS a span { background-position: 0 0 }
 		.IND a span { background-position: -16px 0 }
+		.PER a span { background-position: -32px 0 }
 		
 	.dropdown dd ul li a em,
 	.dropdown dt a em {

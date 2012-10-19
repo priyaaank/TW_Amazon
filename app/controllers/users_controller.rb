@@ -4,11 +4,70 @@ class UsersController < ApplicationController
 
   before_filter :authenticate_user!
   before_filter :correct_user
+  
+  before_filter :validate_timezone
 
   def faq_page
     @title = "Frequently Asked Questions (and the answers)"
+   
   end
-
+  
+  def region_management
+    @title = "Region Management"
+    
+  end
+  
+  def validate_timezone
+   @region_na=params[:region_currency]
+  end
+  
+  def update_region_YAML
+     
+    
+    regex = Regexp.new("^[1-9]{1}[0-9]*$");
+    @regionname=params[:region_name]
+    @regioncurrency=params[:region_currency]
+    @regiontimezone=params[:region_timezone]
+    @regionmaximum=params[:region_maximum]
+    begin
+    Time.zone.now.in_time_zone(params[:region_timezone])
+    if(params[:region_name]=='')
+      flash[:error] = "Name can not be empty".html_safe
+    else if(params[:region_currency]=="")
+        flash[:error] = "Currency can not be empty".html_safe
+    else if(params[:region_maximum]=="" or params[:region_maximum].match(regex).nil?)
+       flash[:error] = "Maximum can not be empty or Maximum must be a number".html_safe
+       else
+        config_file = "#{Rails.root}/config/region.yml"
+        yaml = YAML.load_file(config_file)
+        fake_yaml = yaml
+        max="'"+params[:region_maximum]+"'"
+    # #fake_yaml['USA'] = "new content\n\r\tlabel: value"
+        new_content = {'currency'=>params[:region_currency], 'timezone'=>params[:region_timezone], 'maximum'=>params[:region_maximum]}
+        fake_yaml[params[:region_name]] = new_content
+        flash[:success] = "The Region has been save".html_safe
+        File.open( "#{Rails.root}/config/region.yml", 'w' ) do |out|
+          YAML.dump(fake_yaml, out)
+        end
+        redirect_to index_path
+        end
+      end
+    end
+    rescue
+       flash[:error] = "Timezone can not be empty or must be a valid Timezone".html_safe
+     
+    end
+    # 
+    
+    #puts "*" * 20
+    #puts fake_yaml
+    # 
+    # flash[:error] = "Error".html_safe
+    # redirect_to (:back)
+    # # end
+    
+  end
+  
   def show
     @title = "My Bids"
     @user = User.find(params[:id])
