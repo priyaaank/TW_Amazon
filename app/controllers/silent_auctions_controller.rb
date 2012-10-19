@@ -84,19 +84,23 @@ class SilentAuctionsController < ApplicationController
         if params['continue']
           format.html { redirect_to new_silent_auction_path }
         else if params['done']
-              if current_user.admin == true
-                #format.html {redirect_to silent_auctions_path}
-                if @silent_auction.item_type == 'Silent Auction'
-                  format.html {redirect_to silent_auctions_path}
-                else
-                  format.html {redirect_to sales_silent_auctions_path}
-                end
+              # if current_user.admin == true
+                # if @silent_auction.item_type == 'Silent Auction'
+                  # format.html {redirect_to silent_auctions_path}
+                # else
+                  # format.html {redirect_to sales_silent_auctions_path}
+                # end
+              # else
+                # if @silent_auction.item_type == 'Silent Auction'
+                  # format.html {redirect_to list_my_items_user_path(current_user)}
+                # else
+                  # format.html {redirect_to list_my_sales_user_path(current_user)}
+                # end
+              # end
+              if @silent_auction.item_type == 'Silent Auction'
+                format.html {redirect_to list_my_items_user_path(current_user)}
               else
-                if @silent_auction.item_type == 'Silent Auction'
-                  format.html {redirect_to list_my_items_user_path(current_user)}
-                else
-                  format.html {redirect_to list_my_sales_user_path(current_user)}
-                end
+                format.html {redirect_to list_my_sales_user_path(current_user)}
               end
             end
         end

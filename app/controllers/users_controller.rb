@@ -84,7 +84,7 @@ class UsersController < ApplicationController
     @running_bids = SilentAuction.running(@timezone).where("creator = ? AND item_type = 'Silent Auction' AND region = ?", @user.username, @user.region).where({:open => true}).recent
     @closed_bids = SilentAuction.closed.where("creator = ? AND region = ?", @user.username, @user.region).recent
     @expired_bids = SilentAuction.expired.where("creator = ? AND region = ?", @user.username, @user.region).recent
-    @future_bids = SilentAuction.future(@timezone).where({:open => true}).where("item_type = 'Silent Auction' AND region = ?", @user.region).recent#need timezone to filter the future auction items
+    @future_bids = SilentAuction.future(@timezone).where({:open => true}).where("creator = ? AND item_type = 'Silent Auction' AND region = ?", @user.username, @user.region).recent#need timezone to filter the future auction items
   end
   
   def list_my_sales

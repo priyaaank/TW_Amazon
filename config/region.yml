@@ -7,4 +7,7 @@ IND:
   currency: Rs
   timezone: New Delhi
   maximum: '100000'
-
+PER:
+  currency: PEN
+  timezone: Lima
+  maximum: '100000'
