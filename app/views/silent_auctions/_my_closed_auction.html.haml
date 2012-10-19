@@ -18,3 +18,11 @@
       = simple_format("End date:<br /><strong>#{formatted_date(auction.end_date)}</strong>")
     %td.auction_bids
       = simple_format("Winning Bid:<br/><span class='highlight'>#{get_region_config(current_user.region)['currency']} #{number_with_delimiter(wonBid.amount)}</span>")
+    - if current_user.admin?
+      -#= render :partial => "silent_auctions/admin_auction_view", :locals => { :auction => auction }
+      %td.auction_controls
+        .controls_holder
+          = link_to "x".html_safe, confirm_delete_silent_auction_path(auction),
+                                  :method => 'post',
+                                  :class => "btn btn-mini delete_btn",
+                                  :title => "delete_auction"
