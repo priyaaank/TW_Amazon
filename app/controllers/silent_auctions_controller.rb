@@ -175,21 +175,27 @@ class SilentAuctionsController < ApplicationController
     respond_to do |format|
       if @silent_auction.update_attributes(params[:silent_auction])
         format.html {
-          if current_user.admin == true
-            flash[:success] = "<b>#{@silent_auction.title}</b> was successfully updated!".html_safe
-            if @silent_auction.item_type == 'Silent Auction'
-              redirect_to silent_auctions_path
-            else
-              redirect_to sales_silent_auctions_path
-            end
+          # if current_user.admin == true
+            # flash[:success] = "<b>#{@silent_auction.title}</b> was successfully updated!".html_safe
+            # if @silent_auction.item_type == 'Silent Auction'
+              # redirect_to silent_auctions_path
+            # else
+              # redirect_to sales_silent_auctions_path
+            # end
+          # else
+            # flash[:success] = "<b>#{@silent_auction.title}</b> was successfully updated!".html_safe
+            # #redirect_to sales_silent_auctions_path
+            # if @silent_auction.item_type == 'Silent Auction'
+              # redirect_to list_my_items_user_path(current_user)
+            # else
+              # redirect_to list_my_sales_user_path(current_user)
+            # end
+          # end
+          flash[:success] = "<b>#{@silent_auction.title}</b> was successfully updated!".html_safe
+          if @silent_auction.item_type == 'Silent Auction'
+            redirect_to list_my_items_user_path(current_user)}
           else
-            flash[:success] = "<b>#{@silent_auction.title}</b> was successfully updated!".html_safe
-            #redirect_to sales_silent_auctions_path
-            if @silent_auction.item_type == 'Silent Auction'
-              redirect_to list_my_items_user_path(current_user)
-            else
-              redirect_to list_my_sales_user_path(current_user)
-            end
+            redirect_to list_my_sales_user_path(current_user)}
           end
         }
       else
