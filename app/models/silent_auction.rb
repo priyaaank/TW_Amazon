@@ -158,6 +158,16 @@ class SilentAuction < ActiveRecord::Base
       
       # to send email notification to the item's owner 2 days before a sale ends
       if current_time.hour == 0 && auction.end_date == (current_time.to_date + 2.days) && auction.item_type == 'Quick Sale'
+        
+        puts "*" * 20
+        puts current_time.hour
+        puts (current_time.hour==0)
+        puts auction.end_date
+        puts (current_time.to_date + 2.days)
+        puts (auction.end_date == (current_time.to_date + 2.days))
+        puts auction.item_type
+        puts (auction.item_type == 'Quick Sale')
+        
         @silent_auction = auction
         unless Rails.application.config.test_mode 
           UserMailer.seller_notification_quick_sale_almost_ends(@silent_auction.title,@silent_auction.creator).deliver
