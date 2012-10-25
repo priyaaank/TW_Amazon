@@ -2,8 +2,8 @@ Feature: Bid on an auction
 
   Background:
   Given there is a running auction as the following:
-    | title        | description        | min_price |
-    | test title 1 | test description 1 | 200       |
+    | title        | description        | min_price | open | creator    | region | item_type      |
+    | test title 1 | test description 1 | 200       | yes  | test-admin | AUS    | Silent Auction |
   And I'm logged in as a user
 
   @javascript

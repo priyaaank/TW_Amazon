@@ -1,5 +1,5 @@
 When /^I'm logged in as a user$/ do
-  @user = User.create!(:username => 'test-user', :password => 'foobar')
+  @user = User.create!(:username => 'test-user', :password => 'foobar', :admin => false, :region => 'AUS')
   visit destroy_user_session_path
   visit new_dummy_session_path
   select 'test-user', :from => 'user[username]'
