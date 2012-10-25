@@ -3,6 +3,7 @@ class SilentAuction < ActiveRecord::Base
   before_save :strip_whitespace
   before_save :set_default_region
   before_save :validate_price_limit
+  #before_save :check_start_date, :on => :create
   
   has_many :bids, :dependent => :destroy, :inverse_of => :silent_auction
 
@@ -21,8 +22,10 @@ class SilentAuction < ActiveRecord::Base
   validates :min_price, :presence => { :message => "is required"},
                         :numericality => { :greater_than => 0, :greater_than_or_equal_to => 0.01}, #:less_than_or_equal_to => 9999.99},
                         :format => { :with => /^\d+?(?:\.\d{0,2})?$/, :message => "can only have 2 decimal places" }
+  
   validates :start_date, :presence => {:message => "Start date is required"}
-  validates_date :start_date, :on => :create, :on_or_after => :today
+  #validates_date :start_date, :on => :create, :on_or_after => :today
+  validate :check_start_date, :on => :create, :unless => "start_date.nil?"
   
   validates :end_date, :presence => {:message => "End date is required"}
   validates_datetime :end_date, :on_or_after => :start_date
@@ -49,6 +52,16 @@ class SilentAuction < ActiveRecord::Base
   
   def initialize(*params)
     super(*params)
+  end
+
+  def check_start_date
+    date_today = Time.zone.now.in_time_zone(self.get_region_config(self.region)["timezone"]).to_date
+    if self.start_date >= date_today
+      #return true
+    else
+      errors.add(:start_date, "Start date must be on or after #{date_today}")
+      #return false
+    end
   end
 
   def strip_whitespace

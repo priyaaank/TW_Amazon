@@ -113,13 +113,6 @@ describe SilentAuction do
       auction.should have_at_least(1).errors_on(:end_date) 
     end
     
-    it 'should default region to AUS' do
-      auction=SilentAuction.make
-      auction.region=nil
-      auction.save!
-      auction.reload
-      auction.region.should=="AUS"
-    end
   end
 
   describe 'close_auctions_ending_today' do
