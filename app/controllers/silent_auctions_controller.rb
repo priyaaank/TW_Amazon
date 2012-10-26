@@ -8,7 +8,7 @@ class SilentAuctionsController < ApplicationController
 
   # GET /silent_auctions/running
   def index
-    @title = "Running Auctions Listing"
+    @title = "Running Silent Auctions"
     if current_user.admin?
       @running_auctions = SilentAuction.running_auction_for_admin(get_region_config(current_user.region)["timezone"]).recent.includes(:bids)
     else
@@ -16,7 +16,17 @@ class SilentAuctionsController < ApplicationController
     end
   end
 
-  # GET /silent_auctions/quick_sales
+  # GET /silent_auctions/normal_auctions
+  def normal_auctions
+    @title = "Running Auctions"
+    if current_user.admin?
+      @running_auctions = SilentAuction.running_normal_auction_for_admin(get_region_config(current_user.region)["timezone"]).recent.includes(:bids)
+    else
+      @running_auctions = SilentAuction.running_normal_auction_for_user(get_region_config(current_user.region)["timezone"],current_user.username).recent.includes(:bids)  
+    end
+  end
+
+  # GET /silent_auctions/sales
   def sales
     @title = "Quick Sales Board"
     if current_user.admin?
@@ -86,8 +96,13 @@ class SilentAuctionsController < ApplicationController
         else if params['done']
               if @silent_auction.item_type == 'Silent Auction'
                 format.html {redirect_to list_my_items_user_path(current_user)}
+              # else
+                # format.html {redirect_to list_my_sales_user_path(current_user)}
+              else if @silent_auction.item_type == 'Normal Auction'
+                format.html {redirect_to list_my_normal_auctions_user_path(current_user)}                
               else
-                format.html {redirect_to list_my_sales_user_path(current_user)}
+                format.html {redirect_to list_my_sales_user_path(current_user)}                
+              end #end of else if
               end
             end
         end

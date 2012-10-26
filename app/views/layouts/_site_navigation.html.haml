@@ -17,6 +17,7 @@
         %ul{:class => "dropdown-menu auctions_sales_menu"}
           -#- if not(current_user.admin?)
           %li=link_to("Silent Auctions", silent_auctions_path)
+          %li=link_to("Normal Auctions", normal_auctions_silent_auctions_path)
           %li=link_to("Quick Sales", sales_silent_auctions_path)
       %li.dropdown
         = link_to "Closed Auctions", closed_silent_auctions_path, :class => is_active?('closed')

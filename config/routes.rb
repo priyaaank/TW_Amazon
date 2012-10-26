@@ -17,6 +17,7 @@ TWAmazon::Application.routes.draw do
       get 'closed'
       get 'expired'
       get 'future'
+      get 'normal_auctions'
       get 'sales'
     end
 
@@ -25,10 +26,12 @@ TWAmazon::Application.routes.draw do
 
 
   # bid paths
-  resources :bids, :only => [:create, :new]
+  resources :bids, :only => [:create, :new, :update]
   resources :bids do
     member do
       put 'withdraw'
+      post 'update_amount'
+      put 'delete'
     end
   end
 
@@ -39,6 +42,7 @@ TWAmazon::Application.routes.draw do
       get :faq_page
       get :notification
       get :list_my_items
+      get :list_my_normal_auctions
       get :list_my_sales
       post :create
       get :new_region

@@ -1,0 +1,45 @@
+%h1
+  %span My Normal Auctions
+  = link_to 'Create NEW Auction/Sale', new_silent_auction_path, :class => 'btn btn-primary'
+%h3 Running Auctions
+- if @running_bids.empty?
+  .empty_collection
+    %p.emptyMsg You currently have no item on auction.
+-else
+  %table{:class => 'table table-simpleBordered', :id => 'currentBids'}
+    %tbody
+      - @running_bids.each do |auction|
+        -#- auction = bid
+        = render :partial => "silent_auctions/my_normal_auction", :locals => {:auction => auction }
+
+%h3 Closed Auctions
+- if @closed_bids.empty?
+  .empty_collection
+    %p.emptyMsg You currently have no item within closed auction.
+-else
+  %table{:class => 'table table-simpleBordered', :id => 'closedBids'}
+    %tbody
+      - @closed_bids.each do |auction|
+        -#- auction = bid
+        = render :partial => "silent_auctions/my_closed_auction", :locals => {:auction => auction }
+
+%h3 Expired Auctions
+- if @expired_bids.empty?
+  .empty_collection
+    %p.emptyMsg You currently have no item within closed auction.
+-else
+  %table{:class => 'table table-simpleBordered', :id => 'closedBids'}
+    %tbody
+      - @expired_bids.each do |auction|
+        = render :partial => "silent_auctions/expired_auction", :locals => {:auction => auction }
+
+%h3 Future Auctions
+- if @future_bids.empty?
+  .empty_collection
+    %p.emptyMsg You currently have no item to be put on auction.
+-else
+  %table{:class => 'table table-simpleBordered', :id => 'closedBids'}
+    %tbody
+      - @future_bids.each do |auction|
+        -#- auction = bid
+        = render :partial => "silent_auctions/my_auction", :locals => {:auction => auction }

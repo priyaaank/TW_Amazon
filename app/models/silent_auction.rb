@@ -35,8 +35,10 @@ class SilentAuction < ActiveRecord::Base
  
   scope :running, lambda { |timezone| where(["start_date < :today AND open = :is_open", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true]) }
   scope :running_auction_for_admin, lambda { |timezone| where(["start_date < :today AND open = :is_open AND item_type = 'Silent Auction'", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true]) }
+  scope :running_normal_auction_for_admin, lambda { |timezone| where(["start_date < :today AND open = :is_open AND item_type = 'Normal Auction'", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true]) }
   scope :running_quick_sales_for_admin, lambda { |timezone| where(["start_date < :today AND open = :is_open AND item_type = 'Quick Sale'", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true]) }
   scope :running_auction_for_user, lambda { |timezone,username| where(["start_date < :today AND open = :is_open AND creator <> :user_name AND item_type = 'Silent Auction'", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true, :user_name => username]) }
+  scope :running_normal_auction_for_user, lambda { |timezone,username| where(["start_date < :today AND open = :is_open AND creator <> :user_name AND item_type = 'Normal Auction'", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true, :user_name => username]) }
   scope :running_quick_sales_for_user, lambda { |timezone,username| where(["start_date < :today AND open = :is_open AND creator <> :user_name AND item_type = 'Quick Sale'", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true, :user_name => username]) }
   
   scope :future, lambda { |timezone| where("start_date > ? AND open = ? AND item_type = 'Silent Auction'", Time.zone.now.in_time_zone(timezone).to_date, true) }

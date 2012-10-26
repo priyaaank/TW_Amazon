@@ -54,7 +54,20 @@ class Bid < ActiveRecord::Base
 
   def amount_must_not_be_less_than_auction_min_price
     if self.amount != nil
-      errors.add :amount, "cannot be less than minimum price" unless SilentAuction.find(self.silent_auction_id).min_price <= self.amount
+      #errors.add :amount, "cannot be less than minimum price" unless SilentAuction.find(self.silent_auction_id).min_price <= self.amount
+      auction = SilentAuction.find(self.silent_auction_id)
+      if auction.item_type == 'Silent Auction' 
+        errors.add :amount, "cannot be less than minimum price" unless auction.min_price <= self.amount
+      else
+        highestBid = auction.bids.active.highFirst.earlier.first 
+        if highestBid.nil?
+          errors.add :amount, "cannot be less than minimum price" unless auction.min_price <= self.amount
+        else
+          errors.add :amount, "must be higher than the current highest bid" unless highestBid.amount < self.amount          
+        end
+        
+        
+      end
     end
   end
 

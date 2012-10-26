@@ -1,0 +1,9 @@
+$('.withdraw_bid').unbind('ajax:success');
+$('.withdraw_bid').bind('ajax:success', function(){
+    var parent = $(this).parent();
+    parent.empty();
+    parent.append(
+            "<%= escape_javascript(render :partial => "bids/newNormalBidForm", :locals => {:auction => @auction}) %> "
+    ).fadeIn();
+    $("span.success").empty();
+});
