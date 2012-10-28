@@ -4,9 +4,9 @@ TW Garage Sale reporting in...   :)
 Hi, 
 
 
-We have a new item, "<%= @title %>". 
+We have a new item, "<%= @title.html_safe %>". 
 
-Please feel free to check it out, from <%= @start_date %> until <%= @end_date %>, at "http://twgs.herokuapp.com"  :)
+Please feel free to check it out, from <%= @start_date %> until <%= @end_date %>, at "http://twgs.herokuapp.com/silent_auctions<%= @type %>"  :)
 
 
 

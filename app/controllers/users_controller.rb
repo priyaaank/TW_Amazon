@@ -82,8 +82,8 @@ class UsersController < ApplicationController
     puts @user.username
     @timezone = get_region_config(@user.region)["timezone"]
     @running_bids = SilentAuction.running(@timezone).where("creator = ? AND item_type = 'Silent Auction' AND region = ?", @user.username, @user.region).where({:open => true}).recent
-    @closed_bids = SilentAuction.closed.where("creator = ? AND region = ?", @user.username, @user.region).recent
-    @expired_bids = SilentAuction.expired.where("creator = ? AND region = ?", @user.username, @user.region).recent
+    @closed_bids = SilentAuction.closed.where("creator = ? AND region = ? AND item_type ='Silent Auction'", @user.username, @user.region).recent
+    @expired_bids = SilentAuction.expired.where("creator = ? AND region = ? AND item_type ='Silent Auction'", @user.username, @user.region).recent
     @future_bids = SilentAuction.future(@timezone).where({:open => true}).where("creator = ? AND item_type = 'Silent Auction' AND region = ?", @user.username, @user.region).recent#need timezone to filter the future auction items
   end
   
@@ -94,8 +94,8 @@ class UsersController < ApplicationController
     puts @user.username
     @timezone = get_region_config(@user.region)["timezone"]
     @running_bids = SilentAuction.running(@timezone).where("creator = ? AND item_type = 'Normal Auction' AND region = ?", @user.username, @user.region).where({:open => true}).recent
-    @closed_bids = SilentAuction.closed.where("creator = ? AND region = ?", @user.username, @user.region).recent
-    @expired_bids = SilentAuction.expired.where("creator = ? AND region = ?", @user.username, @user.region).recent
+    @closed_bids = SilentAuction.closed.where("creator = ? AND region = ? AND item_type ='Normal Auction'", @user.username, @user.region).recent
+    @expired_bids = SilentAuction.expired.where("creator = ? AND region = ? AND item_type ='Normal Auction'", @user.username, @user.region).recent
     @future_bids = SilentAuction.future(@timezone).where({:open => true}).where("creator = ? AND item_type = 'Normal Auction' AND region = ?", @user.username, @user.region).recent#need timezone to filter the future auction items
   end
   

@@ -31,6 +31,15 @@ class UserMailer < ActionMailer::Base
   
   def send_announcement_to_other_users(auction)
     @title = auction.title
+    
+    @type = ''
+    if auction.item_type == 'Quick Sale'
+      @type = '/sales'
+    else if auction.item_type == 'Normal Auction'
+      @type = '/normal_auctions'
+    end # end of else if
+    end
+    
     @start_date = auction.start_date.strftime("%d %B %Y")
     @end_date = auction.end_date.strftime("%d %B %Y")
     @other_users = User.where("username <> ? AND region = ?", auction.creator, auction.region)

@@ -41,7 +41,7 @@ class SilentAuction < ActiveRecord::Base
   scope :running_normal_auction_for_user, lambda { |timezone,username| where(["start_date < :today AND open = :is_open AND creator <> :user_name AND item_type = 'Normal Auction'", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true, :user_name => username]) }
   scope :running_quick_sales_for_user, lambda { |timezone,username| where(["start_date < :today AND open = :is_open AND creator <> :user_name AND item_type = 'Quick Sale'", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true, :user_name => username]) }
   
-  scope :future, lambda { |timezone| where("start_date > ? AND open = ? AND item_type = 'Silent Auction'", Time.zone.now.in_time_zone(timezone).to_date, true) }
+  scope :future, lambda { |timezone| where("start_date > ? AND open = ? AND (item_type = 'Silent Auction' OR item_type = 'Normal Auction')", Time.zone.now.in_time_zone(timezone).to_date, true) }
   scope :future_sale, lambda { |timezone| where("start_date > ? AND open = ? AND item_type = 'Quick Sale'", Time.zone.now.in_time_zone(timezone).to_date, true) }
   
   scope :closed, includes(:bids).where("bids.id IS NOT NULL AND bids.active = ? AND open = ?", true, false)
@@ -140,6 +140,18 @@ class SilentAuction < ActiveRecord::Base
   end
 
   def change_to_closed
+    if self.item_type == 'Quick Sale'
+      self.destroy
+    else
+      self.open = false
+      unless Rails.application.config.test_mode 
+        self.send_notification_email(self)
+      end
+      self.save!
+    end
+  end
+
+  def change_to_closed_OLD
     if self.item_type == 'Silent Auction'
       self.open = false
       unless Rails.application.config.test_mode 
