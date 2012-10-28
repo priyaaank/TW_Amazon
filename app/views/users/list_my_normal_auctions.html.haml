@@ -26,7 +26,7 @@
 %h3 Expired Auctions
 - if @expired_bids.empty?
   .empty_collection
-    %p.emptyMsg You currently have no item within closed auction.
+    %p.emptyMsg You currently have no item within expired auction.
 -else
   %table{:class => 'table table-simpleBordered', :id => 'closedBids'}
     %tbody
