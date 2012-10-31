@@ -100,7 +100,16 @@
 
 		.AUS a span { background-position: 0 0 }
 		.IND a span { background-position: -16px 0 }
-		.PER a span { background-position: -32px 0 }
+		.GER a span { background-position: -32px 0 }
+		.UK a span { background-position: -48px 0 }
+		.USA a span { background-position: -64px 0 }
+		.CAN a span { background-position: -80px 0 }
+		.BRA a span { background-position: -96px 0 }
+		.ZAF a span { background-position: -112px 0 }
+		.UGA a span { background-position: -128px 0 }
+		.SGP a span { background-position: -144px 0 }
+		.CHI a span { background-position: -160px 0 }
+		
 		
 	.dropdown dd ul li a em,
 	.dropdown dt a em {

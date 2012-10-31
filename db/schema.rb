@@ -38,13 +38,13 @@ ActiveRecord::Schema.define(:version => 20120928051352) do
     t.string   "title"
     t.text     "description"
     t.boolean  "open",        :default => true
-    t.datetime "created_at",                                :null => false
-    t.datetime "updated_at",                                :null => false
+    t.datetime "created_at",                                     :null => false
+    t.datetime "updated_at",                                     :null => false
     t.float    "min_price"
     t.date     "end_date"
     t.string   "region",      :default => "AUS"
     t.date     "start_date"
-    t.string   "category",    :default => "Computers"
+    t.string   "category",    :default => "Laptops & Computers"
     t.string   "creator"
     t.string   "item_type",   :default => "Silent Auction"
   end
