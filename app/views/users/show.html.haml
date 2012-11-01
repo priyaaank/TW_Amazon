@@ -10,7 +10,7 @@
         - auction = bid.silent_auction
         = render :partial => "silent_auctions/running_auction", :locals => {:auction => auction }
 
-%h3 Won Auctions
+%h3 Closed Auctions
 - if @closed_bids.empty?
   .empty_collection
     -#%p.emptyMsg You don't have any bids in the closed auctions.
