@@ -2,7 +2,7 @@
 = simple_form_for bid, :remote => true, :html => { :class => 'form-inline bid_form'} do |f|
   - bid.amount = ""
   - auction = SilentAuction.find(bid.silent_auction_id)
-  %span{:style => "font-weight:bold;"}
+  %span{:class => 'badge badge-warning', :style => "font-weight:bold;"}
     = "Highest Bid: #{get_region_config(current_user.region)['currency']} #{won_bid_for_auction(auction).amount}"
   %br
   %br
