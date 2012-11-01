@@ -6,6 +6,7 @@
     %td.auction_info
       %p.itemTitle= auction.title
       = simple_format(auction.description, :class => 'itemDescription')
+      = simple_format("Contact: <span class='highlight'>#{auction.creator}@thoughtworks.com</span>", :class => 'itemWinner')      
     -#%td.region
       -#= simple_format("Region:<br/><strong>#{auction.region.upcase}</strong>")
     %td.min_price
