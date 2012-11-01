@@ -86,7 +86,7 @@ td.end_date {width:10%}
 
 /*be careful when change, bid_col = auctions_bid + auctions_controls in user view for running auctions*/
 td.bid_col {width:20%}
-td.auction_bids {width:10%}
+td.auction_bids {width:5%}
 td.auction_controls {width:10%;}
 
 .auction_controls p{
