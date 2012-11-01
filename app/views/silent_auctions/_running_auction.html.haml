@@ -23,5 +23,13 @@
       - if current_user.username != auction.creator
         = render :partial => "bids/user_bid_view", :locals => { :auction => auction, :bid => bid }
       - else
-        %td
-          &nbsp;
+        -# %td
+          -# &nbsp;
+        %td.auction_bids
+          - bid_count = auction.bids.active.count
+          - if bid_count > 0
+            %span{:class => 'badge badge-error', :style => "font-weight:bold;"}
+              = pluralize(bid_count, "bid")
+          - else
+            %span{:class => 'badge badge-error', :style => "font-weight:bold;"}
+              = "0 bids"

@@ -23,5 +23,14 @@
       - if current_user.username != auction.creator
         = render :partial => "bids/user_normal_bid_view", :locals => { :auction => auction, :bid => bid }
       - else
-        %td
-          &nbsp;  
+        -# %td
+          -# &nbsp;  
+        %td.auction_bids
+          - bid_count = auction.bids.active.count
+          - if bid_count > 0
+            %span{:class => 'badge badge-error', :style => "font-weight:bold;"}
+              -#= pluralize(bid_count, "bid")
+              = "Highest Bid: #{get_region_config(current_user.region)['currency']} #{won_bid_for_auction(auction).amount}"
+          - else
+            %span{:class => 'badge badge-error', :style => "font-weight:bold;"}
+              = "0 bids"
