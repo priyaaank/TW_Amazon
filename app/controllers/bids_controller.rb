@@ -22,9 +22,9 @@ class BidsController < ApplicationController
         err_msg = @bid.errors.full_messages[0]
         # format.html { redirect_back_with_error(silent_auctions_path,"Error! #{err_msg}") }
         if item_type == 'Silent Auction'
-          format.html { redirect_back_with_error(silent_auctions_path) }
+          format.html { redirect_back_with_error(silent_auctions_path,"Error! #{err_msg}") }
         else
-          format.html { redirect_back_with_error(normal_auctions_silent_auctions_path) }
+          format.html { redirect_back_with_error(normal_auctions_silent_auctions_path,"Error! #{err_msg}") }
         end        
         format.js { render 'fail', :locals => { :errMsg => "#{err_msg}" } }
       end
