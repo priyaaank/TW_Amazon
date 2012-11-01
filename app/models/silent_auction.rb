@@ -177,6 +177,7 @@ class SilentAuction < ActiveRecord::Base
     if yaml.has_key?(region)
       yaml[region]
     else
+      # this is a safety measure for items associated with a region that has been removed from the system
       yaml['AUS']
     end
   end

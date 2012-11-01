@@ -11,13 +11,16 @@
   %a{:href => "#kinds_of_transactions"} What kinds of transaction are available on this website?
   %br/
   %br/
+  %a{:href => "#payment"} How do I make the payment for the auction I won or the sale?
+  %br/
+  %br/
   %a{:href => "#timezone"} When is the starting time and the ending time of an auction/sale?
   %br/
   %br/
-  %a{:href => "#how_many_bids"} How many times can I place a bid on the silent auction of an item?
+  %a{:href => "#how_many_bids"} How many times can I place a bid on the auction of an item?
   %br/
   %br/
-  %a{:href => "#withdraw_my_bid"} Can I withdraw my bid from the silent auction of an item?
+  %a{:href => "#withdraw_my_bid"} Can I withdraw my bid from the auction of an item?
   %br/
   %br/
   %a{:href => "#see_my_bids"} How can I see the bids I have placed on silent auctions?
@@ -59,6 +62,15 @@
   = 'On Garage Sale, you can post an item for either a silent auction or a sale. In a silent auction, other ThoughtWorkers will be able to place bids, which at least must be equal to the specified minimum price for the item. While a quick sale can be used as a board to advertise your item (your email address will be written together with the details of your item or you may also put other contact details under the description of the item) so that any interested buyers can contact you directly.'
   %br/
   %br/
+  %a{:name => 'payment'}
+  %a{:href => '#top'} Back to top
+%h3 Question: How do I make the payment for the auction I won or the sale?
+%p.emptyMsg 
+  = 'It is up to the seller and buyer to arrange the payment and transfer of the item. It is also a good idea to contact the seller first and discuss about this before making any decision, or as a seller, to put some information about how payment and transfer are going to be done within item description.'
+  %br/
+  = 'In particular for TW laptops, the payment is usually made by a deduction from your salary.'
+  %br/
+  %br/
   %a{:name => 'timezone'}
   %a{:href => '#top'} Back to top
 %h3 Question: When is the starting time and the ending time of an auction/sale?
@@ -74,16 +86,20 @@
   %br/
   %a{:name => 'how_many_bids'}
   %a{:href => '#top'} Back to top
-%h3 Question: How many times can I place a bid on the silent auction of an item?
+%h3 Question: How many times can I place a bid on the auction of an item?
 %p.emptyMsg 
   = 'On a silent auction, you can only place a bid once. If you want, you may withdraw the bid you have placed, but you won\'t be able to place another bid on the same item.'
+  %br/
+  = 'On a normal auction, you can place a bid and withdraw multiple times.'
   %br/
   %br/
   %a{:name => 'withdraw_my_bid'}
   %a{:href => '#top'} Back to top
-%h3 Question: Can I withdraw my bid from the silent auction of an item?
+%h3 Question: Can I withdraw my bid from the auction of an item?
 %p.emptyMsg 
   = 'On a silent auction, if you want, you may withdraw the bid you have placed, but you won\'t be able to place another bid on the same item.'
+  %br/
+  = 'On a normal auction, you can place a bid and withdraw multiple times.'
   %br/
   %br/
   %a{:name => 'see_my_bids'}
