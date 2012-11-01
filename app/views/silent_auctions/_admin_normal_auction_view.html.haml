@@ -6,7 +6,7 @@
       = "Highest Bid: #{get_region_config(current_user.region)['currency']} #{won_bid_for_auction(auction).amount}"
   - else
     %span{:class => 'badge badge-error', :style => "font-weight:bold;"}
-      = "0 bids"
+      = "There's no bid yet"
 %td.auction_controls
   .controls_holder
     %div{:class=>'btn-group manage_auction'}
