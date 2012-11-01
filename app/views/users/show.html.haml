@@ -13,8 +13,8 @@
 %h3 Closed Auctions
 - if @closed_bids.empty?
   .empty_collection
-    -#%p.emptyMsg You don't have any bids in the closed auctions.
-    %p.emptyMsg You don't have any winning bids in the closed auctions.
+    %p.emptyMsg You don't have any bids in the closed auctions.
+    -#%p.emptyMsg You don't have any winning bids in the closed auctions.
 -else
   %table{:class => 'table table-simpleBordered', :id => 'closedBids'}
     %tbody
