@@ -17,7 +17,7 @@
       = simple_format("Start date:<br /><strong>#{formatted_date(auction.start_date)}</strong>")
     %td.end_date
       = simple_format("End date:<br /><strong>#{formatted_date(auction.end_date)}</strong>")
-    - if current_user.admin?
+    - if current_user.admin? || current_user.username == auction.creator
       = render :partial => "admin_auction_view", :locals => { :auction => auction }
     - else
       = render :partial => "bids/user_bid_view", :locals => { :auction => auction, :bid => bid }
