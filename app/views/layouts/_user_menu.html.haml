@@ -33,7 +33,7 @@
           -#%li=link_to("My Auctions", list_my_items_user_path(current_user))
           -#%li=link_to("My Sales", list_my_sales_user_path(current_user))
         - else 
-          -if(current_user.username=="twamazon")
+          -if(current_user.username=="dgower")
             %li=link_to("Region Management", region_management_user_path(current_user)) 
         -# %li=link_to("My Auctions", list_my_items_user_path(current_user))
         %li=link_to("My Silent Auctions", list_my_items_user_path(current_user))
