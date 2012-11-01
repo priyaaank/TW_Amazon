@@ -1,7 +1,7 @@
 %td.auction_bids
   - bid_count = auction.bids.active.count
   - if bid_count > 0
-    %span{:style => "font-weight:bold;"}
+    %span{:class => 'badge badge-warning', :style => "font-weight:bold;"}
       -#= pluralize(bid_count, "bid")
       = "Highest Bid: #{get_region_config(current_user.region)['currency']} #{won_bid_for_auction(auction).amount}"
   - else
