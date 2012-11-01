@@ -11,6 +11,9 @@
   %a{:href => "#kinds_of_transactions"} What kinds of transaction are available on this website?
   %br/
   %br/
+  %a{:href => "#timezone"} When is the starting time and the ending time of an auction/sale?
+  %br/
+  %br/
   %a{:href => "#how_many_bids"} How many times can I place a bid on the silent auction of an item?
   %br/
   %br/
@@ -54,6 +57,18 @@
 %h3 Question: What kinds of transaction are available on this website?
 %p.emptyMsg 
   = 'On Garage Sale, you can post an item for either a silent auction or a sale. In a silent auction, other ThoughtWorkers will be able to place bids, which at least must be equal to the specified minimum price for the item. While a quick sale can be used as a board to advertise your item (your email address will be written together with the details of your item or you may also put other contact details under the description of the item) so that any interested buyers can contact you directly.'
+  %br/
+  %br/
+  %a{:name => 'timezone'}
+  %a{:href => '#top'} Back to top
+%h3 Question: When is the starting time and the ending time of an auction/sale?
+%p.emptyMsg
+  %ul
+    %li Every auction/sale specified to start on the same date as when it is being created will start immediately. 
+    %li An item owner can also set an auction/sale to start sometime in the future. In this case, the starting time will be at 00:00 o'clock on the specified starting date, according to the timezone associated with the region of the auction/sale. 
+    %li The ending time will be at 23:59 o'clock on the specified ending date, according to the timezone associated with the region of the auction/sale.
+    %li This timezone is currently following the regional time of a major city in a country, for example: the regional time of Melbourne is used for Australia, and the regional time of New Delhi is used for India. 
+  -#= 'On Garage Sale, you can post an item for either a silent auction or a sale. In a silent auction, other ThoughtWorkers will be able to place bids, which at least must be equal to the specified minimum price for the item. While a quick sale can be used as a board to advertise your item (your email address will be written together with the details of your item or you may also put other contact details under the description of the item) so that any interested buyers can contact you directly.'
   %br/
   %br/
   %a{:name => 'how_many_bids'}
