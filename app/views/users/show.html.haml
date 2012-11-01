@@ -1,5 +1,5 @@
 %h1 My Bids
-%h3 Running Auctions
+%h3 Current Silent Auctions
 - if @running_bids.empty?
   .empty_collection
     %p.emptyMsg You currently have not participated in any running auctions.
@@ -9,6 +9,17 @@
       - @running_bids.each do |bid|
         - auction = bid.silent_auction
         = render :partial => "silent_auctions/running_auction", :locals => {:auction => auction }
+
+%h3 Current Normal Auctions
+- if @running_bids.empty?
+  .empty_collection
+    %p.emptyMsg You currently have not participated in any running auctions.
+-else
+  %table{:class => 'table table-simpleBordered', :id => 'currentBids'}
+    %tbody
+      - @running_normal_bids.each do |bid|
+        - auction = bid.silent_auction
+        = render :partial => "silent_auctions/running_normal_auction", :locals => {:auction => auction }
 
 %h3 Closed Auctions
 - if @closed_bids.empty?
