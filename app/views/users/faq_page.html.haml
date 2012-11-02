@@ -17,6 +17,9 @@
   %a{:href => "#timezone"} When is the starting time and the ending time of an auction/sale?
   %br/
   %br/
+  %a{:href => "#region"} Does the system cover other regions other than mine?
+  %br/
+  %br/
   %a{:href => "#how_many_bids"} How many times can I place a bid on the auction of an item?
   %br/
   %br/
@@ -82,6 +85,15 @@
   &#8226; The ending time will be at 23:59 o'clock on the specified ending date, according to the timezone associated with the region of the auction/sale.
   %br
   &#8226; This timezone is currently following the regional time of a major city in a country, for example: the regional time of Melbourne is used for Australia, and the regional time of New Delhi is used for India. 
+  %br/
+  %br/
+  %a{:name => 'region'}
+  %a{:href => '#top'} Back to top
+%h3 Question: Does the system covers other regions other than mine?
+%p.emptyMsg 
+  = 'There may be more regions added to the system and you will be able to see items in other regions by changing the selected region associated with your account (by clicking the flag icon at the top part of the webpage).'
+  %br/
+  = 'However, please be aware that if you join in an auction in regions other than yours, you will need to face and handle the complexity of making a payment in a different currency, as well as the shipping of the item across regions.'
   %br/
   %br/
   %a{:name => 'how_many_bids'}
