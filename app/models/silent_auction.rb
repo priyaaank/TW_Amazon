@@ -147,10 +147,10 @@ class SilentAuction < ActiveRecord::Base
       self.destroy
     else
       self.open = false
+      self.save!
       unless Rails.application.config.test_mode 
         self.send_notification_email(self)
       end
-      self.save!
     end
   end
 
@@ -173,17 +173,21 @@ class SilentAuction < ActiveRecord::Base
 
   def get_region_config(region)
     yaml = self.get_regions
-    yaml[region]
+    #yaml[region]
+    if yaml.has_key?(region)
+      yaml[region]
+    else
+      yaml['AUS']
+    end
   end
 
   def self.close_auctions_ending_today
     self.where("open = ?", true).each do |auction|
       region = auction.region
-      timezone = auction.get_region_config(region)["timezone"]
+      timezone = auction.get_region_config(region)["timezone"]                  
       if auction.end_date < (Time.zone.now.in_time_zone(timezone) + 10.minutes).to_date        
         auction.change_to_closed
-      end
-            
+      end            
       current_time = Time.zone.now.in_time_zone(timezone) + 10.minutes
       
       # to send email notification to the item's owner 2 days before a sale ends
