@@ -1,7 +1,7 @@
 %h1
   %span My Normal Auctions
   = link_to 'Create NEW Auction/Sale', new_silent_auction_path, :class => 'btn btn-primary'
-%h3 Running Auctions
+%h4.running Running Auctions
 - if @running_bids.empty?
   .empty_collection
     %p.emptyMsg You currently have no item on auction.
@@ -12,7 +12,7 @@
         -#- auction = bid
         = render :partial => "silent_auctions/my_normal_auction", :locals => {:auction => auction }
 
-%h3 Closed Auctions
+%h4.closed Closed Auctions
 - if @closed_bids.empty?
   .empty_collection
     %p.emptyMsg You currently have no item within closed auction.
@@ -33,7 +33,7 @@
       - @expired_bids.each do |auction|
         = render :partial => "silent_auctions/expired_auction", :locals => {:auction => auction }
 
-%h3 Future Auctions
+%h4.future Future Auctions
 - if @future_bids.empty?
   .empty_collection
     %p.emptyMsg You currently have no item to be put on auction.

@@ -55,6 +55,79 @@ a.btn-danger {
   text-shadow:white 0 1px 0;
 }
 
+.container .running {
+ margin-top:20px;
+
+  background-color: #7fffd4;
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#7fffd4), to(#8fbc8f));
+  background: -webkit-linear-gradient(top, #7fffd4, #8fbc8f);
+  background: -moz-linear-gradient(top, #7fffd4, #8fbc8f);
+  background: -ms-linear-gradient(top, #7fffd4, #8fbc8f);
+  background: -o-linear-gradient(top, #7fffd4, #8fbc8f);
+
+  box-shadow:rgba(0, 0, 0, 0.117188) 0 1px 3px, white 0 0 1px inset;
+  border-top-style:solid;
+  border-top-width:1px;
+  border: 1px solid #D4D4D4;
+  border-top-color:#E6E6E6;
+  border-bottom-color:#CDCDCD;
+  box-shadow:rgba(0, 0, 0, 0.117188) 0 1px 3px, white 0 0 1px inset;
+  color:black;
+  font-size:1em;
+  font-weight:bold;
+  line-height:18px;
+  padding: 5px 10px 3px 10px;
+  text-shadow:white 0 1px 0;
+}
+
+.container .closed {
+ margin-top:20px;
+
+  background-color: #e0ffff;
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#e0ffff), to(#00bfff));
+  background: -webkit-linear-gradient(top, #e0ffff, #00bfff);
+  background: -moz-linear-gradient(top, #e0ffff, #00bfff);
+  background: -ms-linear-gradient(top, #e0ffff, #00bfff);
+  background: -o-linear-gradient(top, #e0ffff, #00bfff);
+
+  box-shadow:rgba(0, 0, 0, 0.117188) 0 1px 3px, white 0 0 1px inset;
+  border-top-style:solid;
+  border-top-width:1px;
+  border: 1px solid #D4D4D4;
+  border-top-color:#E6E6E6;
+  border-bottom-color:#CDCDCD;
+  box-shadow:rgba(0, 0, 0, 0.117188) 0 1px 3px, white 0 0 1px inset;
+  color:black;
+  font-size:1em;
+  font-weight:bold;
+  line-height:18px;
+  padding: 5px 10px 3px 10px;
+  text-shadow:white 0 1px 0;
+}
+.container .future {
+ margin-top:20px;
+
+  background-color: #fafad2;
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fafad2), to(#ffd700));
+  background: -webkit-linear-gradient(top, #fafad2, #ffd700);
+  background: -moz-linear-gradient(top, #fafad2, #ffd700);
+  background: -ms-linear-gradient(top, #fafad2, #ffd700);
+  background: -o-linear-gradient(top, #fafad2, #ffd700);
+
+  box-shadow:rgba(0, 0, 0, 0.117188) 0 1px 3px, white 0 0 1px inset;
+  border-top-style:solid;
+  border-top-width:1px;
+  border: 1px solid #D4D4D4;
+  border-top-color:#E6E6E6;
+  border-bottom-color:#CDCDCD;
+  box-shadow:rgba(0, 0, 0, 0.117188) 0 1px 3px, white 0 0 1px inset;
+  color:black;
+  font-size:1em;
+  font-weight:bold;
+  line-height:18px;
+  padding: 5px 10px 3px 10px;
+  text-shadow:white 0 1px 0;
+}
 .just_closed td {
   background: #f3f3f3;
 }

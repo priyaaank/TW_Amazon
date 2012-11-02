@@ -2,7 +2,7 @@
   %span My Sales
   = link_to 'Create NEW Auction/Sale', new_silent_auction_path, :class => 'btn btn-primary'
 
-%h3 Current Sales
+%h4.running Current Sales
 - if @running_bids.empty?
   .empty_collection
     %p.emptyMsg You currently have no item on sale.
@@ -12,7 +12,7 @@
       - @running_bids.each do |auction|
         = render :partial => "silent_auctions/my_sale", :locals => {:auction => auction }
 
-%h3 Future Sales
+%h4.future Future Sales
 - if @future_bids.empty?
   .empty_collection
     %p.emptyMsg You currently have no item to be put on sale.
