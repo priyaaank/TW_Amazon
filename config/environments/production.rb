@@ -64,8 +64,8 @@ TWAmazon::Application.configure do
     :address              => "smtp.mandrillapp.com",
     :port                 => "587",
     :domain               => "mandrillapp.com",
-    :user_name            => "app6942104@heroku.com",
-    :password             => "3bc71a78-915d-4be0-9a84-2c1d135c4c49",
+    :user_name            => "app4595588@heroku.com",
+    :password             => "7b69fbd8-dbd6-4220-be9b-c1ea21a56848",
     :authentication       => "plain",
     :enable_starttls_auto => true
   }

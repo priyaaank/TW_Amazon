@@ -44,17 +44,17 @@ class UserMailer < ActionMailer::Base
     @end_date = auction.end_date.strftime("%d %B %Y")
     @other_users = User.where("username <> ? AND region = ?", auction.creator, auction.region)
     @all_recipients = "twgs.twgs@gmail.com"
-    @other_users.each do |user|
-      if @all_recipients != "" then 
-        @all_recipients = @all_recipients + ", "
-      end
-      if user.email == nil
-        @all_recipients = @all_recipients + user.username + "@thoughtworks.com"
-        else if user.email == 'on'
-          @all_recipients = @all_recipients + user.username + "@thoughtworks.com"
-        end                  
-      end
-    end
+    # @other_users.each do |user|
+      # if @all_recipients != "" then 
+        # @all_recipients = @all_recipients + ", "
+      # end
+      # if user.email == nil
+        # @all_recipients = @all_recipients + user.username + "@thoughtworks.com"
+        # else if user.email == 'on'
+          # @all_recipients = @all_recipients + user.username + "@thoughtworks.com"
+        # end                  
+      # end
+    # end
 
     # send the email only when there is at least 1 recipient
     mail(:to => "#{@all_recipients}", :subject => "[TW Garage Sale] [SPAM] New auction for \"#{@title}\"", :from => 'GarageSale@no-reply.thoughtworks.com')      
