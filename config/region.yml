@@ -7,3 +7,7 @@ IND:
   currency: Rs
   timezone: New Delhi
   maximum: '100000'
+BRA:
+  currency: R$
+  timezone: Brasilia
+  maximum: '5000'
