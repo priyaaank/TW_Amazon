@@ -21,3 +21,4 @@ puts 'SETTING UP TEST USER LOGIN'
     @index += 1
   end
 end
+

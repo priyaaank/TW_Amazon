@@ -43,3 +43,7 @@ end
 Photo.blueprint do
   # Attributes here
 end
+
+Region.blueprint do
+  # Attributes here
+end

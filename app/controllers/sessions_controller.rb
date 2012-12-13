@@ -1,6 +1,5 @@
 class SessionsController < Devise::OmniauthCallbacksController
   include ApplicationHelper
-  include UsersHelper
 
   before_filter :authenticate_user!
 
@@ -48,8 +47,11 @@ class SessionsController < Devise::OmniauthCallbacksController
 
   # Overwriting the sign_out redirect path method
   def after_sign_in_path_for(resource_or_scope)
-    #index_path
-    ensure_user_has_a_region
+    if current_user.region.blank?
+      new_region_user_path(current_user)
+    else
+      index_path
+    end
   end
 
   def after_sign_out_path_for(resource_or_scope)

@@ -12,6 +12,10 @@ module ApplicationHelper
     "active" if params[:action] == page_name
   end
 
+  def ensure_signed_in_user_has_a_region
+      redirect_to new_region_user_path(current_user) if current_user.region.blank?
+  end
+
   def authorize_admin
     store_location
 

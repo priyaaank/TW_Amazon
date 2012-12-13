@@ -1,6 +1,3 @@
 = simple_nested_form_for @user, :url => { :action => "update_region"}, :html => { :multipart => false, :method => :post } do |f|
-  -#- config_file = "#{Rails.root}/config/region.yml"
-  -#- yaml = YAML.load_file(config_file)
-  -#= f.input :region, :label => 'You haven\'t selected a region, please select one from the list below:', :collection => yaml, :selected => @user.region, :onchange => 'alert(@user);'
-  = f.input :region, :label => 'You haven\'t selected a region, please select one from the list below:', :collection => get_regions, :selected => @user.region, :onchange => 'alert(@user);'
+  = f.select :region,  options_from_collection_for_select(@regions,"id", "code")
   = submit_tag "Update Your Region and Refresh the Page", :name => "refresh", :id => 'submit_continue', :class => 'btn btn-primary form_action_btn', :disable_with => "Updating region and refreshing the page..."

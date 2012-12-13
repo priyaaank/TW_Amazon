@@ -1,7 +1,6 @@
 class SilentAuctionsController < ApplicationController
   include ApplicationHelper
   include SilentAuctionsHelper
-  include UsersHelper
 
   before_filter :authenticate_user!
   before_filter :ensure_signed_in_user_has_a_region, :only => [:index, :closed, :expired, :future]
@@ -9,82 +8,41 @@ class SilentAuctionsController < ApplicationController
   # GET /silent_auctions/running
   def index
     @title = "Running Silent Auctions"
-    if current_user.admin?
-      @running_auctions = SilentAuction.running_auction_for_admin(get_region_config(current_user.region)["timezone"]).recent.includes(:bids)
-    else
-      @running_auctions = SilentAuction.running_auction_for_user(get_region_config(current_user.region)["timezone"],current_user.username).recent.includes(:bids)  
-    end
+    @running_auctions = SilentAuction.running_silent_auction(@current_user.timezone).recent.includes(:bids)
   end
 
   # GET /silent_auctions/normal_auctions
   def normal_auctions
     @title = "Running Auctions"
-    if current_user.admin?
-      @running_auctions = SilentAuction.running_normal_auction_for_admin(get_region_config(current_user.region)["timezone"]).recent.includes(:bids)
-    else
-      @running_auctions = SilentAuction.running_normal_auction_for_user(get_region_config(current_user.region)["timezone"],current_user.username).recent.includes(:bids)  
-    end
+    @running_auctions = SilentAuction.running_normal_auction(@current_user.timezone).recent.includes(:bids)
   end
 
-  # GET /silent_auctions/sales
   def sales
     @title = "Quick Sales Board"
-    if current_user.admin?
-      @running_sales = SilentAuction.running_quick_sales_for_admin(get_region_config(current_user.region)["timezone"]).recent      
-    else
-      @running_sales = SilentAuction.running_quick_sales_for_user(get_region_config(current_user.region)["timezone"],current_user.username).recent      
-    end
+    @running_sales = SilentAuction.running_quick_sales(@current_user.timezone).recent
   end
 
-  # GET /silent_auctions/closed
   def closed
     @title = "Closed Auctions Listing"
     @closed_auctions = SilentAuction.closed.recent.page(params[:page])
-
-    respond_to do |format|
-      format.html
-    end
   end
 
-  # GET /silent_auctions/expired
   def expired
     @title = "Expired Auctions Listing"
-    #@expired_auctions = SilentAuction.expired.recent.page(params[:page])
     @expired_auctions = SilentAuction.expired.order("end_date DESC").page(params[:page])
-
-    respond_to do |format|
-      format.html
-    end
   end
 
-  # GET /silent_auctions/future
   def future
     @title = "Future Auctions Listing"
-    @future_auctions = SilentAuction.future(get_region_config(current_user.region)["timezone"]).recent.page(params[:page])
-
-    respond_to do |format|
-      format.html
-    end
+    @future_auctions = SilentAuction.future(@current_user.timezone).recent.page(params[:page])
   end
 
-  # GET /silent_auctions/new
-  # An HTTP GET to /resources/new is intended to render a form suitable for creating a new resource,
-  # which it does by calling the new action within the controller,
-  # which creates a new unsaved record and renders the form.
   def new
     @title = "Create new auction"
     @silent_auction = SilentAuction.new
     @silent_auction.photos.build
-    
-    respond_to do |format|
-      format.html
-    end
-
   end
 
-  # POST /silent_auctions
-  # An HTTP POST to /resources takes the record created as part of the new action
-  # and passes it to te create action within the controller which then attempts to save it to the database.
   def create
     @silent_auction = SilentAuction.new(params[:silent_auction])
     respond_to do |format|
@@ -99,18 +57,18 @@ class SilentAuctionsController < ApplicationController
               # else
                 # format.html {redirect_to list_my_sales_user_path(current_user)}
               else if @silent_auction.item_type == 'Normal Auction'
-                format.html {redirect_to list_my_normal_auctions_user_path(current_user)}                
+                format.html {redirect_to list_my_normal_auctions_user_path(current_user)}
               else
-                format.html {redirect_to list_my_sales_user_path(current_user)}                
+                format.html {redirect_to list_my_sales_user_path(current_user)}
               end #end of else if
               end
             end
         end
         unless Rails.application.config.test_mode
-          if @silent_auction.start_date.to_date == Time.zone.now.in_time_zone(get_region_config(@silent_auction.region)["timezone"]).to_date
+          if @silent_auction.start_date.to_date == Time.zone.now.in_time_zone(@currentuser.timezone).to_date
             UserMailer.send_announcement_to_other_users(@silent_auction).deliver
           end
-        end        
+        end
       else
         format.html {
           # to force error message for minimum price has a subject
@@ -124,8 +82,7 @@ class SilentAuctionsController < ApplicationController
       end
     end
   end
-  
-  # PUT to close auction
+
   def close
     @silent_auction = SilentAuction.find(params[:id])
     respond_to do |format|
@@ -140,7 +97,6 @@ class SilentAuctionsController < ApplicationController
     end
   end
 
-  # POST to ask for confirmation of deleting an auction
   def confirm_delete
     @title = "Confirm delete auction"
     @delete_auction = SilentAuction.find(params[:id])

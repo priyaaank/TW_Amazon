@@ -1,13 +1,15 @@
 class User < ActiveRecord::Base
   has_many :bids, :inverse_of => :user
+  belongs_to :region
 
   devise :omniauthable
-  attr_accessible :username, :admin, :region, :email
+  attr_accessible :username, :admin, :email
   validates :username, :presence => true, :length => { :maximum => 255 }
 
   # for dummy users
   devise :database_authenticatable
   attr_accessible :email, :password, :password_confirmation
+  delegate :timezone, :currency,  :to => :region
 
   # Devise method used to create user from CAS uid
   def self.find_or_create_from_auth_hash(auth_hash, signed_in_resource=nil)
@@ -22,11 +24,11 @@ class User < ActiveRecord::Base
   end
 
   def self.is_admin?(uid)
-    admins = ["dgower", "prtan", "twamazon", "venkatns"]
-    if admins.include?(uid)
-      true
-    else
-      false
-    end
+    ["dgower", "prtan", "twamazon", "venkatn"].include?(uid)
   end
+
+  def region_id
+    region.id if !region.nil?
+  end
+
 end

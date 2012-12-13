@@ -3,11 +3,10 @@ class SilentAuction < ActiveRecord::Base
   before_save :strip_whitespace
   before_save :set_default_region
   before_save :validate_price_limit
-  #before_save :check_start_date, :on => :create
-  
-  has_many :bids, :dependent => :destroy, :inverse_of => :silent_auction
 
+  has_many :bids, :dependent => :destroy, :inverse_of => :silent_auction
   has_many :photos, :dependent => :destroy, :inverse_of => :silent_auction
+
   accepts_nested_attributes_for :photos, :allow_destroy => true, :reject_if => proc { |attributes| attributes['image'].blank? && attributes['image_cache'].blank? && attributes['caption'].blank? }
 
   attr_accessible :title, :description, :open, :min_price, :start_date, :end_date, :photos_attributes, :region, :category, :creator, :item_type
@@ -22,39 +21,30 @@ class SilentAuction < ActiveRecord::Base
   validates :min_price, :presence => { :message => "is required"},
                         :numericality => { :greater_than => 0, :greater_than_or_equal_to => 0.01}, #:less_than_or_equal_to => 9999.99},
                         :format => { :with => /^\d+?(?:\.\d{0,2})?$/, :message => "can only have 2 decimal places" }
-  
+
   validates :start_date, :presence => {:message => "Start date is required"}
-  #validates_date :start_date, :on => :create, :on_or_after => :today
   validate :check_start_date, :on => :create, :unless => "start_date.nil?"
-  
   validates :end_date, :presence => {:message => "End date is required"}
   validates_datetime :end_date, :on_or_after => :start_date
   validates :end_date, :timeliness => {:on_or_before => lambda{|auction| auction.start_date + 2.months}, :type => :date}
-  
   validates :category, :presence => { :message => "Please select a category" }
- 
+
+  def self.query_running_auctions_of_type(auction_type)
+    Proc.new { |timezone| where(["start_date < :today AND open = :is_open AND item_type = '#{auction_type}'", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true]) }
+  end
+
   scope :running, lambda { |timezone| where(["start_date < :today AND open = :is_open", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true]) }
-  scope :running_auction_for_admin, lambda { |timezone| where(["start_date < :today AND open = :is_open AND item_type = 'Silent Auction'", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true]) }
-  scope :running_normal_auction_for_admin, lambda { |timezone| where(["start_date < :today AND open = :is_open AND item_type = 'Normal Auction'", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true]) }
-  scope :running_quick_sales_for_admin, lambda { |timezone| where(["start_date < :today AND open = :is_open AND item_type = 'Quick Sale'", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true]) }
-  #scope :running_auction_for_user, lambda { |timezone,username| where(["start_date < :today AND open = :is_open AND creator <> :user_name AND item_type = 'Silent Auction'", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true, :user_name => username]) }
-  scope :running_auction_for_user, lambda { |timezone,username| where(["start_date < :today AND open = :is_open AND item_type = 'Silent Auction'", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true]) }
-  #scope :running_normal_auction_for_user, lambda { |timezone,username| where(["start_date < :today AND open = :is_open AND creator <> :user_name AND item_type = 'Normal Auction'", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true, :user_name => username]) }
-  scope :running_normal_auction_for_user, lambda { |timezone,username| where(["start_date < :today AND open = :is_open AND item_type = 'Normal Auction'", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true]) }
-  #scope :running_quick_sales_for_user, lambda { |timezone,username| where(["start_date < :today AND open = :is_open AND creator <> :user_name AND item_type = 'Quick Sale'", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true, :user_name => username]) }
-  scope :running_quick_sales_for_user, lambda { |timezone,username| where(["start_date < :today AND open = :is_open AND item_type = 'Quick Sale'", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true]) }
-  
+  scope :running_silent_auction, query_running_auctions_of_type('Silent Auction')
+  scope :running_normal_auction, query_running_auctions_of_type('Normal Auction')
+  scope :running_quick_sales, query_running_auctions_of_type('Quick Sale')
+
   scope :future, lambda { |timezone| where("start_date > ? AND open = ? AND (item_type = 'Silent Auction' OR item_type = 'Normal Auction')", Time.zone.now.in_time_zone(timezone).to_date, true) }
   scope :future_sale, lambda { |timezone| where("start_date > ? AND open = ? AND item_type = 'Quick Sale'", Time.zone.now.in_time_zone(timezone).to_date, true) }
-  
   scope :closed, includes(:bids).where("bids.id IS NOT NULL AND bids.active = ? AND open = ?", true, false)
-  
-  scope :expired, includes(:bids).where("silent_auctions.open = ? AND silent_auctions.id NOT IN (select distinct silent_auction_id from bids where active = ?)", false, true)  
-
+  scope :expired, includes(:bids).where("silent_auctions.open = ? AND silent_auctions.id NOT IN (select distinct silent_auction_id from bids where active = ?)", false, true)
   scope :recent, order('"silent_auctions"."created_at" desc')
-
   scope :ending_today, lambda { |timezone| where("end_date <= ?", (Time.zone.now.in_time_zone(timezone) + 10.minutes).to_date ) }
-  
+
   def initialize(*params)
     super(*params)
   end
@@ -77,7 +67,7 @@ class SilentAuction < ActiveRecord::Base
       self.description = self.description.strip
     end
   end
-  
+
   def validate_price_limit
     region = self.region
     maximum = self.get_region_config(region)["maximum"].to_f
@@ -86,10 +76,10 @@ class SilentAuction < ActiveRecord::Base
     if self.min_price > maximum
       isvalid = false
       errors.add(:min_price, " can't exceed #{currency} #{number_with_delimiter(maximum, :delimiter => ',')}")
-    end 
+    end
     return isvalid
   end
-  
+
   def number_with_delimiter(number, options = {})
     options.symbolize_keys!
 
@@ -110,14 +100,14 @@ class SilentAuction < ActiveRecord::Base
     parts[0].gsub!(/(\d)(?=(\d\d\d)+(?!\d))/, "\\1#{options[:delimiter]}")
     parts.join(options[:separator]).html_safe
   end
-    
+
   def set_default_region
      #self.region ||= :AUS
      if self.region.nil? then
        self.region = "AUS"
      end
   end
- 
+
   def close
     if self.bids.active.count == 0 && self.item_type != 'Silent Auction'
       errors.add :message, "Auction with no active bid cannot be closed"
@@ -148,7 +138,7 @@ class SilentAuction < ActiveRecord::Base
     else
       self.open = false
       self.save!
-      unless Rails.application.config.test_mode 
+      unless Rails.application.config.test_mode
         self.send_notification_email(self)
       end
     end
@@ -157,7 +147,7 @@ class SilentAuction < ActiveRecord::Base
   def change_to_closed_OLD
     if self.item_type == 'Silent Auction'
       self.open = false
-      unless Rails.application.config.test_mode 
+      unless Rails.application.config.test_mode
         self.send_notification_email(self)
       end
       self.save!
@@ -168,7 +158,7 @@ class SilentAuction < ActiveRecord::Base
 
   def get_regions
     config_file = "#{Rails.root}/config/region.yml"
-    YAML.load_file(config_file)    
+    YAML.load_file(config_file)
   end
 
   def get_region_config(region)
@@ -185,15 +175,15 @@ class SilentAuction < ActiveRecord::Base
   def self.close_auctions_ending_today
     self.where("open = ?", true).each do |auction|
       region = auction.region
-      timezone = auction.get_region_config(region)["timezone"]                  
-      if auction.end_date < (Time.zone.now.in_time_zone(timezone) + 10.minutes).to_date        
+      timezone = auction.get_region_config(region)["timezone"]
+      if auction.end_date < (Time.zone.now.in_time_zone(timezone) + 10.minutes).to_date
         auction.change_to_closed
-      end            
+      end
       current_time = Time.zone.now.in_time_zone(timezone) + 10.minutes
-      
+
       # to send email notification to the item's owner 2 days before a sale ends
       if current_time.hour == 0 && auction.end_date == (current_time.to_date + 2.days) && auction.item_type == 'Quick Sale'
-        
+
         puts "*" * 20
         puts current_time.hour
         puts (current_time.hour==0)
@@ -202,23 +192,23 @@ class SilentAuction < ActiveRecord::Base
         puts (auction.end_date == (current_time.to_date + 2.days))
         puts auction.item_type
         puts (auction.item_type == 'Quick Sale')
-        
+
         @silent_auction = auction
-        unless Rails.application.config.test_mode 
+        unless Rails.application.config.test_mode
           UserMailer.seller_notification_quick_sale_almost_ends(@silent_auction.title,@silent_auction.creator).deliver
-        end                        
+        end
       end
-      
+
       # to send email notification when the auction of an item STARTS
       if current_time.hour == 0 && auction.start_date == current_time.to_date
         @silent_auction = auction
-        unless Rails.application.config.test_mode 
+        unless Rails.application.config.test_mode
           UserMailer.send_announcement_to_other_users(@silent_auction).deliver
-        end                
+        end
       end
-    end    
+    end
   end
-  
+
   def send_notification_email(auction)
     @winner_id = ""
     @winner_amount = ""
@@ -227,7 +217,7 @@ class SilentAuction < ActiveRecord::Base
     @admins = User.where("admin = ? AND region = ?", true, auction.region)
     @alladmins = ""
     @admins.each do |admin|
-      if @alladmins != "" then 
+      if @alladmins != "" then
         @alladmins = @alladmins + ", "
       end
       @alladmins = @alladmins + admin.username + "@thoughtworks.com"
@@ -256,7 +246,7 @@ class SilentAuction < ActiveRecord::Base
           UserMailer.administrator_notification_expired(auction.title,@alladmins,auction.creator).deliver
         end
       end
-    end  
+    end
   end
-  
+
 end
