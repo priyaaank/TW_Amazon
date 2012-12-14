@@ -7,19 +7,13 @@
       %p.itemTitle= auction.title
       = simple_format(auction.description, :class => 'itemDescription')
       = simple_format("Winner: <span class='highlight'>#{wonBid.user.username}@thoughtworks.com</span>", :class => 'itemWinner')
-    -#%td.region
-      -#= simple_format("Region:<br/><strong>#{auction.region.upcase}</strong>")
     %td.min_price
-      -#= simple_format("Min Price:<br/><strong>#{(auction.region == "AUS" ? "AU$" : "NA") + " " + auction.min_price.to_s}</strong>")
-      -#= simple_format("Min Price:<br/><strong>#{number_to_currency(auction.min_price, :locale => auction.region)}</strong>")
-      -#= simple_format("Min Price:<br/><strong>#{get_region_config(current_user.region)['currency']} #{auction.min_price}</strong>")
-      = simple_format("Min Price:<br/><strong>#{get_region_config(current_user.region)['currency']} #{number_with_delimiter(auction.min_price)}</strong>")
+      = simple_format("Min Price:<br/><strong>#{current_user.currency} #{number_with_delimiter(auction.min_price)}</strong>")
     %td.end_date
       = simple_format("End date:<br /><strong>#{formatted_date(auction.end_date)}</strong>")
     %td.auction_bids
-      = simple_format("Winning Bid:<br/><span class='highlight'>#{get_region_config(current_user.region)['currency']} #{number_with_delimiter(wonBid.amount)}</span>")
+      = simple_format("Winning Bid:<br/><span class='highlight'>#{current_user.currency} #{number_with_delimiter(wonBid.amount)}</span>")
     - if current_user.admin?
-      -#= render :partial => "silent_auctions/admin_auction_view", :locals => { :auction => auction }
       %td.auction_controls
         .controls_holder
           = link_to "x".html_safe, confirm_delete_silent_auction_path(auction),

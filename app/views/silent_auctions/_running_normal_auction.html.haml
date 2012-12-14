@@ -6,13 +6,9 @@
     %td.auction_info
       %p.itemTitle= auction.title
       = simple_format(auction.description, :class => 'itemDescription')
-      = simple_format("Contact: <span class='highlight'>#{auction.creator}@thoughtworks.com</span>", :class => 'itemWinner')      
-    -#%td.region
-      -#= simple_format("Region:<br/><strong>#{auction.region.upcase}</strong>")
+      = simple_format("Contact: <span class='highlight'>#{auction.creator}@thoughtworks.com</span>", :class => 'itemWinner')
     %td.min_price
-      -#= simple_format("Min Price:<br/><strong>#{(auction.region == "AUS" ? "AU$" : "NA") + " " + auction.min_price.to_s}</strong>")
-      -#= simple_format("Min Price:<br/><strong>#{number_to_currency(auction.min_price, :locale => auction.region)}</strong>")
-      = simple_format("Min Price:<br/><strong>#{get_region_config(current_user.region)['currency']} #{number_with_delimiter(auction.min_price)}</strong>")
+      = simple_format("Min Price:<br/><strong>#{current_user.currency} #{number_with_delimiter(auction.min_price)}</strong>")
     %td.start_date
       = simple_format("Start date:<br /><strong>#{formatted_date(auction.start_date)}</strong>")
     %td.end_date
@@ -24,13 +20,13 @@
         = render :partial => "bids/user_normal_bid_view", :locals => { :auction => auction, :bid => bid }
       - else
         -# %td
-          -# &nbsp;  
+          -# &nbsp;
         %td.auction_bids
           - bid_count = auction.bids.active.count
           - if bid_count > 0
             %span{:class => 'badge badge-warning', :style => "font-weight:bold;"}
               -#= pluralize(bid_count, "bid")
-              = "Highest Bid: #{get_region_config(current_user.region)['currency']} #{won_bid_for_auction(auction).amount}"
+              = "Highest Bid: #{current_user.currency} #{won_bid_for_auction(auction).amount}"
           - else
             %span{:class => 'badge badge-error', :style => "font-weight:bold;"}
               = "There's no bid yet"

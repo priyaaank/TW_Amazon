@@ -8,7 +8,7 @@
       %p.itemTitle= auction.title
       = simple_format(auction.description, :class => 'itemDescription')
     %td.min_price
-      = simple_format("Min Price:<br/><strong>#{get_region_config(current_user.region)['currency']} #{number_with_delimiter(auction.min_price)}</strong>")
+      = simple_format("Min Price:<br/><strong>#{current_user.currency} #{number_with_delimiter(auction.min_price)}</strong>")
     %td.end_date
       = simple_format("End date:<br /><strong>#{formatted_date(auction.end_date)}</strong>")
     %td.auction_bids
