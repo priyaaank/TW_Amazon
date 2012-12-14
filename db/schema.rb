@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121210194323) do
+ActiveRecord::Schema.define(:version => 20121213185302) do
 
   create_table "bids", :force => true do |t|
     t.float    "amount"
@@ -51,11 +51,11 @@ ActiveRecord::Schema.define(:version => 20121210194323) do
     t.datetime "updated_at",                                :null => false
     t.float    "min_price"
     t.date     "end_date"
-    t.string   "region",      :default => "AUS"
     t.date     "start_date"
     t.string   "category",    :default => "Computers"
     t.string   "creator"
     t.string   "item_type",   :default => "Silent Auction"
+    t.integer  "region_id"
   end
 
   create_table "users", :force => true do |t|

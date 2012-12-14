@@ -8,33 +8,33 @@ class SilentAuctionsController < ApplicationController
   # GET /silent_auctions/running
   def index
     @title = "Running Silent Auctions"
-    @running_auctions = SilentAuction.running_silent_auction(@current_user.timezone).recent.includes(:bids)
+    @running_auctions = SilentAuction.running_silent_auction(current_user.timezone).recent.includes(:bids).find_by_region_id(current_user.region)
   end
 
   # GET /silent_auctions/normal_auctions
   def normal_auctions
     @title = "Running Auctions"
-    @running_auctions = SilentAuction.running_normal_auction(@current_user.timezone).recent.includes(:bids)
+    @running_auctions = SilentAuction.running_normal_auction(current_user.timezone).recent.includes(:bids).find_by_region_id(current_user.region)
   end
 
   def sales
     @title = "Quick Sales Board"
-    @running_sales = SilentAuction.running_quick_sales(@current_user.timezone).recent
+    @running_auctionss = SilentAuction.running_quick_sales(current_user.timezone).recent.find_by_region_id(current_user.region)
   end
 
   def closed
     @title = "Closed Auctions Listing"
-    @closed_auctions = SilentAuction.closed.recent.page(params[:page])
+    @closed_auctions = SilentAuction.closed.recent.page(params[:page]).find_by_region_id(current_user.region)
   end
 
   def expired
     @title = "Expired Auctions Listing"
-    @expired_auctions = SilentAuction.expired.order("end_date DESC").page(params[:page])
+    @expired_auctions = SilentAuction.expired.order("end_date DESC").page(params[:page]).find_by_region_id(current_user.region)
   end
 
   def future
     @title = "Future Auctions Listing"
-    @future_auctions = SilentAuction.future(@current_user.timezone).recent.page(params[:page])
+    @future_auctions = SilentAuction.future(current_user.timezone).recent.page(params[:page])
   end
 
   def new

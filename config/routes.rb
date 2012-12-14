@@ -47,8 +47,6 @@ TWAmazon::Application.routes.draw do
       post :create
       get :new_region
       post :update_region
-      get :region_management
-      get :update_region_YAML
     end
   end
 

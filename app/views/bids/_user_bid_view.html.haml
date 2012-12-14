@@ -13,12 +13,12 @@
     - if bid.active
       - if bid.id == wonBid.id
         -#= simple_format("Your Bid:<br/><span class='highlight'>#{number_to_currency(bid.amount)}</span>")
-        = simple_format("Your Bid:<br/><span class='highlight'>#{get_region_config(auction.region)['currency']} #{number_with_delimiter(bid.amount)}</span>")
+        = simple_format("Your Bid:<br/><span class='highlight'>#{auction.currency} #{number_with_delimiter(bid.amount)}</span>")
       - else
         -#= simple_format("Your Bid:<br/><span class='lost'>#{number_to_currency(bid.amount)}</span>")
-        = simple_format("Your Bid:<br/><span class='lost'>#{get_region_config(auction.region)['currency']} #{number_with_delimiter(bid.amount)}</span>")
+        = simple_format("Your Bid:<br/><span class='lost'>#{auction.currency} #{number_with_delimiter(bid.amount)}</span>")
     - else
-      = simple_format("Your Bid: <span class='delBid'>#{get_region_config(auction.region)['currency']} #{number_with_delimiter(bid.amount)}</span>")
+      = simple_format("Your Bid: <span class='delBid'>#{auction.currency} #{number_with_delimiter(bid.amount)}</span>")
       %span{:style => 'font-weight:bold; color:#f00'} WITHDRAWN
   - else
     &nbsp;

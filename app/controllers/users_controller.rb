@@ -23,7 +23,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     puts "*" * 40
     puts @user.username
-    @timezone = get_region_config(@user.region)["timezone"]
+    @timezone = @user.region.timezone
     @running_bids = SilentAuction.running(@timezone).where("creator = ? AND item_type = 'Silent Auction' AND region = ?", @user.username, @user.region).where({:open => true}).recent
     @closed_bids = SilentAuction.closed.where("creator = ? AND region = ? AND item_type ='Silent Auction'", @user.username, @user.region).recent
     @expired_bids = SilentAuction.expired.where("creator = ? AND region = ? AND item_type ='Silent Auction'", @user.username, @user.region).recent
@@ -35,7 +35,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     puts "*" * 40
     puts @user.username
-    @timezone = get_region_config(@user.region)["timezone"]
+    @timezone = @user.region.timezone
     @running_bids = SilentAuction.running(@timezone).where("creator = ? AND item_type = 'Normal Auction' AND region = ?", @user.username, @user.region).where({:open => true}).recent
     @closed_bids = SilentAuction.closed.where("creator = ? AND region = ? AND item_type ='Normal Auction'", @user.username, @user.region).recent
     @expired_bids = SilentAuction.expired.where("creator = ? AND region = ? AND item_type ='Normal Auction'", @user.username, @user.region).recent
@@ -47,7 +47,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     puts "*" * 40
     puts @user.username
-    @timezone = get_region_config(@user.region)["timezone"]
+    @timezone = @user.region.timezone
     @running_bids = SilentAuction.running(@timezone).where("creator = ? AND item_type = 'Quick Sale' AND region = ?", @user.username, @user.region).where({:open => true}).recent
     @future_bids = SilentAuction.future_sale(@timezone).where({:open => true}).where("creator = ? AND region = ?", @user.username, @user.region).recent#need timezone to filter the future auction items
   end
@@ -81,7 +81,9 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
+    region_id =  params[:user].delete(:region)
     @user.update_attributes(params[:user])
-    redirect_to(:back)
+    @user.region = Region.find(params[:user][:region])
+    redirect_to :back
   end
 end

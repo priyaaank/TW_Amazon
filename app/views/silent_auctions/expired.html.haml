@@ -4,16 +4,8 @@
   - if current_user.admin?
     = link_to 'Create NEW Auction/Sale', new_silent_auction_path, :class => 'btn btn-primary'
 
--#- status = page_entries_info @expired_auctions
--#- replacements = [ ["silent", "expired"], ["entries", "auctions"] ]
--#- replacements.each {|replacement| status.gsub!(replacement[0], replacement[1])}
--#%h3= status.html_safe
-- @expired_auctions = @expired_auctions.where("region = '#{@user.region}'")
-- if @expired_auctions.empty?
-  - status = page_entries_info @expired_auctions
-  - replacements = [ ["silent", "expired"], ["entries", "auctions"] ]
-  - replacements.each {|replacement| status.gsub!(replacement[0], replacement[1])}
-  %h3= status.html_safe
+- if @expired_auctions.blank?
+  %h3= "No auctions found"
   .empty_collection
     %p.emptyMsg There are no expired auctions.
 - else

@@ -4,8 +4,7 @@
   -#- if current_user.admin?
   = link_to 'Create NEW Auction/Sale', new_silent_auction_path, :class => 'btn btn-primary'
 
-- @running_auctions = @running_sales.where("region = '#{@user.region}'")
-- if @running_auctions.empty?
+- if @running_auctions.blank?
   %h3= "No sales found"
   .empty_collection
     %p.emptyMsg There are no running sales.

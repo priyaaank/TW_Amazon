@@ -1,14 +1,10 @@
 %ul{:class => "nav pull-right"}
   - @user = current_user
-  -#- unless @user.region.nil?
-  - unless @user.region.nil?
-    - unless @user.region == ""
-      -# %li.divider-vertical
-      -#%li{:class => "dropdown-menu", :id => "region-selector"}
-      %li{:id => "region-selector", :class => ""}
-        %span{:id => "countryselect"}
-          = simple_nested_form_for @user, :html => { :multipart => false } do |f|
-            = f.input :region, :collection => get_regions, :selected => @user.region, :onchange => 'alert(@user);'
+  - unless @user.region.blank?
+    %li{:id => "region-selector", :class => ""}
+      %span{:id => "countryselect"}
+        = simple_nested_form_for @user, :html => { :multipart => false } do |f|
+          = f.collection_select :region, get_regions,"id", "code", :selected => @user.region_id, :onchange => 'alert(@user);'
   %li.divider-vertical
   %li.dropdown
     %a{:href => "#", :id => 'user_menu', :class => "dropdown-toggle", "data-toggle" => "dropdown"}
@@ -23,19 +19,16 @@
     %ul{:class => "dropdown-menu"}
       - if test_mode?
         - if not(current_user.admin?)
-          %li=link_to("My Auctions", user_path(current_user))   
+          %li=link_to("My Auctions", user_path(current_user))
         %li=link_to("Logout", destroy_user_session_path)
         - if session[:cas_login]
           %li=link_to("Logout from CAS", destroy_cas_user_session_path)
       - else
         - if not(current_user.admin?)
           %li=link_to("My Bids", user_path(current_user))
-          -#%li=link_to("My Auctions", list_my_items_user_path(current_user))
-          -#%li=link_to("My Sales", list_my_sales_user_path(current_user))
-        - else 
+        - else
           -if(current_user.username=="dgower")
-            %li=link_to("Region Management", region_management_user_path(current_user)) 
-        -# %li=link_to("My Auctions", list_my_items_user_path(current_user))
+            %li=link_to("Region Management", region_management_user_path(current_user))
         %li=link_to("My Silent Auctions", list_my_items_user_path(current_user))
         %li=link_to("My Normal Auctions", list_my_normal_auctions_user_path(current_user))
         %li=link_to("My Sales", list_my_sales_user_path(current_user))

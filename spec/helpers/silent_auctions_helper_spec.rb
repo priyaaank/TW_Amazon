@@ -49,16 +49,5 @@ describe SilentAuctionsHelper do
       helper.won_bid_for_auction(test_auction).should eql tbid1
     end
   end
-  
-  describe 'get_region_config' do
-    describe 'when region code is passed in' do
-      it 'gives me the currency' do
-        helper.get_region_config("AUS")["currency"].should == "AU$"
-      end
-      
-      it 'gives me the timezone' do
-        helper.get_region_config("AUS")["timezone"].should == "Melbourne"
-      end
-    end
-  end
+
 end

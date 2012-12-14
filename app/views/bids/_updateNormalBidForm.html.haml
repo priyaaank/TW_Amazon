@@ -3,11 +3,11 @@
   - bid.amount = ""
   - auction = SilentAuction.find(bid.silent_auction_id)
   %span{:class => 'badge badge-warning', :style => "font-weight:bold;"}
-    = "Highest Bid: #{get_region_config(current_user.region)['currency']} #{won_bid_for_auction(auction).amount}"
+    = "Highest Bid: #{current_user.currency} #{won_bid_for_auction(auction).amount}"
   %br
   %br
-  = f.input :amount, :label => "Your Last Bid: #{get_region_config(current_user.region)['currency']} #{won_bid_for_auction(auction).amount}", :wrapper => :prepend do
-    = content_tag :span, "#{get_region_config(current_user.region)['currency']}", :class => "add-on", :id => "bid_amount_currency"
+  = f.input :amount, :label => "Your Last Bid: #{current_user.currency} #{won_bid_for_auction(auction).amount}", :wrapper => :prepend do
+    = content_tag :span, "#{current_user.currency}", :class => "add-on", :id => "bid_amount_currency"
     = f.input_field :amount, :class => 'span1'
   = f.hidden_field :silent_auction_id, :value => auction.id
   = submit_tag "Update Bid", :class => 'btn btn-primary btn-mini', :disable_with => "Updating..."

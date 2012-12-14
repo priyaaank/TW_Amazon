@@ -4,16 +4,8 @@
   - if current_user.admin?
     = link_to 'Create NEW Auction/Sale', new_silent_auction_path, :class => 'btn btn-primary'
 
--#- status = page_entries_info @closed_auctions
--#- replacements = [ ["silent", "closed"], ["entries", "auctions"] ]
--#- replacements.each {|replacement| status.gsub!(replacement[0], replacement[1])}
--#%h3= status.html_safe
-- @closed_auctions = @closed_auctions.where("region = '#{@user.region}'")
-- if @closed_auctions.empty?
-  - status = page_entries_info @closed_auctions
-  - replacements = [ ["silent", "closed"], ["entries", "auctions"] ]
-  - replacements.each {|replacement| status.gsub!(replacement[0], replacement[1])}
-  %h3= status.html_safe
+- if @closed_auctions.blank?
+  %h3= 'No auctions found'
   .empty_collection
     %p.emptyMsg There are no closed auctions.
 - else

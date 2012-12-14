@@ -66,4 +66,8 @@ module ApplicationHelper
     session[:requested_page] = nil
   end
 
+  def get_regions
+     @regions ||= Region.all
+  end
+
 end

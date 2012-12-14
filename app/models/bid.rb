@@ -1,6 +1,6 @@
 class Bid < ActiveRecord::Base
   include UsersHelper
-  
+
   belongs_to :silent_auction, :inverse_of => :bids
   belongs_to :user, :inverse_of => :bids
 
@@ -21,18 +21,16 @@ class Bid < ActiveRecord::Base
 
   def validate_bid_limit
     item = SilentAuction.find(silent_auction_id)
-    region = item.region
-    maximum = item.get_region_config(region)["maximum"].to_f
-    currency = item.get_region_config(region)["currency"]
-    isvalid = true
-    if self.amount > maximum
-      isvalid = false
+    maximum = item.region.maximum.to_f
+    currency = item.region.currency
+    valid = self.amount > maximum
+    unless valid
       warning = number_with_delimiter(maximum, :delimiter => ",").to_s
       errors.add(:amount, " can't exceed #{currency} #{warning}")
-    end 
-    return isvalid
+    end
+    return valid
   end
-  
+
   def number_with_delimiter(number, options = {})
     options.symbolize_keys!
 
@@ -56,17 +54,17 @@ class Bid < ActiveRecord::Base
     if self.amount != nil
       #errors.add :amount, "cannot be less than minimum price" unless SilentAuction.find(self.silent_auction_id).min_price <= self.amount
       auction = SilentAuction.find(self.silent_auction_id)
-      if auction.item_type == 'Silent Auction' 
+      if auction.item_type == 'Silent Auction'
         errors.add :amount, "cannot be less than minimum price" unless auction.min_price <= self.amount
       else
-        highestBid = auction.bids.active.highFirst.earlier.first 
+        highestBid = auction.bids.active.highFirst.earlier.first
         if highestBid.nil?
           errors.add :amount, "cannot be less than minimum price" unless auction.min_price <= self.amount
         else
-          errors.add :amount, "must be higher than the current highest bid" unless highestBid.amount < self.amount          
+          errors.add :amount, "must be higher than the current highest bid" unless highestBid.amount < self.amount
         end
-        
-        
+
+
       end
     end
   end
