@@ -18,7 +18,8 @@ describe UsersController do
 
     describe "for signed-in non-admin users" do
       before(:each) do
-        @user = User.make!(:user, :region => 'AUS')
+        @region = Region.make!(:aus)
+        @user = User.make!(:user, :region => @region)
         sign_in @user
       end
 
@@ -36,10 +37,10 @@ describe UsersController do
 
       describe 'listing auctions user has placed bid on' do
         before(:each) do
-          auction1 = SilentAuction.make!
-          auction2 = SilentAuction.make!
-          auction3 = SilentAuction.make!
-          auction4 = SilentAuction.make!
+          auction1 = SilentAuction.make! :region => @region
+          auction2 = SilentAuction.make! :region => @region
+          auction3 = SilentAuction.make! :region => @region
+          auction4 = SilentAuction.make! :region => @region
 
           @bid1 = @user.bids.create(:silent_auction_id => auction1.id, :amount => 100)
           @bid2 = @user.bids.create(:silent_auction_id => auction2.id, :amount => 200)

@@ -4,8 +4,9 @@ SilentAuction.blueprint do
   title { Faker::Lorem.sentence }
   description { Faker::Lorem.paragraph }
   min_price { 1.00 }
-  start_date { Time.zone.now }
   end_date { 7.days.from_now }
+  region {Region.make!(:aus)}
+  start_date { Time.zone.now.in_time_zone(Region.make!(:aus).timezone) + 10.minutes}
 end
 
 User.blueprint do
@@ -13,6 +14,7 @@ User.blueprint do
   admin { false }
   password {"userpass"}
   password_confirmation {"userpass"}
+  region {Region.make!(:aus)}
 end
 
 User.blueprint(:user) do
@@ -37,13 +39,22 @@ User.blueprint(:casUser) do
 end
 
 Bid.blueprint do
-  # Attributes here
 end
 
 Photo.blueprint do
   # Attributes here
 end
 
-Region.blueprint do
-  # Attributes here
+Region.blueprint(:aus) do
+  code {'AUS'}
+  currency {'AU$'}
+  timezone {'Melbourne'}
+  maximum {10000}
+end
+
+Region.blueprint(:ind) do
+  code {'IND'}
+  currency {'Rs'}
+  timezone {'New Delhi'}
+  maximum {100000}
 end

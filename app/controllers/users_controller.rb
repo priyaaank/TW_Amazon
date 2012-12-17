@@ -13,9 +13,9 @@ class UsersController < ApplicationController
   def show
     @title = "My Bids"
     @user = User.find(params[:id])
-    @running_bids = @user.bids.joins(:silent_auction).where(:silent_auctions => {:open => true}).where("region = ? AND item_type = 'Silent Auction'", @user.region).recent
-    @running_normal_bids = @user.bids.joins(:silent_auction).where(:silent_auctions => {:open => true}).where("region = ? AND item_type = 'Normal Auction'", @user.region).recent
-    @closed_bids = @user.bids.joins(:silent_auction).where(:silent_auctions => {:open => false}).where("bids.active = ? AND region = ?", true, @user.region).recent
+    @running_bids = @user.bids.joins(:silent_auction).where(:silent_auctions => {:open => true}).where("region_id = ? AND item_type = 'Silent Auction'", @user.region).recent
+    @running_normal_bids = @user.bids.joins(:silent_auction).where(:silent_auctions => {:open => true}).where("region_id = ? AND item_type = 'Normal Auction'", @user.region).recent
+    @closed_bids = @user.bids.joins(:silent_auction).where(:silent_auctions => {:open => false}).where("bids.active = ? AND region_id = ?", true, @user.region).recent
   end
 
   def list_my_items
@@ -83,7 +83,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     region_id =  params[:user].delete(:region)
     @user.update_attributes(params[:user])
-    @user.region = Region.find(params[:user][:region])
+    @user.region = Region.find(region_id)
     redirect_to :back
   end
 end

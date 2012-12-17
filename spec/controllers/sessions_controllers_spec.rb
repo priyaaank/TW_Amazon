@@ -43,12 +43,12 @@ describe SessionsController do
       #response.should redirect_to index_path
       response.should_not redirect_to index_path
 
-      subject.current_user.region = "AUS"
+      subject.current_user.region = Region.make!(:aus)
       subject.current_user.save!
       get :cas
       session[:cas_login].should == true
       response.should redirect_to index_path
-      #Expected response to be a redirect to <http://test.host/silent_auctions> but was a redirect to <http://test.host/users/1/new_region>      
+      #Expected response to be a redirect to <http://test.host/silent_auctions> but was a redirect to <http://test.host/users/1/new_region>
     end
   end
 

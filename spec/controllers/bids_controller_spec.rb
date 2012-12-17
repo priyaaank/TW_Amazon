@@ -6,7 +6,8 @@ describe BidsController do
   describe "POST 'create'" do
 
     before(:each) do
-      @user = User.make!(:user)
+      @region = Region.find_by_code('AUS')
+      @user = User.make!(:user, :region => @region)
       sign_in @user
     end
 

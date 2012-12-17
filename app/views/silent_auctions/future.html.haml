@@ -8,7 +8,6 @@
 -#- replacements = [ ["silent", "future"], ["entries", "auctions"] ]
 -#- replacements.each {|replacement| status.gsub!(replacement[0], replacement[1])}
 -#%h3= status.html_safe
-- @future_auctions = @future_auctions.where("region = '#{@user.region}'")
 - if @future_auctions.empty?
   - status = page_entries_info @future_auctions
   - replacements = [ ["silent", "future"], ["entries", "auctions"] ]

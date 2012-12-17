@@ -7,7 +7,7 @@ class SilentAuction < ActiveRecord::Base
   has_many :bids, :dependent => :destroy, :inverse_of => :silent_auction
   has_many :photos, :dependent => :destroy, :inverse_of => :silent_auction
   belongs_to :region
-  delegate :currency, :to => :region
+  delegate :currency, :timezone, :to => :region
 
   attr_accessible :title, :description, :open, :min_price, :start_date, :end_date, :photos_attributes, :category, :creator, :item_type
 
@@ -51,7 +51,7 @@ class SilentAuction < ActiveRecord::Base
   end
 
   def check_start_date
-    errors.add(:start_date, "Start date must be on or after #{date_today}") unless self.start_date >= date_today
+    errors.add(:start_date, "Start date must be on or after #{date_today}") unless self.start_date.to_date >= date_today
   end
 
   def strip_whitespace
@@ -62,7 +62,7 @@ class SilentAuction < ActiveRecord::Base
   def validate_price_limit
     maximum = region.maximum.to_f
     currency = region.currency
-    valid = min_price > maximum
+    valid = min_price < maximum
     errors.add(:min_price, " can't exceed #{currency} #{number_with_delimiter(maximum, :delimiter => ',')}") unless valid
     return valid
   end
@@ -110,15 +110,15 @@ class SilentAuction < ActiveRecord::Base
     if item_type == 'Quick Sale'
       destroy
     else
-      open = false
+      self.open = false
       save!
       self.send_notification_email(self) unless Rails.application.config.test_mode
     end
   end
 
   def self.close_auctions_ending_today
-    self.where("open = ?", true).each do |auction|
-      timezone = auction.region.timezone
+    self.find_all_by_open(true).each do |auction|
+      timezone = auction.timezone
       if auction.end_date < (Time.zone.now.in_time_zone(timezone) + 10.minutes).to_date
         auction.change_to_closed
       end
@@ -126,25 +126,15 @@ class SilentAuction < ActiveRecord::Base
 
       # to send email notification to the item's owner 2 days before a sale ends
       if current_time.hour == 0 && auction.end_date == (current_time.to_date + 2.days) && auction.item_type == 'Quick Sale'
-
-        puts "*" * 20
-        puts current_time.hour
-        puts (current_time.hour==0)
-        puts auction.end_date
-        puts (current_time.to_date + 2.days)
-        puts (auction.end_date == (current_time.to_date + 2.days))
-        puts auction.item_type
-        puts (auction.item_type == 'Quick Sale')
-
         @silent_auction = auction
         UserMailer.seller_notification_quick_sale_almost_ends(@silent_auction.title,@silent_auction.creator).deliver unless Rails.application.config.test_mode
       end
-    end
 
-    # to send email notification when the auction of an item STARTS
-    if current_time.hour == 0 && auction.start_date == current_time.to_date
-      @silent_auction = auction
-      UserMailer.send_announcement_to_other_users(@silent_auction).deliver unless Rails.application.config.test_mode
+      # to send email notification when the auction of an item STARTS
+      if current_time.hour == 0 && auction.start_date == current_time.to_date
+        @silent_auction = auction
+        UserMailer.send_announcement_to_other_users(@silent_auction).deliver unless Rails.application.config.test_mode
+      end
     end
   end
 
@@ -153,7 +143,7 @@ class SilentAuction < ActiveRecord::Base
     @winner_amount = ""
     @winner = Bid.where("silent_auction_id = ? AND active = ?",auction.id,true)
     @count = @winner.count
-    @admins = User.where("admin = ? AND region = ?", true, auction.region)
+    @admins = User.where("admin = ? AND region_id = ?", true, auction.region)
     @alladmins = @admins.collect{|admin| admin.username + '@thoughtworks.com'}.join(',')
     if @count > 0
       @winner = @winner.order("amount ASC").last!
@@ -181,7 +171,7 @@ class SilentAuction < ActiveRecord::Base
 
   private
   def date_today
-    Time.zone.now.in_time_zone(region.timezone).to_date
+    Time.zone.now.in_time_zone(timezone).to_date
   end
 
 end

@@ -13,9 +13,9 @@ describe SilentAuctionsController do
 
     describe "for signed-in users" do
       before(:each) do
-        @user = User.make!(:user)
+        @region = Region.make!(:aus)
+        @user = User.make!(:user, :region => @region)
         sign_in @user
-        @user.region = "AUS"
         @user.save!
       end
 
@@ -24,12 +24,11 @@ describe SilentAuctionsController do
         @user.save!
         get :index
         response.should_not be_success
-        @user.region = ""
         @user.save!
         get :index
         response.should_not be_success
       end
-      
+
       it 'should return http success' do
         get :index
         response.should be_success
@@ -42,10 +41,10 @@ describe SilentAuctionsController do
 
       describe 'list all running auctions' do
         before(:each) do
-          @auction1 = SilentAuction.make!(:created_at => 1.day.ago, :start_date => Time.now, :end_date => 7.days.from_now, :creator => 'dummy_creator')
-          @auction2 = SilentAuction.make!(:created_at => Time.now, :creator => 'dummy_creator')
-          @auction3 = SilentAuction.make!(:created_at => 1.minute.from_now, :creator => 'dummy_creator')
-          @close_auction = SilentAuction.make!(:open => false, :creator => 'dummy_creator')
+          @auction1 = SilentAuction.make!(:region => @region, :created_at => 1.day.ago, :start_date => Time.now, :end_date => 7.days.from_now, :creator => 'dummy_creator')
+          @auction2 = SilentAuction.make!(:region => @region, :created_at => Time.now, :creator => 'dummy_creator')
+          @auction3 = SilentAuction.make!(:region => @region, :created_at => 1.minute.from_now, :creator => 'dummy_creator')
+          @close_auction = SilentAuction.make!(:region => @region, :open => false, :creator => 'dummy_creator')
           get :index
         end
 
@@ -77,9 +76,9 @@ describe SilentAuctionsController do
 
     describe "for signed-in users" do
       before(:each) do
-        @user = User.make!(:user)
+        @region = Region.make!(:aus)
+        @user = User.make!(:user, :region => @region)
         sign_in @user
-        @user.region = "AUS"
         @user.save!
       end
 
@@ -95,9 +94,9 @@ describe SilentAuctionsController do
 
       describe 'list all closed auctions that has at least one bid' do
         before(:each) do
-          @auction1 = SilentAuction.make!(:created_at => Time.now + 100)
-          @auction2 = SilentAuction.make!(:created_at => Time.now)
-          @auction3 = SilentAuction.make!(:created_at => Time.now + 50)
+          @auction1 = SilentAuction.make!(:region => @region, :created_at => Time.now + 100)
+          @auction2 = SilentAuction.make!(:region => @region, :created_at => Time.now)
+          @auction3 = SilentAuction.make!(:region => @region, :created_at => Time.now + 50)
 
           @user.bids.create(:silent_auction_id => @auction1.id, :amount => 100)
           @user.bids.create(:silent_auction_id => @auction2.id, :amount => 100)
@@ -141,9 +140,9 @@ describe SilentAuctionsController do
 
     describe "for sign-in admin" do
       before(:each) do
-        @admin = User.make!(:admin)
+        @region = Region.make!(:aus)
+        @admin = User.make!(:admin, :region => @region)
         sign_in @admin
-        @admin.region = "AUS"
         @admin.save!
       end
 
@@ -159,9 +158,9 @@ describe SilentAuctionsController do
 
       describe 'list all expired auctions (closed auctions with no bid)' do
         before(:each) do
-          @auction1 = SilentAuction.make!(:open => false, :end_date => Time.now + 10.hours + 2.days)
-          @auction2 = SilentAuction.make!(:open => false, :end_date => Time.now + 10.hours + 1.days)
-          @auction3 = SilentAuction.make!(:open => false, :end_date => Time.now + 10.hours)
+          @auction1 = SilentAuction.make!(:region => @region, :open => false, :end_date => Time.now + 10.hours + 2.days)
+          @auction2 = SilentAuction.make!(:region => @region, :open => false, :end_date => Time.now + 10.hours + 1.days)
+          @auction3 = SilentAuction.make!(:region => @region, :open => false, :end_date => Time.now + 10.hours)
 
           @run_auction = SilentAuction.make!
 
@@ -202,9 +201,9 @@ describe SilentAuctionsController do
 
     describe "for sign-in admin" do
       before(:each) do
-        @admin = User.make!(:admin)
+        @region = Region.make!(:aus)
+        @admin = User.make!(:admin, :region => @region)
         sign_in @admin
-        @admin.region = "AUS"
         @admin.save!
       end
 
@@ -220,9 +219,9 @@ describe SilentAuctionsController do
 
       describe 'list all future auctions' do
         before(:each) do
-          @future = SilentAuction.make!(:start_date => Date.today + 1.day)
+          @future = SilentAuction.make!(:start_date => Date.today + 1.day, :region => @region)
 
-          @today = SilentAuction.make!(:start_date => Date.today)
+          @today = SilentAuction.make!(:start_date => Date.today, :region => @region)
 
           get :future
         end
@@ -286,7 +285,7 @@ describe SilentAuctionsController do
     context 'given valid auction details' do
 
       before(:each) do
-        @valid_details = { :title => 'a', :description => 'b', :min_price => 250, :photos_attributes => {}, :start_date=>Date.today, :end_date=>7.days.from_now}
+        @valid_details = { :title => 'a', :description => 'b', :min_price => 250, :photos_attributes => {}, :start_date=>Date.today, :end_date=>7.days.from_now, :region_id => 1}
       end
 
       it 'should save new silent auction' do
@@ -310,7 +309,8 @@ describe SilentAuctionsController do
     context 'given invalid auction details' do
 
       before(:each) do
-        @invalid_details = { :title => '', :description => 'b', :min_price => 250, :photos_attributes => {}}
+        @region = Region.make!(:aus)
+        @invalid_details = { :title => '', :description => 'b', :min_price => 250, :photos_attributes => {}, :region_id => @region.id}
       end
 
       it 'should not create a new silent auction' do

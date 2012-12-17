@@ -5,36 +5,34 @@ class SilentAuctionsController < ApplicationController
   before_filter :authenticate_user!
   before_filter :ensure_signed_in_user_has_a_region, :only => [:index, :closed, :expired, :future]
 
-  # GET /silent_auctions/running
   def index
     @title = "Running Silent Auctions"
-    @running_auctions = SilentAuction.running_silent_auction(current_user.timezone).recent.includes(:bids).find_by_region_id(current_user.region)
+    @running_auctions = SilentAuction.running_silent_auction(current_user.timezone).recent.includes(:bids).where("region_id = '#{current_user.region_id}'")
   end
 
-  # GET /silent_auctions/normal_auctions
   def normal_auctions
     @title = "Running Auctions"
-    @running_auctions = SilentAuction.running_normal_auction(current_user.timezone).recent.includes(:bids).find_by_region_id(current_user.region)
+    @running_auctions = SilentAuction.running_normal_auction(current_user.timezone).recent.includes(:bids).where("region_id = '#{current_user.region_id}'")
   end
 
   def sales
     @title = "Quick Sales Board"
-    @running_auctionss = SilentAuction.running_quick_sales(current_user.timezone).recent.find_by_region_id(current_user.region)
+    @running_auctionss = SilentAuction.running_quick_sales(current_user.timezone).recent.where("region_id = '#{current_user.region_id}'")
   end
 
   def closed
     @title = "Closed Auctions Listing"
-    @closed_auctions = SilentAuction.closed.recent.page(params[:page]).find_by_region_id(current_user.region)
+    @closed_auctions = SilentAuction.closed.recent.page(params[:page]).where("region_id = '#{current_user.region_id}'")
   end
 
   def expired
     @title = "Expired Auctions Listing"
-    @expired_auctions = SilentAuction.expired.order("end_date DESC").page(params[:page]).find_by_region_id(current_user.region)
+    @expired_auctions = SilentAuction.expired.order("end_date DESC").page(params[:page]).where("region_id = '#{current_user.region_id}'")
   end
 
   def future
     @title = "Future Auctions Listing"
-    @future_auctions = SilentAuction.future(current_user.timezone).recent.page(params[:page])
+    @future_auctions = SilentAuction.future(current_user.timezone).recent.page(params[:page]).where("region_id = '#{current_user.region_id}'")
   end
 
   def new
@@ -44,7 +42,9 @@ class SilentAuctionsController < ApplicationController
   end
 
   def create
+    region_id =  params[:silent_auction].delete(:region_id)
     @silent_auction = SilentAuction.new(params[:silent_auction])
+    @silent_auction.region = Region.find(region_id)
     respond_to do |format|
       if @silent_auction.save
         flash[:success] = "New item for <b>#{@silent_auction.title}</b> was successfully created!".html_safe
@@ -133,32 +133,17 @@ class SilentAuctionsController < ApplicationController
     respond_to do |format|
       if @silent_auction.update_attributes(params[:silent_auction])
         format.html {
-          # if current_user.admin == true
-            # flash[:success] = "<b>#{@silent_auction.title}</b> was successfully updated!".html_safe
-            # if @silent_auction.item_type == 'Silent Auction'
-              # redirect_to silent_auctions_path
-            # else if @silent_auction.item_type == 'Normal Auction'
-              # redirect_to normal_auctions_silent_auctions_path
-            # else
-              # redirect_to sales_silent_auctions_path
-            # end #end of else if
-            # end
-          # else
-            flash[:success] = "<b>#{@silent_auction.title}</b> was successfully updated!".html_safe
-            #redirect_to sales_silent_auctions_path
+           flash[:success] = "<b>#{@silent_auction.title}</b> was successfully updated!".html_safe
             if @silent_auction.item_type == 'Silent Auction'
               redirect_to list_my_items_user_path(current_user)
-            else if @silent_auction.item_type == 'Normal Auction'
+            elsif @silent_auction.item_type == 'Normal Auction'
               redirect_to list_my_normal_auctions_user_path(current_user)
             else
               redirect_to list_my_sales_user_path(current_user)
-            end #end of else if
             end
-          # end
         }
       else
         format.html {
-          # to force error message for minimum price has a subject
           @silent_auction.errors[:min_price].each do |msg|
             msg.insert(0, "Minimum price ")
           end
