@@ -20,9 +20,8 @@ Feature: silent auction
     Scenario: Create new auction
     Given I'm logged in as an admin
     When I create a silent auction with the following:
-      | title        | description            | min_price |
-      | sample title | this is my description | 250       |
-
+      | title        | description            | min_price | open |
+      | sample title | this is my description | 250       | yes  |
     Then a valid silent auction is created with the following:
       | title        | description            | min_price | open |
       | sample title | this is my description | 250       | yes  |
@@ -31,4 +30,4 @@ Feature: silent auction
 
 
 
-	
+

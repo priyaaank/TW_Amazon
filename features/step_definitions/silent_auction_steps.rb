@@ -6,7 +6,8 @@ end
 Given /^there are valid auctions as the following:$/ do |table|
   table.hashes.each do | hash |
     hash["open"] = (hash["open"] == "yes") ? true : false
-    auction = SilentAuction.make!(:title => hash['title'], :description => hash['description'], :min_price => hash['min_price'])
+    @region = Region.find_by_code 'AUS'
+    auction = SilentAuction.make!(:title => hash['title'], :description => hash['description'], :min_price => hash['min_price'], :region => @region)
     hash['active bids'].to_i.times do
       User.make!(:user).bids.create(:silent_auction_id => auction.id, :amount => hash['min_price'])
     end
@@ -16,7 +17,8 @@ Given /^there are valid auctions as the following:$/ do |table|
 end
 
 Given /^there are no valid running auctions$/ do
-  SilentAuction.running.destroy_all
+  @region = Region.find_by_code 'AUS'
+  SilentAuction.running(@region.timezone).destroy_all
 end
 
 Given /^there are no valid closed auctions$/ do
@@ -25,13 +27,15 @@ end
 
 # REAL USER ACTIONS
 When /^I create a silent auction with the following:$/ do |table|
+  @region = Region.find_by_code 'AUS'
   table.hashes.each do | hash |
     visit new_silent_auction_path
     current_path.should == new_silent_auction_path
-    find_field('End date').value.should == 2.weeks.from_now.to_date.to_s(:day_date_and_month)
+    find_field('End date').value.should == 2.weeks.from_now.in_time_zone(@region.timezone).to_s(:date_month_and_year)
     fill_in("silent_auction[title]", :with => hash['title'])
     fill_in("silent_auction[min_price]", :with => hash['min_price'])
     fill_in("silent_auction[description]", :with => hash['description'])
+    fill_in("silent_auction[start_date]", :with => Date.today.to_s(:date_month_and_year))
     click_button "submit_done"
   end
 end
@@ -57,6 +61,7 @@ end
 
 When /^I close the auction$/ do
   within("tr#silentAuction_#{get(:silent_auctions).id}") do
+    click_button 'Manage'
     click_link 'close_auction'
     page.driver.browser.switch_to.alert.accept
   end
@@ -64,7 +69,8 @@ end
 
 When /^I delete the auction$/ do
   within("tr#silentAuction_#{get(:silent_auctions).id}") do
-    click_link 'delete_auction'
+    click_button 'Manage'
+    click_link 'Delete'
   end
 end
 
@@ -114,8 +120,9 @@ Then /^I can see running auctions and closed auctions separately$/ do
 end
 
 Then /^I can see all running auctions sorted by most recent first:$/ do |table|
+  @region = Region.find_by_code 'AUS'
   within_table('runningAuctions') do
-    page.find(:css,"tr.auction", :count => SilentAuction.running.count)
+    page.find(:css,"tr.auction", :count => SilentAuction.running(@region.timezone).count)
 
     expected_order = table.raw.map {|titleRow| titleRow[0]}
     actual_order = page.all('p.itemTitle').collect(&:text)
@@ -134,8 +141,9 @@ Then /^I can see all closed auctions sorted by most recent first:$/ do |table|
 end
 
 Then /^I can see all expired auctions sorted by most recent first:$/ do |table|
+  @region = Region.find_by_code 'AUS'
   within_table('expiredAuctions') do
-    page.find(:css,"tr.auction", :count => SilentAuction.expired.count)
+    page.find(:css,"tr.auction", :count => SilentAuction.expired(@region.timezone).count)
 
     expected_order = table.raw.map {|titleRow| titleRow[0]}
     actual_order = page.all('p.itemTitle').collect(&:text)
@@ -173,7 +181,7 @@ end
 Then /^I can see the end date$/ do
   # TODO improve the effectiveness of asserting the dynamic end date
   # that should appear for each open auction on the listing page
-  page.should have_content 'End date' 
+  page.should have_content 'End date'
 end
 
 Then /^the auction should be deleted$/ do

@@ -2,8 +2,8 @@ Feature: Delete Auction
 
   Background:
     Given there is a running auction as the following:
-      | title        | description        | min_price |
-      | test title 1 | test description 1 | 200       |
+      | title        | description        | min_price | open | region |
+      | test title 1 | test description 1 | 200       | yes  | AUS    |
     And there are bids placed for the auction as following:
       | user | bid amount |
       | user_1 | 500.99 |
@@ -32,7 +32,7 @@ Feature: Delete Auction
     Then I should go back to 'running_auctions' page
 
   @javascript
-  Scenario: delete auction
+  Scenario: Cancel Delete auction
     When I delete the auction
     And choose to cancel deleting
     Then I should go back to 'running_auctions' page

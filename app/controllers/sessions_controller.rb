@@ -13,14 +13,6 @@ class SessionsController < Devise::OmniauthCallbacksController
       else
         # in real application (non-test-mode) redirect users directly to CAS login page
         redirect_to user_omniauth_authorize_path(:cas)
-        # current_user = User.find(1)
-        # redirect_to index_path
-
-        # TRY
-        # redirect_to(:back)
-        # session[:return_to] ||= request.referer
-        # redirect_to session[:return_to]
-
       end
     end
   end

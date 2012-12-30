@@ -2,8 +2,8 @@ Feature: Close auction to see winner
 
   Background:
     Given there is a running auction as the following:
-      | title        | description        | min_price |
-      | test title 1 | test description 1 | 200       |
+      | title        | description        | min_price | region | open |
+      | test title 1 | test description 1 | 200       | AUS    | yes  |
 
   @javascript
   Scenario: Admin close auction
@@ -30,4 +30,4 @@ Feature: Close auction to see winner
     And I'm logged in as an admin
     When I close the auction
     Then I can see the winner is "user_3@thoughtworks.com"
-    And I can see the winning bid is "$550.00"
+    And I can see the winning bid is "$ 550.0"

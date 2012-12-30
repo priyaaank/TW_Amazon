@@ -26,7 +26,7 @@ Then /^I can see all the running auctions that I have placed bids:$/ do |table|
     table.hashes.each do |hash|
       page.should have_content(hash['title'])
       page.should have_content(hash['description'])
-      page.should have_content(number_to_currency(hash['my bid']))
+      page.should have_content(number_with_delimiter(hash['my bid']))
     end
   end
 end
@@ -36,7 +36,7 @@ Then /^I can see all the closed auctions that I have placed bids:$/ do |table|
     table.hashes.each do |hash|
       page.should have_content(hash['title'])
       page.should have_content(hash['description'])
-      page.should have_content(number_to_currency(hash['my bid']))
+      page.should have_content(number_with_delimiter(hash['my bid']))
     end
   end
 end

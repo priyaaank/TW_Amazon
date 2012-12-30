@@ -1,16 +1,11 @@
 %div{:class => 'well form-horizontal'}
   %legend Item Details
   = f.input :title, :label => 'Title', :input_html => {:class => "span6"}
-  -#= f.input :category, :label => 'Category', :collection => get_categories, :include_blank => false, :selected =>"Computers"
   = f.input :category, :as => :hidden, :input_html => {:value => 'Computers'}
-  = f.input :region, :as => :hidden, :input_html => {:value => current_user.region}
-  - if @silent_auction.creator == nil
+  - if @silent_auction.creator.nil?
     = f.input :creator, :as => :hidden, :input_html => {:value => current_user.username}
   - else
     = f.input :creator, :as => :hidden, :input_html => {:value => @silent_auction.creator}
-  -#= f.input :creator, :as => :hidden, :input_html => {:value => current_user.username}
-  -#= f.input :item_type, :as => :hidden, :input_html => {:value => 'Silent Auction'}
-  -#= f.input :item_type, :as => :radio_buttons, :collection => [['Silent Auction','Silent Auction'],['Quick Sale','Quick Sale']], :label_method => :last, :value_method => :first
   = f.input :item_type, :as => :radio_buttons, :collection => [['Silent Auction','Silent Auction'],['Normal Auction','Normal Auction'],['Quick Sale','Quick Sale']], :label_method => :last, :value_method => :first
   = f.input :min_price, :label => 'Minimum Price',:wrapper => :prepend do
     = content_tag :span, "#{current_user.currency}", :class => "add-on", :id => "silent_auction_currency"
@@ -18,7 +13,7 @@
   .text_counter
     = f.input :description, :as => :text, :label => 'Description', :input_html => { :rows => 8, :class => "span6", :id => "description" }
   = f.input :start_date, :label =>"Start date", :as => :string, :order =>[:day,:month,:year], :input_html => {:class =>"datePicker" }
-  = f.input :end_date, :label =>"End date", :as => :string, :order =>[:day,:month,:year], :input_html => {:class =>"datePicker" }
+  = f.input :end_date, :label =>"End date", :as => :string, :order =>[:day,:month,:year], :input_html => {:class =>"datePicker", :value => 2.weeks.from_now.in_time_zone(current_user.timezone).to_s(:date_month_and_year)}
 %div{:class => 'well form-inline clearfix', :id => "image-upload"}
   %legend.file_upload
     = "Item Images"

@@ -1,5 +1,7 @@
 When /^I'm logged in as a user$/ do
-  @user = User.create!(:username => 'test-user', :password => 'foobar', :admin => false, :region => 'AUS')
+  @user = User.create!(:username => 'test-user', :password => 'foobar', :admin => false)
+  @user.region = Region.find_by_code 'AUS'
+  @user.save!
   visit destroy_user_session_path
   visit new_dummy_session_path
   select 'test-user', :from => 'user[username]'
@@ -9,6 +11,8 @@ end
 
 When /^I'm logged in as an admin$/ do
   @user = User.create!(:username => 'test-admin', :password => 'foobar', :admin => true)
+  @user.region = Region.find_by_code 'AUS'
+  @user.save!
   visit destroy_user_session_path
   visit new_dummy_session_path
   select 'test-admin', :from => 'user[username]'
@@ -17,8 +21,8 @@ When /^I'm logged in as an admin$/ do
 end
 
 When /^I logout from the system$/ do
-  click_link "user_menu"
-  click_link "Logout"
+  click_link 'user_menu'
+  click_link 'Logout'
 end
 
 Then /^I can see my login status$/ do

@@ -3,8 +3,8 @@ Feature: Withdraw bid before auction close
   Background:
     Given I'm logged in as a user
     And there is a running auction as the following:
-      | title        | description        | min_price |
-      | test title 1 | test description 1 | 200       |
+      | title        | description        | min_price | open |
+      | test title 1 | test description 1 | 200       | yes  |
 
     And I place a bid as following:
       | auction title | bid amount |

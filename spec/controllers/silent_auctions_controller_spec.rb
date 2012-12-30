@@ -285,7 +285,7 @@ describe SilentAuctionsController do
     context 'given valid auction details' do
 
       before(:each) do
-        @valid_details = { :title => 'a', :description => 'b', :min_price => 250, :photos_attributes => {}, :start_date=>Date.today, :end_date=>7.days.from_now, :region_id => 1}
+        @valid_details = { :title => 'a', :description => 'b', :min_price => 250, :photos_attributes => {}, :start_date=>Date.today, :end_date=>7.days.from_now}
       end
 
       it 'should save new silent auction' do
@@ -310,7 +310,7 @@ describe SilentAuctionsController do
 
       before(:each) do
         @region = Region.make!(:aus)
-        @invalid_details = { :title => '', :description => 'b', :min_price => 250, :photos_attributes => {}, :region_id => @region.id}
+        @invalid_details = { :title => '', :description => 'b', :min_price => 250, :photos_attributes => {}}
       end
 
       it 'should not create a new silent auction' do

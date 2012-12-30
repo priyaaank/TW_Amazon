@@ -3,7 +3,7 @@ Feature: edit
 Scenario: edit silent auctions
 
 Given I'm logged in as admin
-Given there is a valid silent auctions as following:
+Given there are valid auctions as the following:
 | title | description | minimum price | end date | image |
 | title 1 | description 1 | 300.00 | 23 - 05-2012 | image1.jpg |
 

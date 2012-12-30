@@ -1,14 +1,15 @@
 Given /^there is a running auction as the following:$/ do |table|
   table.hashes.each do | hash |
     hash["open"] = (hash["open"] == "yes") ? true : false
-    auction = SilentAuction.make!(:title => hash['title'], :description => hash['description'], :min_price => hash['min_price'], :open => hash["open"], :creator => hash["creator"], :region => hash["region"], :start_date => Time.now.to_date, :end_date => Time.now.to_date + 2.days)
+    hash['region'] ||= 'AUS'
+    auction = SilentAuction.make!(:title => hash['title'], :description => hash['description'], :min_price => hash['min_price'], :open => hash["open"], :creator => hash["creator"], :region => Region.find_by_code(hash["region"]), :start_date => Time.now.to_date, :end_date => Time.now.to_date + 2.days)
     add :silent_auctions, auction
   end
 end
 
 Given /^there are bids placed for the auction as following:$/ do |table|
   table.hashes.each do | hash |
-    User.make!(:username => hash['user']).bids.create(:silent_auction_id => get(:silent_auctions).id, :amount => hash['bid amount'])
+    User.make!(:user, :username => hash['user']).bids.create(:silent_auction_id => get(:silent_auctions).id, :amount => hash['bid amount'])
   end
 end
 

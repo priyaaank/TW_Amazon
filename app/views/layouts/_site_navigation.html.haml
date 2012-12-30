@@ -9,7 +9,7 @@
         -#= link_to "Running Auctions", silent_auctions_path, :class => is_active?('index')
       %li.dropdown
         -#%a{:href => "#", :id => 'user_menu', :class => "dropdown-toggle", "data-toggle" => "dropdown"}
-        %a{:href => "#", :id => 'user_menu', :class => "#{is_active?('sales')} #{is_active?('index')}", "data-toggle" => "dropdown"}
+        %a{:href => "#", :id => 'deals_menu', :class => "#{is_active?('sales')} #{is_active?('index')}", "data-toggle" => "dropdown"}
           = 'Current Deals'
           -#%span
             -#Current Deals

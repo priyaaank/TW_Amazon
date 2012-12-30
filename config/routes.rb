@@ -44,7 +44,6 @@ TWAmazon::Application.routes.draw do
       get :list_my_items
       get :list_my_normal_auctions
       get :list_my_sales
-      post :create
       get :new_region
       post :update_region
     end

@@ -42,9 +42,9 @@ class SilentAuctionsController < ApplicationController
   end
 
   def create
-    region_id =  params[:silent_auction].delete(:region_id)
     @silent_auction = SilentAuction.new(params[:silent_auction])
-    @silent_auction.region = Region.find(region_id)
+    @silent_auction.region = current_user.region
+    @silent_auction.creator = current_user.username
     respond_to do |format|
       if @silent_auction.save
         flash[:success] = "New item for <b>#{@silent_auction.title}</b> was successfully created!".html_safe
