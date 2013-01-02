@@ -65,7 +65,7 @@ class SilentAuctionsController < ApplicationController
             end
         end
         unless Rails.application.config.test_mode
-          if @silent_auction.start_date.to_date == Time.zone.now.in_time_zone(@currentuser.timezone).to_date
+          if @silent_auction.start_date.to_date == Time.zone.now.in_time_zone(current_user.timezone).to_date
             UserMailer.send_announcement_to_other_users(@silent_auction).deliver
           end
         end

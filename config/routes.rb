@@ -1,5 +1,9 @@
 TWAmazon::Application.routes.draw do
 
+  ActiveAdmin.routes(self)
+
+  devise_for :admin_users, ActiveAdmin::Devise.config
+
   root :to => 'home#login'
 
   # define an index or home path to redirect if a user already login

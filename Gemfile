@@ -7,6 +7,9 @@ gem 'coffee-rails', '~> 3.2.1'
 gem "heroku"
 gem "validates_timeliness", "~> 3.0"
 
+#Admin gem
+gem 'activeadmin'
+
 #CAS OAUTH gems
 gem 'devise'
 gem 'omniauth-cas'

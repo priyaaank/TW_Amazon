@@ -27,6 +27,10 @@ class User < ActiveRecord::Base
     ["dgower", "prtan", "twamazon", "venkatn"].include?(uid)
   end
 
+  def is_admin?
+    admin
+  end
+
   def region_id
     region.id if !region.nil?
   end

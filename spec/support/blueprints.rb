@@ -58,3 +58,7 @@ Region.blueprint(:ind) do
   timezone {'New Delhi'}
   maximum {100000}
 end
+
+AdminUser.blueprint do
+  # Attributes here
+end
