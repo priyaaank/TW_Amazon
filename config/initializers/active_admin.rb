@@ -151,8 +151,3 @@ ActiveAdmin.setup do |config|
   # config.csv_options = {}
 end
 
-#[User, Bid, Photo, Region, SilentAuction].each { |resource|
-#  ActiveAdmin.register resource do
-#    controller { with_role :admin }
-#  end
-#}

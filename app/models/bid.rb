@@ -9,7 +9,8 @@ class Bid < ActiveRecord::Base
   validate :amount_must_be_greater_than_auction_min_price
   validate :auction_must_not_be_closed
 
-  attr_accessible :amount, :active, :silent_auction_id, :created_at
+  attr_accessible :amount, :active, :silent_auction_id, :created_at, :as => [:default, :admin]
+  attr_accessible :user_id, :as => :admin
 
   scope :active, where(:active => true)
   scope :highFirst, order('amount DESC')

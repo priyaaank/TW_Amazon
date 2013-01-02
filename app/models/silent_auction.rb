@@ -9,7 +9,8 @@ class SilentAuction < ActiveRecord::Base
   belongs_to :region
   delegate :currency, :timezone, :to => :region
 
-  attr_accessible :title, :description, :open, :min_price, :start_date, :end_date, :photos_attributes, :category, :creator, :item_type
+  attr_accessible :title, :description, :open, :min_price, :start_date, :end_date, :photos_attributes, :category, :creator, :item_type, :as  => [:default, :admin]
+  attr_accessible :region_id, :as => :admin
 
   accepts_nested_attributes_for :photos, :allow_destroy => true, :reject_if => proc { |attributes| attributes['image'].blank? && attributes['image_cache'].blank? && attributes['caption'].blank? }
 
@@ -21,7 +22,7 @@ class SilentAuction < ActiveRecord::Base
     :length => { :maximum => 500, :message => "Description is too long (Maximum 500 characters)" }
 
   validates :min_price, :presence => { :message => "is required"},
-    :numericality => { :greater_than => 0, :greater_than_or_equal_to => 0.01}, #:less_than_or_equal_to => 9999.99},
+    :numericality => { :greater_than_or_equal_to => 0.01},
     :format => { :with => /^\d+?(?:\.\d{0,2})?$/, :message => "can only have 2 decimal places" }
 
   validates :start_date, :presence => {:message => "Start date is required"}

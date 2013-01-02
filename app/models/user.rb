@@ -3,12 +3,13 @@ class User < ActiveRecord::Base
   belongs_to :region
 
   devise :omniauthable
-  attr_accessible :username, :admin, :email
+  attr_accessible :username, :admin, :email, :as => [:default, :admin]
   validates :username, :presence => true, :length => { :maximum => 255 }
 
   # for dummy users
   devise :database_authenticatable
   attr_accessible :email, :password, :password_confirmation
+  attr_accessible :region_id, :encrypted_password, :as => :admin
   delegate :timezone, :currency,  :to => :region
 
   # Devise method used to create user from CAS uid
