@@ -4,6 +4,7 @@ puts 'SETTING UP TEST ADMIN LOGIN'
 
 2.times do
   user = User.new(:username => "Admin_tw_#{@index}", :admin => true, :email=> nil, :password => 'adminpass', :password_confirmation => 'adminpass')
+  p user.inspect
   if(user.save!)
     puts 'New admin created: ' << user.username
     @index += 1

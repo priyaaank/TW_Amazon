@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
 
   # for dummy users
   devise :database_authenticatable
-  attr_accessible :email, :password, :password_confirmation
+  attr_accessible :email, :password, :password_confirmation, :as => :default
   attr_accessible :region_id, :encrypted_password, :as => :admin
   delegate :timezone, :currency,  :to => :region
 
