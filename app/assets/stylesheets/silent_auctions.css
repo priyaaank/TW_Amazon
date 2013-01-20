@@ -17,7 +17,7 @@ a.btn-danger {
 	color: #FFD406;
 	border: none;
 /*	position: relative;*/
-	padding-top: 10em; 
+	padding-top: 10em;
 /*	top: -1.3em;*/
 	margin: 0 0;
 }
@@ -293,7 +293,7 @@ form .exceeded{color:#e00;}
   z-index: 100;
   position: relative;
   -moz-opacity:0 ;
-  filter: alpha(opacity: 0);
+  filter: alpha(opacity=0);
   opacity: 0;
 }
 
@@ -386,7 +386,7 @@ legend.file_upload span {font-size:13px;}
 
 .dropdown a {
   font-size: 13px;
-  line-height: 18px;	
+  line-height: 18px;
 }
 
 .auctions_sales_menu {
