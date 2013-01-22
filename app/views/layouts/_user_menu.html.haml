@@ -1,10 +1,9 @@
 %ul{:class => "nav pull-right"}
-  - @user = current_user
-  - unless @user.region.blank?
+  - unless current_user.region.blank?
     %li{:id => "region-selector", :class => ""}
       %span{:id => "countryselect"}
-        = simple_nested_form_for @user, :html => { :multipart => false } do |f|
-          = f.collection_select :region, get_regions,"id", "code", :selected => @user.region_id, :onchange => 'alert(@user);'
+        = simple_nested_form_for current_user, :html => { :multipart => false } do |f|
+          = f.collection_select :region, get_regions,"id", "code", :selected => current_user.region_id, :onchange => 'alert(@user);'
   %li.divider-vertical
   %li.dropdown
     %a{:href => "#", :id => 'user_menu', :class => "dropdown-toggle", "data-toggle" => "dropdown"}
@@ -26,9 +25,6 @@
       - else
         - if not(current_user.admin?)
           %li=link_to("My Bids", user_path(current_user))
-        - else
-          -if(current_user.username=="dgower")
-            %li=link_to("Region Management", region_management_user_path(current_user))
         %li=link_to("My Silent Auctions", list_my_items_user_path(current_user))
         %li=link_to("My Normal Auctions", list_my_normal_auctions_user_path(current_user))
         %li=link_to("My Sales", list_my_sales_user_path(current_user))
