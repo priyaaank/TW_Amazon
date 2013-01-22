@@ -75,9 +75,10 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
-    region_id =  params[:user].delete(:region)
+    region_code =  params[:user].delete(:region)
     @user.update_attributes(params[:user])
-    @user.region = Region.find(region_id)
+    @user.region = Region.find_by_code region_code
+    @user.save!
     redirect_to :back
   end
 end

@@ -3,7 +3,7 @@
     %li{:id => "region-selector", :class => ""}
       %span{:id => "countryselect"}
         = simple_nested_form_for current_user, :html => { :multipart => false } do |f|
-          = f.collection_select :region, get_regions,"id", "code", :selected => current_user.region_id, :onchange => 'alert(@user);'
+          = f.collection_select :region, get_regions,"code", "code", :selected => current_user.region.code, :onchange => 'alert(@user);'
   %li.divider-vertical
   %li.dropdown
     %a{:href => "#", :id => 'user_menu', :class => "dropdown-toggle", "data-toggle" => "dropdown"}
