@@ -79,12 +79,9 @@ function bindInputEvent(fileInput) {
     fileInput.on('change', function() {
         var parent = fileInput.closest('.controls');
         parent.children('.help-inline').remove();
-        if(uniqueFileNameUpload(fileInput)){
-            $('#'+fileInput.attr('id')+'__fake').val(fileInput.val().replace(/C:\\fakepath\\/i, ''));
-        } else {
-            fileInput.closest('.controls').append('<span class="help-inline error">Duplicate filename not allowed</span>');
-            fileInput.val('');
-            $('#'+fileInput.attr('id')+'__fake').val('no file selected');
+        $('#'+fileInput.attr('id')+'__fake').val(fileInput.val().replace(/C:\\fakepath\\/i, ''));
+        if(!uniqueFileNameUpload(fileInput)){
+            fileInput.closest('.controls').append('<span class="help-inline error">Duplicate filename</span>');
         }
     });
 }
