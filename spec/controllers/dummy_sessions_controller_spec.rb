@@ -9,7 +9,6 @@ describe DummySessionsController do
   end
 
   describe 'GET "new"' do
-
     describe 'when user not login' do
       it 'should display the list of usernames of test users' do
         # create some test users

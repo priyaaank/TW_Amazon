@@ -75,7 +75,7 @@ When /^I delete the auction$/ do
 end
 
 When /^I choose to continue deleting$/ do
-  click_link "delete_auction"
+  click_link "confirm_delete_auction_button"
 end
 
 When /^choose to cancel deleting$/ do
@@ -122,7 +122,7 @@ end
 Then /^I can see all running auctions sorted by most recent first:$/ do |table|
   @region = Region.find_by_code 'AUS'
   within_table('runningAuctions') do
-    page.find(:css,"tr.auction", :count => SilentAuction.running(@region.timezone).count)
+    page.all(:css,"tr.auction", :count => SilentAuction.running(@region.timezone).count)
 
     expected_order = table.raw.map {|titleRow| titleRow[0]}
     actual_order = page.all('p.itemTitle').collect(&:text)
@@ -132,7 +132,7 @@ end
 
 Then /^I can see all closed auctions sorted by most recent first:$/ do |table|
   within_table('closedAuctions') do
-    page.find(:css,"tr.auction", :count => SilentAuction.closed.count)
+    page.all(:css,"tr.auction", :count => SilentAuction.closed.count)
 
     expected_order = table.raw.map {|titleRow| titleRow[0]}
     actual_order = page.all('p.itemTitle').collect(&:text)
@@ -143,7 +143,7 @@ end
 Then /^I can see all expired auctions sorted by most recent first:$/ do |table|
   @region = Region.find_by_code 'AUS'
   within_table('expiredAuctions') do
-    page.find(:css,"tr.auction", :count => SilentAuction.expired(@region.timezone).count)
+    page.all(:css,"tr.auction", :count => SilentAuction.expired(@region.timezone).count)
 
     expected_order = table.raw.map {|titleRow| titleRow[0]}
     actual_order = page.all('p.itemTitle').collect(&:text)
@@ -189,4 +189,7 @@ Then /^the auction should be deleted$/ do
   visit silent_auctions_path
   page.should have_no_content(auction.title)
   SilentAuction.find_by_title(auction.title).should == nil
+end
+Given /^there are no bids placed on that auction$/ do
+
 end
