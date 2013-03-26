@@ -21,12 +21,19 @@ Feature: silent auction
     Given I'm logged in as an admin
     When I create a silent auction with the following:
       | title        | description            | min_price | open |
-      | sample title | this is my description | 250       | yes  |
+
     Then a valid silent auction is created with the following:
       | title        | description            | min_price | open |
       | sample title | this is my description | 250       | yes  |
 
 
+    @javascript
+    Scenario: Upload Duplicate Image
+    Given I'm logged in as a user
+    When I create a silent auction
+    And I select upload File with name <image.jpg>
+    And I choose to upload one more file with name <image.jpg>
+    Then I'm able to upload both images
 
 
 

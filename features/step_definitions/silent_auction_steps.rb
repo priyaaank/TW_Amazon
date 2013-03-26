@@ -87,6 +87,17 @@ When(/^I change the auction details as follows:$/) do |table|
   pending # express the regexp above with the code you wish you had
 end
 
+When(/^I select upload File with name <(.*)>$/) do |filename|
+  attach_file(:silent_auction_photos_attributes_0_image, ::Rails.root.join('features', 'upload-files', filename))
+end
+
+When(/^I choose to upload one more file with name <(.*)>$/) do |filename|
+  click_link "Add another image"
+  file_controls = page.all(:xpath, '//input[@type="file"]')
+  attach_file(file_controls[1][:id], ::Rails.root.join('features', 'upload-files', filename))
+end
+
+
 # VALIDATE HOWEVER WE MUST
 Then /^a valid silent auction is created with the following:$/ do |table|
   table.hashes.each do | hash |
@@ -196,3 +207,6 @@ Then /^the auction should be deleted$/ do
   SilentAuction.find_by_title(auction.title).should == nil
 end
 
+Then(/^I'm able to upload both images$/) do
+  pending # express the regexp above with the code you wish you had
+end
