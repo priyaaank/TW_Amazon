@@ -82,6 +82,11 @@ When /^choose to cancel deleting$/ do
   click_link "cancel_delete_auction"
 end
 
+When(/^I change the auction details as follows:$/) do |table|
+  # table is a Cucumber::Ast::Table
+  pending # express the regexp above with the code you wish you had
+end
+
 # VALIDATE HOWEVER WE MUST
 Then /^a valid silent auction is created with the following:$/ do |table|
   table.hashes.each do | hash |
@@ -190,6 +195,4 @@ Then /^the auction should be deleted$/ do
   page.should have_no_content(auction.title)
   SilentAuction.find_by_title(auction.title).should == nil
 end
-Given /^there are no bids placed on that auction$/ do
 
-end
