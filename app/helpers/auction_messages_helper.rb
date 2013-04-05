@@ -1,0 +1,2 @@
+module AuctionMessagesHelper
+end
