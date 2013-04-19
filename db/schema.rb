@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130405031345) do
+ActiveRecord::Schema.define(:version => 20130412043122) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -50,12 +50,9 @@ ActiveRecord::Schema.define(:version => 20130405031345) do
     t.integer  "silent_auction_id"
     t.text     "message"
     t.string   "creator"
-    t.integer  "user_id"
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
   end
-
-  add_index "auction_messages", ["silent_auction_id"], :name => "index_auction_messages_on_silent_auction_id"
 
   create_table "bids", :force => true do |t|
     t.float    "amount"

@@ -3,7 +3,7 @@
     %td.auction_photos
       = render :partial => 'silent_auctions/auction_photos', :locals => {:auction => auction}
     %td.auction_info
-      %p.itemTitle= auction.title
+      %p.itemTitle= link_to auction.title, new_silent_auction_auction_message_path(auction)
       = simple_format(auction.description, :class => 'itemDescription')
       = simple_format("Contact: <span class='highlight'>#{auction.creator}@thoughtworks.com</span>", :class => 'itemWinner')
     %td.min_price

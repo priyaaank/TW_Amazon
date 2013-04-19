@@ -17,7 +17,7 @@ class SilentAuctionsController < ApplicationController
 
   def sales
     @title = "Quick Sales Board"
-    @running_auctionss = SilentAuction.running_quick_sales(current_user.timezone).recent.where("region_id = '#{current_user.region_id}'")
+    @running_auctions = SilentAuction.running_quick_sales(current_user.timezone).recent.where("region_id = '#{current_user.region_id}'")
   end
 
   def closed

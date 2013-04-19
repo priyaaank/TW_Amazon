@@ -36,7 +36,7 @@ class BidsController < ApplicationController
         format.js { render 'update'}
       else
         err_msg = @bid.errors.full_messages[0]
-        format.html { redirect_back_with_error(normal_auctions_silent_auctions_path) }
+        format.html { redirect_back_with_error(normal_auctions_silent_auctions_path,"") }
         format.js { render 'fail', :locals => { :errMsg => "#{err_msg}" } }
       end
     end

@@ -6,6 +6,7 @@ class SilentAuction < ActiveRecord::Base
 
   has_many :bids, :dependent => :destroy, :inverse_of => :silent_auction
   has_many :photos, :dependent => :destroy, :inverse_of => :silent_auction
+  has_many :auction_messages, :dependent => :destroy, :inverse_of => :silent_auction
   belongs_to :region
   delegate :currency, :timezone, :to => :region
 

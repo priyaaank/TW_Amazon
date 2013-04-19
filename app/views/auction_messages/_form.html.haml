@@ -1,0 +1,7 @@
+= simple_form_for @auction_message, :url => { :action => "create" } do |f|
+    .field
+    %legend Post Message
+    = f.input :message, :as => :text, :label => 'Message', :input_html => { :rows => 8, :class => "span6", :id => "message" }
+    = f.input :silent_auction_id, :as => :hidden, :input_html => {:value => @silent_auction.id}
+    .actions
+    = f.submit 'Submit',:class => 'btn btn-primary form_action_btn'

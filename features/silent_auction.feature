@@ -32,9 +32,9 @@ Feature: silent auction
     Scenario: Upload Duplicate Image
     Given I'm logged in as a user
     When I create a silent auction
-    And I select upload File with name <image.jpg>
-    And I choose to upload one more file with name <image.jpg>
-    Then I'm able to upload both images
+    And I select to upload File with name <image.jpg>
+    And I select to upload one more file with name <image.jpg>
+    Then I'm able to select both images
 
 
 

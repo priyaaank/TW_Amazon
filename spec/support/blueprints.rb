@@ -62,3 +62,7 @@ end
 AdminUser.blueprint do
   # Attributes here
 end
+
+AuctionMessage.blueprint do
+  # Attributes here
+end

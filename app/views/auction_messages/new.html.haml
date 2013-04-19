@@ -1,6 +1,5 @@
 -@user = current_user
-%h1
-%span Auction Messages
+%h1{:style => 'margin-bottom:20px;'} Create Auction Messages
 %h3= "Displaying Details and auction messages of a auction"
 %table{:class => 'table table-condensed', :id => 'auctionDetails'}
   %tbody
@@ -21,28 +20,21 @@
   %tr
     %td= "End Date"
     %td= simple_format("<strong>#{formatted_date(@silent_auction.end_date)}</strong>")
+- unless @auction_messages.empty?
+  %div{:class => 'well form-horizontal'}
+    .field
+      %legend Messages
+    %table{:class => 'table table-condensed'}
+    - @auction_messages.each do |auction_message|
+      %tr
+        %td
+          = simple_format("<strong>#{auction_message.creator}</strong> said...")
+          = simple_format("#{auction_message.message}")
+          = simple_format("#{auction_message.created_at.strftime('%b %d, %Y at %I:%M %p')} <hr/>")
+
 
 
 %div{:class => 'well form-horizontal'}
   = render :partial => "form"
-  -#= render :partial => "form", :locals => { :auction => @silent_auction}
 
-
--#%p#notice= notice
--#
--#%p
--#  %b Silent auction:
--#  = @auction_message.silent_auction_id
--#%p
--#  %b Message:
--#  = @auction_message.message
--#%p
--#  %b Creator:
--#  = @auction_message.creator
--#%p
--#  %b Message date:
--#  = @auction_message.message_date
--#
--#= link_to 'Edit', edit_auction_message_path(@auction_message)
--#
 
