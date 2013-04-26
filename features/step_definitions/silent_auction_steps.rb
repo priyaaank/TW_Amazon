@@ -212,3 +212,16 @@ Then(/^I'm able to select both images$/) do
   file_controls.size.should == 2
   file_controls[1].value.should == file_controls[0].value
 end
+When /^I view the auction details with title \"(.+)\"$/ do |sample_title|
+
+  auction =  SilentAuction.find_by_title(sample_title)
+  visit new_silent_auction_auction_message_path(auction)
+  #click_link sample_title
+end
+When /^I add a comment to the auction with text \"(.+)\"$/ do |message|
+  fill_in("auction_message[message]", :with => message)
+  click_button "Submit"
+end
+Then /^I am able to view the message with text \"(.+)\"$/ do |message|
+  page.should have_content message
+end

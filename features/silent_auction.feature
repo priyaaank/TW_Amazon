@@ -36,6 +36,13 @@ Feature: silent auction
     And I select to upload one more file with name <image.jpg>
     Then I'm able to select both images
 
-
+  @javascript
+  Scenario: View Auction Messages
+    Given I'm logged in as a user
+    When I create a silent auction
+    And choose to save and return
+    And I view the auction details with title "sample title"
+    And I add a comment to the auction with text "Item is on sale"
+    Then I am able to view the message with text "Item is on sale"
 
 

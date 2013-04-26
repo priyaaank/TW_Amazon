@@ -23,16 +23,17 @@
 - unless @auction_messages.empty?
   %div{:class => 'well form-horizontal'}
     .field
-      %legend Messages
-    %table{:class => 'table table-condensed'}
-    - @auction_messages.each do |auction_message|
-      %tr
-        %td
-          = simple_format("<strong>#{auction_message.creator}</strong> said...")
-          = simple_format("#{auction_message.message}")
-          = simple_format("#{auction_message.created_at.strftime('%b %d, %Y at %I:%M %p')} <hr/>")
-
-
+    %span{:style => 'font-size:20px;margin-right:10px;'} Messages
+    %span= link_to image_tag(asset_path("minus.gif"), :id => 'showHideImage',:style => 'height:18px;width:18px;'), '#', :onclick => 'showHideMessages()'
+    %hr
+    %div{:id =>'showHideMessages'}
+      %table{:class => 'table table-condensed'}
+      - @auction_messages.each do |auction_message|
+        %tr
+          %td
+            = simple_format("<strong>#{auction_message.creator}</strong> said...")
+            = simple_format("#{auction_message.message}")
+            = simple_format("#{auction_message.created_at.strftime('%b %d, %Y at %I:%M %p')} <hr/>")
 
 %div{:class => 'well form-horizontal'}
   = render :partial => "form"
