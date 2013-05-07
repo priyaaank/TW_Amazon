@@ -1,6 +1,7 @@
 class AddRegionToUser < ActiveRecord::Migration
    class User < ActiveRecord::Base
-     attr_accessible  :region_code
+     attr_accessible :region, :region_code
+     belongs_to :region
    end
 
   def up
