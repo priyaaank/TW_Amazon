@@ -28,6 +28,10 @@ end
 # REAL USER ACTIONS
 When /^I create a silent auction with the following:$/ do |table|
   @region = Region.find_by_code 'AUS'
+  @category = Category.create(:category=>"Laptop")
+  @category.save!
+  @category = Category.create(:category=>"Misc")
+  @category.save!
   table.hashes.each do | hash |
     visit new_silent_auction_path
     current_path.should == new_silent_auction_path
@@ -36,6 +40,11 @@ When /^I create a silent auction with the following:$/ do |table|
     fill_in("silent_auction[min_price]", :with => hash['min_price'])
     fill_in("silent_auction[description]", :with => hash['description'])
     fill_in("silent_auction[start_date]", :with => Date.today.to_s(:date_month_and_year))
+    if(hash['category']!=nil)
+      select(hash['category'],:from =>'silent_auction[category_id]')
+    else
+    select('Laptop',:from =>'silent_auction[category_id]')
+    end
     click_button "submit_done"
   end
 end
@@ -216,7 +225,7 @@ When /^I view the auction details with title \"(.+)\"$/ do |sample_title|
 
   auction =  SilentAuction.find_by_title(sample_title)
   visit new_silent_auction_auction_message_path(auction)
-  #click_link sample_title
+
 end
 When /^I add a comment to the auction with text \"(.+)\"$/ do |message|
   fill_in("auction_message[message]", :with => message)
@@ -224,4 +233,20 @@ When /^I add a comment to the auction with text \"(.+)\"$/ do |message|
 end
 Then /^I am able to view the message with text \"(.+)\"$/ do |message|
   page.should have_content message
+end
+When /^I choose the category "([^"]*)"$/ do |category_choice|
+  select(category_choice,:from =>'search_category')
+  click_button "search_done"
+end
+
+Then /^the auction details are changed$/ do
+  pending
+end
+Then /^I am only able to view the following item$/ do |table|
+  @region = Region.find_by_code 'AUS'
+  within_table('runningAuctions') do
+    expected_order = table.raw.map {|titleRow| titleRow[0]}
+    actual_order = page.all('p.itemTitle').collect(&:text)
+    actual_order.should == expected_order
+    end
 end

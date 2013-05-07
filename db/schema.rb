@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130412043122) do
+ActiveRecord::Schema.define(:version => 20130426013531) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -67,6 +67,12 @@ ActiveRecord::Schema.define(:version => 20130412043122) do
   add_index "bids", ["user_id", "silent_auction_id"], :name => "index_bids_on_user_id_and_silent_auction_id", :unique => true
   add_index "bids", ["user_id"], :name => "index_bids_on_user_id"
 
+  create_table "categories", :force => true do |t|
+    t.string   "category"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "photos", :force => true do |t|
     t.integer  "silent_auction_id"
     t.string   "image"
@@ -93,10 +99,10 @@ ActiveRecord::Schema.define(:version => 20130412043122) do
     t.float    "min_price"
     t.date     "end_date"
     t.date     "start_date"
-    t.string   "category",    :default => "Computers"
     t.string   "creator"
     t.string   "item_type",   :default => "Silent Auction"
     t.integer  "region_id"
+    t.integer  "category_id"
   end
 
   create_table "users", :force => true do |t|

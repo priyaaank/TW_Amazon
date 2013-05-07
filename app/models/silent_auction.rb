@@ -8,11 +8,11 @@ class SilentAuction < ActiveRecord::Base
   has_many :photos, :dependent => :destroy, :inverse_of => :silent_auction
   has_many :auction_messages, :dependent => :destroy, :inverse_of => :silent_auction
   belongs_to :region
+  belongs_to :category
   delegate :currency, :timezone, :to => :region
 
-  attr_accessible :title, :description, :open, :min_price, :start_date, :end_date, :photos_attributes, :category, :creator, :item_type, :as  => [:default, :admin]
+  attr_accessible :title, :description, :open, :min_price, :start_date, :end_date, :photos_attributes, :category_id, :creator, :item_type, :as  => [:default, :admin]
   attr_accessible :region_id, :as => :admin
-
   accepts_nested_attributes_for :photos, :allow_destroy => true, :reject_if => proc { |attributes| attributes['image'].blank? && attributes['image_cache'].blank? && attributes['caption'].blank? }
 
   validates :title, :presence => { :message => "Title is required" } ,
@@ -31,7 +31,7 @@ class SilentAuction < ActiveRecord::Base
   validates :end_date, :presence => {:message => "End date is required"}
   validates_datetime :end_date, :on_or_after => :start_date
   validates :end_date, :timeliness => {:on_or_before => lambda{|auction| auction.start_date + 2.months}, :type => :date}
-  validates :category, :presence => { :message => "Please select a category" }
+  validates :category_id, :presence => { :message => "Please select a category" }
 
   def self.query_running_auctions_of_type(auction_type)
     Proc.new { |timezone| where(["start_date < :today AND open = :is_open AND item_type = '#{auction_type}'", :today => Time.zone.now.in_time_zone(timezone).to_date + 1.day, :is_open => true]) }

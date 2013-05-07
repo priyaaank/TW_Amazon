@@ -1,5 +1,5 @@
 -@user = current_user
-%h1{:style => 'margin-bottom:20px;'} Create Auction Messages
+%h1{:style => 'margin-bottom:20px;'} Auction Details
 %h3= "Displaying Details and auction messages of a auction"
 %table{:class => 'table table-condensed', :id => 'auctionDetails'}
   %tbody
@@ -11,6 +11,9 @@
   %tr
     %td= "Description"
     %td= simple_format("<strong>#{@silent_auction.description}</strong>")
+  %tr
+    %td= "Category"
+    %td= simple_format("<strong>#{(Category.find(@silent_auction.category_id)).category}</strong>")
   %tr
     %td= "Min Price"
     %td= simple_format("<strong>#{current_user.currency} #{number_with_delimiter(@silent_auction.min_price)}</strong>")

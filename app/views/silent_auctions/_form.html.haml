@@ -1,7 +1,7 @@
 %div{:class => 'well form-horizontal'}
   %legend Item Details
   = f.input :title, :label => 'Title', :input_html => {:class => "span6"}
-  = f.input :category, :as => :hidden, :input_html => {:value => 'Computers'}
+  = f.input :category_id, :as=>:select, :include_blank => "Select a Category", :collection => Category.all, :label_method => :category, :value_method => :id
   - if @silent_auction.creator.nil?
     = f.input :creator, :as => :hidden, :input_html => {:value => current_user.username}
   - else

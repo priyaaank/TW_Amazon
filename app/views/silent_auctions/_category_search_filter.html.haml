@@ -1,0 +1,10 @@
+= simple_form_for(:search, :method => "get") do |f|
+  %table{:class => 'table table-simpleBordered'}
+    %tbody
+      %tr
+        %td.auction_category{:width => "50"}
+          %div{:class => 'form-horizontal'}
+            = f.input :category, :as=>:select, :include_blank => "Select a Category",:selected => category ,:collection => Category.all , :label_method => :category, :value_method => :id
+        %td.auction_submit
+          %div{:class => 'form-horizontal'}
+            = submit_tag "Search", :name => "submit", :id => 'search_done', :class => 'btn btn-primary', :disable_with => "Search"

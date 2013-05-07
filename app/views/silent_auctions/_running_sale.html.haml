@@ -6,6 +6,8 @@
       %p.itemTitle= link_to auction.title, new_silent_auction_auction_message_path(auction)
       = simple_format(auction.description, :class => 'itemDescription')
       = simple_format("Contact: <span class='highlight'>#{auction.creator}@thoughtworks.com</span>", :class => 'itemWinner')
+    %td.category
+      = simple_format("Category:<br/><strong>#{(Category.find(auction.category_id)).category}</strong>")
     %td.min_price
       = simple_format("Min Price:<br/><strong>#{current_user.currency} #{number_with_delimiter(auction.min_price)}</strong>")
     %td.start_date

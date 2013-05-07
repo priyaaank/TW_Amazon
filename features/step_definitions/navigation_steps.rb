@@ -1,9 +1,12 @@
 When /^I create a silent auction$/ do
+  @category = Category.create(:category=>"Laptops")
+  @category.save!
   visit new_silent_auction_path
   fill_in "silent_auction[title]", :with => 'sample title'
   fill_in "silent_auction[min_price]", :with => 1
   fill_in "silent_auction[description]", :with => 'sample description'
   fill_in 'silent_auction[start_date]', :with  => Date.today.to_s
+  select('Laptops',:from =>'silent_auction[category_id]')
 end
 
 When /^choose to save and continue creating$/ do

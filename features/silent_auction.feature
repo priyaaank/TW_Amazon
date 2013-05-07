@@ -44,5 +44,3 @@ Feature: silent auction
     And I view the auction details with title "sample title"
     And I add a comment to the auction with text "Item is on sale"
     Then I am able to view the message with text "Item is on sale"
-
-

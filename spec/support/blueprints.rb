@@ -6,6 +6,7 @@ SilentAuction.blueprint do
   min_price { 1.00 }
   end_date { 7.days.from_now }
   region {Region.make!(:aus)}
+  category {Category.make!(:laptops)}
   start_date { Time.zone.now.in_time_zone(Region.make!(:aus).timezone) + 10.minutes}
 end
 
@@ -65,4 +66,8 @@ end
 
 AuctionMessage.blueprint do
   # Attributes here
+end
+
+Category.blueprint(:laptops) do
+  category {'Laptops'}
 end

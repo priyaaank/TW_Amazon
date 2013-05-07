@@ -285,7 +285,7 @@ describe SilentAuctionsController do
     context 'given valid auction details' do
 
       before(:each) do
-        @valid_details = { :title => 'a', :description => 'b', :min_price => 250, :photos_attributes => {}, :start_date=>Date.today, :end_date=>7.days.from_now}
+        @valid_details = { :title => 'a', :description => 'b', :min_price => 250, :photos_attributes => {}, :start_date=>Date.today, :end_date=>7.days.from_now, :category_id=>1}
       end
 
       it 'should save new silent auction' do

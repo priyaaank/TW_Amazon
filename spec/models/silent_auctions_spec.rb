@@ -112,6 +112,13 @@ describe SilentAuction do
       auction.should have_at_least(1).errors_on(:end_date)
     end
 
+    it 'should have an category to be valid' do
+      auction = SilentAuction.make
+      auction.category_id = nil
+      auction.valid?.should == false
+      auction.category_id = 0
+      auction.valid?.should == true
+    end
   end
 
   describe 'close_auctions_ending_today' do

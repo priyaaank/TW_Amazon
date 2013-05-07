@@ -7,17 +7,41 @@ class SilentAuctionsController < ApplicationController
 
   def index
     @title = "Running Silent Auctions"
-    @running_auctions = SilentAuction.running_silent_auction(current_user.timezone).recent.includes(:bids).where("region_id = '#{current_user.region_id}'")
+    @search_category=""
+    if params[:search]!=nil
+      @search_category=params[:search][:category]
+    end
+    if @search_category!=""
+      @running_auctions = SilentAuction.running_silent_auction(current_user.timezone).recent.includes(:bids).where("region_id = '#{current_user.region_id}' And category_id ='#{params[:search][:category]}'")
+    else
+      @running_auctions = SilentAuction.running_silent_auction(current_user.timezone).recent.includes(:bids).where("region_id = '#{current_user.region_id}'")
+    end
   end
 
   def normal_auctions
     @title = "Running Auctions"
-    @running_auctions = SilentAuction.running_normal_auction(current_user.timezone).recent.includes(:bids).where("region_id = '#{current_user.region_id}'")
+    @search_category=""
+    if params[:search]!=nil
+      @search_category=params[:search][:category]
+    end
+    if @search_category!=""
+      @running_auctions = SilentAuction.running_normal_auction(current_user.timezone).recent.includes(:bids).where("region_id = '#{current_user.region_id}' And category_id ='#{params[:search][:category]}'")
+    else
+      @running_auctions = SilentAuction.running_normal_auction(current_user.timezone).recent.includes(:bids).where("region_id = '#{current_user.region_id}'")
+    end
   end
 
   def sales
     @title = "Quick Sales Board"
-    @running_auctions = SilentAuction.running_quick_sales(current_user.timezone).recent.where("region_id = '#{current_user.region_id}'")
+    @search_category=""
+    if params[:search]!=nil
+      @search_category=params[:search][:category]
+    end
+    if @search_category!=""
+      @running_auctions = SilentAuction.running_quick_sales(current_user.timezone).recent.where("region_id = '#{current_user.region_id}' And category_id ='#{params[:search][:category]}'")
+    else
+      @running_auctions = SilentAuction.running_quick_sales(current_user.timezone).recent.where("region_id = '#{current_user.region_id}'")
+    end
   end
 
   def closed
@@ -37,11 +61,13 @@ class SilentAuctionsController < ApplicationController
 
   def new
     @title = "Create new auction"
+    @categories = Category.all
     @silent_auction = SilentAuction.new
     @silent_auction.photos.build
   end
 
   def create
+    @categories = Category.all
     @silent_auction = SilentAuction.new(params[:silent_auction])
     @silent_auction.region = current_user.region
     @silent_auction.creator = current_user.username

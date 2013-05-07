@@ -3,7 +3,8 @@
   %span Current Sales
   -#- if current_user.admin?
   = link_to 'Create NEW Auction/Sale', new_silent_auction_path, :class => 'btn btn-primary'
-
+  = render :partial => "category_search_filter", :locals => { :category => @search_category }
+  %hr
 - if @running_auctions.blank?
   %h3= "No sales found"
   .empty_collection
