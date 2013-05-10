@@ -9,7 +9,6 @@ class SilentAuction < ActiveRecord::Base
   has_many :auction_messages, :dependent => :destroy, :inverse_of => :silent_auction
   belongs_to :region
   belongs_to :category
-  has_one :category
   delegate :currency, :timezone, :to => :region
 
   attr_accessible :title, :description, :open, :min_price, :start_date, :end_date, :photos_attributes, :category_id, :creator, :item_type, :as  => [:default, :admin]
