@@ -144,6 +144,7 @@ a.btn-danger {
 .highlight {color:green; font-weight:bold;}
 .lost {color:red; font-weight:bold;}
 .error {color:#B94A48;}
+.warn {color:#ffd406;}
 .msg {margin-top:5px;}
 span.success i{display:inline-block; margin-left:5px;}
 

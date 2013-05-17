@@ -81,7 +81,7 @@ function bindInputEvent(fileInput) {
         parent.children('.help-inline').remove();
         $('#'+fileInput.attr('id')+'__fake').val(fileInput.val().replace(/C:\\fakepath\\/i, ''));
         if(!uniqueFileNameUpload(fileInput)){
-            fileInput.closest('.controls').append('<span class="help-inline error">Duplicate filename</span>');
+            fileInput.closest('.controls').append('<span class="help-inline warn">Duplicate filename</span>');
         }
     });
 }
