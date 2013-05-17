@@ -55,12 +55,12 @@ ActiveRecord::Schema.define(:version => 20130426013539) do
   end
 
   create_table "bids", :force => true do |t|
-    t.float     "amount"
-    t.boolean   "active",            :default => true
-    t.integer   "silent_auction_id"
-    t.integer   "user_id"
-    t.timestamp "created_at",                          :null => false
-    t.timestamp "updated_at",                          :null => false
+    t.float    "amount"
+    t.boolean  "active",            :default => true
+    t.integer  "silent_auction_id"
+    t.integer  "user_id"
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
   end
 
   add_index "bids", ["silent_auction_id"], :name => "index_bids_on_silent_auction_id"
@@ -74,20 +74,20 @@ ActiveRecord::Schema.define(:version => 20130426013539) do
   end
 
   create_table "photos", :force => true do |t|
-    t.integer   "silent_auction_id"
-    t.string    "image"
-    t.timestamp "created_at",        :null => false
-    t.timestamp "updated_at",        :null => false
-    t.string    "caption"
+    t.integer  "silent_auction_id"
+    t.string   "image"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+    t.string   "caption"
   end
 
   create_table "regions", :force => true do |t|
-    t.string    "code"
-    t.string    "currency"
-    t.string    "timezone"
-    t.integer   "maximum"
-    t.timestamp "created_at", :null => false
-    t.timestamp "updated_at", :null => false
+    t.string   "code"
+    t.string   "currency"
+    t.string   "timezone"
+    t.integer  "maximum"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "silent_auctions", :force => true do |t|
@@ -103,19 +103,6 @@ ActiveRecord::Schema.define(:version => 20130426013539) do
     t.string   "item_type",   :default => "Silent Auction"
     t.integer  "region_id"
     t.integer  "category_id"
-  end
-
-  create_table "silent_auctions_2", :id => false, :force => true do |t|
-    t.integer   "id"
-    t.string    "title"
-    t.text      "description"
-    t.boolean   "open"
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
-    t.float     "min_price"
-    t.date      "end_date"
-    t.string    "region"
-    t.date      "start_date"
   end
 
   create_table "users", :force => true do |t|
