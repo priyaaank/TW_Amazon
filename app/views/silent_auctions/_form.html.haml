@@ -17,7 +17,7 @@
 %div{:class => 'well form-inline clearfix', :id => "image-upload"}
   %legend.file_upload
     = "Item Images"
-    %span (maximum 5 uploads)
+    %span (maximum 6 uploads)
   %div{:style => 'margin-left:160px;'}
     = f.simple_fields_for :photos do |photo|
       = render :partial => "photos/photo_fields", :locals => {:f => photo}
