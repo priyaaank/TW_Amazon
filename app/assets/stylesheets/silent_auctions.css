@@ -299,7 +299,7 @@ form .exceeded{color:#e00;}
 
 .inner_fields input.filename {
   border: none; background: transparent; box-shadow: none; border-radius: 0;
-  font-size: 0.9em; color: #666; width:245px; cursor: default;
+  font-size: 0.9em; color: #666; cursor: default;
 }
 
 .inner_fields .help-inline {
