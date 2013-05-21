@@ -1,6 +1,9 @@
 TWAmazon::Application.routes.draw do
 
 
+  resources :email_notifications
+
+
   resources :categories
 
 

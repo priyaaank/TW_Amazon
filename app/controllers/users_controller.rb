@@ -47,11 +47,7 @@ class UsersController < ApplicationController
   end
 
   def notification
-    if @user.email == nil
-      @user.email = 'on'
-      @user.save
-    end
-    @user = current_user
+
   end
 
   def correct_user

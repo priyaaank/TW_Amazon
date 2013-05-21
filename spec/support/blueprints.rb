@@ -71,3 +71,7 @@ end
 Category.blueprint(:laptops) do
   category {'Laptops'}
 end
+
+EmailNotification.blueprint do
+  # Attributes here
+end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130426013539) do
+ActiveRecord::Schema.define(:version => 20130521024424) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -71,6 +71,24 @@ ActiveRecord::Schema.define(:version => 20130426013539) do
     t.string   "category"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "email_notifications", :force => true do |t|
+    t.integer  "users_id"
+    t.boolean  "item_ending"
+    t.boolean  "item_won"
+    t.boolean  "item_will_sell"
+    t.boolean  "item_not_sell"
+    t.boolean  "item_not_win"
+    t.boolean  "auction_messages_by_creator"
+    t.boolean  "auction_messages_by_other"
+    t.boolean  "creator_auction_messages"
+    t.boolean  "new_items"
+    t.integer  "new_items_category"
+    t.boolean  "item_outbid"
+    t.boolean  "all_email_notification"
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
   end
 
   create_table "photos", :force => true do |t|

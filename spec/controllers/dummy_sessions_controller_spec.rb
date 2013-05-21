@@ -30,7 +30,7 @@ describe DummySessionsController do
       it 'should redirect to index page' do
         user = User.make!(:user)
         sign_in user
-        get:new
+        get :new
         response.should redirect_to (index_path)
       end
     end
