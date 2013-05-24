@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'rails', '3.2.11'
 gem 'jquery-rails'
 gem 'jquery-migrate-rails'
+gem 'jquery-ui-themes'
 gem 'jquery_datepicker'
 gem 'coffee-rails', '~> 3.2.1'
 gem "heroku"

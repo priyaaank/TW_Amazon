@@ -1,17 +1,17 @@
 = simple_form_for @email_notification do |f|
-  = f.input :all_email_notification, :label=> 'All Notifications: ', :as => :radio_buttons, :collection => [['Yes', true],['No', false]],:type =>"button", :checked =>@email_notification.all_email_notification
   %div{:id => "email-notify"}
     = f.input :select_all, :label=> 'Select All: ', :as => :check_boxes, :collection => [["", "yes"]]
     = f.input :item_ending, :as => :check_boxes, as: :boolean
-    = f.input :item_won, :as => :check_boxes, as: :boolean
+    = f.input :item_won, :as => :check_boxes, as: :boolean, :disabled => !@item_won || nil
     = f.input :item_will_sell, :as => :check_boxes, as: :boolean
     = f.input :item_not_sell, :as => :check_boxes, as: :boolean
     = f.input :item_not_win, :as => :check_boxes, as: :boolean
     = f.input :auction_messages_by_creator, :as => :check_boxes, as: :boolean
     = f.input :auction_messages_by_other, :as => :check_boxes, as: :boolean
     = f.input :creator_auction_messages, :as => :check_boxes, as: :boolean
+    = f.input :auction_starts, :as => :check_boxes, as: :boolean
     = f.input :new_items, :as => :check_boxes, as: :boolean
     = f.input :new_items_category, :as=>:select, :include_blank => "Select a Category", :collection => Category.all , :label_method => :category, :value_method => :id
-    = f.input :item_outbid, :as => :check_boxes, as: :boolean
+    = f.input :item_outbid, :as => :check_boxes, as: :boolean,  :disabled => !@item_outbid || nil
   .actions
   = f.submit 'Save', :class => 'btn btn-primary'

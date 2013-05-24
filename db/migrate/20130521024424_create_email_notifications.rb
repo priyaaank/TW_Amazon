@@ -3,7 +3,7 @@ class CreateEmailNotifications < ActiveRecord::Migration
     create_table :email_notifications do |t|
       t.integer :users_id
       t.boolean :item_ending
-      t.boolean :item_won
+      t.boolean :item_won , :default => true
       t.boolean :item_will_sell
       t.boolean :item_not_sell
       t.boolean :item_not_win
@@ -12,9 +12,8 @@ class CreateEmailNotifications < ActiveRecord::Migration
       t.boolean :creator_auction_messages
       t.boolean :new_items
       t.integer :new_items_category
-      t.boolean :item_outbid
-      t.boolean :all_email_notification
-
+      t.boolean :item_outbid , :default => true
+      t.boolean :auction_starts
       t.timestamps
     end
   end

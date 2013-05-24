@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130521024424) do
+ActiveRecord::Schema.define(:version => 20130521024429) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -76,7 +76,7 @@ ActiveRecord::Schema.define(:version => 20130521024424) do
   create_table "email_notifications", :force => true do |t|
     t.integer  "users_id"
     t.boolean  "item_ending"
-    t.boolean  "item_won"
+    t.boolean  "item_won",                    :default => true
     t.boolean  "item_will_sell"
     t.boolean  "item_not_sell"
     t.boolean  "item_not_win"
@@ -85,10 +85,10 @@ ActiveRecord::Schema.define(:version => 20130521024424) do
     t.boolean  "creator_auction_messages"
     t.boolean  "new_items"
     t.integer  "new_items_category"
-    t.boolean  "item_outbid"
-    t.boolean  "all_email_notification"
-    t.datetime "created_at",                  :null => false
-    t.datetime "updated_at",                  :null => false
+    t.boolean  "item_outbid",                 :default => true
+    t.boolean  "auction_starts"
+    t.datetime "created_at",                                    :null => false
+    t.datetime "updated_at",                                    :null => false
   end
 
   create_table "photos", :force => true do |t|
@@ -125,7 +125,6 @@ ActiveRecord::Schema.define(:version => 20130521024424) do
 
   create_table "users", :force => true do |t|
     t.string   "username",                          :null => false
-    t.string   "email"
     t.string   "encrypted_password"
     t.integer  "sign_in_count",      :default => 0
     t.datetime "current_sign_in_at"

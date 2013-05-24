@@ -66,7 +66,7 @@ class UsersController < ApplicationController
   def update_region
     @user.region = Region.find(params[:user][:region])
     @user.save!
-    redirect_to index_path
+    redirect_to landing_path
   end
 
   def update

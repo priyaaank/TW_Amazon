@@ -1,0 +1,12 @@
+- if @running_auction == nil
+  %li No Recent Auctions
+- else
+  %li{:class => "span4", :id => "silentAuction_#{@running_auction.id}"}
+    = link_to new_silent_auction_auction_message_path(@running_auction) do
+      %div{:class => "thumbnail"}
+        = render :partial => 'silent_auctions/auction_photos', :locals => {:auction => @running_auction}
+        %h3
+          #{@running_auction.title}
+
+
+

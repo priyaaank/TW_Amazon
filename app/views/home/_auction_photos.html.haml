@@ -1,0 +1,19 @@
+- photos = auction.photos
+- if photos.empty?
+  %div{:class=>'photo_area'}
+    = image_tag(asset_path("img_placeholder.jpg"))
+- else
+  - if photos.count == 1
+    %div{:class=>'photo_area'}
+      %a{:class => 'gallery', :rel => "photos_auction_#{auction.id}", :href => photos[0].image_url.to_s, :title => photos[0].caption}
+        = image_tag photos[0].image_url(:thumb).to_s
+    %span.note 1 image
+  - else
+    %div{:class=>'albums'}
+      %a{:class => 'gallery', :rel => "photos_auction_#{auction.id}", :href => photos[0].image_url.to_s, :title => photos[0].caption}
+        = image_tag photos[0].image_url(:thumb).to_s
+    %span.note= "#{photos.count} images"
+    %div{:style=>"visibility:hidden"}
+      - photos.each_with_index do |photo, index|
+        - unless index == 0
+          = link_to "", photo.image_url.to_s, :class => "gallery", :rel => "photos_auction_#{auction.id}", :title => photo.caption

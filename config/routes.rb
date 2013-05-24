@@ -6,6 +6,7 @@ TWAmazon::Application.routes.draw do
 
   resources :categories
 
+  match '/landing',    to: 'home#landing'
 
   ActiveAdmin.routes(self)
 
