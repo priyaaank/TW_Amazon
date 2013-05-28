@@ -1,9 +1,19 @@
 - if @ending_soon == nil
-  %li No Recent Auctions
+  %li No Auctions Ending Soon.
 - else
   %li{:class => "span4", :id => "silentAuction_#{@ending_soon.id}"}
-    = link_to new_silent_auction_auction_message_path(@ending_soon) do
-      %div{:class => "thumbnail"}
-        = render :partial => 'silent_auctions/auction_photos', :locals => {:auction => @ending_soon}
-        %h3
-          #{@ending_soon.title}
+    %div{:class => "thumbnail"}
+      = render :partial => 'silent_auctions/auction_photos', :locals => {:auction => @ending_soon}
+      %hr
+      %div
+        = link_to new_silent_auction_auction_message_path(@ending_soon) , {:class => 'btn btn-large'}  do
+          %i{:class => 'icon-info-sign'}
+          -if @ending_soon.title.length < 23
+            #{@ending_soon.title}
+          -else
+            #{(@ending_soon.title)[0..23] + "...."}
+      %hr
+      -if days_left(@ending_soon) == 'Ending Today'
+        %span{:class => 'label label-important'} Time Left:Today
+      -else
+        %span{:class => 'label label-success'} Time Left: #{days_left(@ending_soon)} days

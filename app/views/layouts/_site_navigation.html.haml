@@ -14,7 +14,7 @@
           -#%span
             -#Current Deals
             -#%b.caret
-        %ul{:class => "dropdown-menu auctions_sales_menu"}
+        %ul{:class => "dropdown-menu", :role => 'menu'}
           -#- if not(current_user.admin?)
           %li=link_to("Silent Auctions", silent_auctions_path)
           %li=link_to("Normal Auctions", normal_auctions_silent_auctions_path)

@@ -24,6 +24,12 @@ class HomeController < ApplicationController
     @search_category=""
     @running_auctions = SilentAuction.running(current_user.timezone).recent.includes(:bids).where("region_id = '#{current_user.region_id}'")
     temp = SilentAuction.running(current_user.timezone).recent.includes(:bids).where("region_id = '#{current_user.region_id}'")
+    temp.each do |auction|
+      if auction.end_date < Date.today
+        temp.delete(auction)
+      end
+    end
     @ending_soon = temp.sort! {|a,b| a.end_date <=> b.end_date}
   end
+
 end

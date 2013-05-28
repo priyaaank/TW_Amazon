@@ -1,12 +1,15 @@
 - if @running_auction == nil
-  %li No Recent Auctions
+  %li No Auctions Ending Soon.
 - else
   %li{:class => "span4", :id => "silentAuction_#{@running_auction.id}"}
-    = link_to new_silent_auction_auction_message_path(@running_auction) do
-      %div{:class => "thumbnail"}
-        = render :partial => 'silent_auctions/auction_photos', :locals => {:auction => @running_auction}
-        %h3
-          #{@running_auction.title}
-
-
+    %div{:class => "thumbnail"}
+      = render :partial => 'silent_auctions/auction_photos', :locals => {:auction => @running_auction}
+      %hr
+      %div
+        = link_to new_silent_auction_auction_message_path(@running_auction) , {:class => 'btn btn-large'}  do
+          %i{:class => 'icon-info-sign'}
+          -if @running_auction.title.length < 25
+            #{@running_auction.title}
+          -else
+            #{(@running_auction.title)[0..25] + "...."}
 
