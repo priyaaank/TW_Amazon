@@ -7,7 +7,6 @@
       %hr
       %div
         = link_to new_silent_auction_auction_message_path(@running_auction) , {:class => 'btn btn-large'}  do
-          %i{:class => 'icon-info-sign'}
           -if @running_auction.title.length < 25
             #{@running_auction.title}
           -else

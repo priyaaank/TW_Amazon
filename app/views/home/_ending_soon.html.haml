@@ -7,7 +7,6 @@
       %hr
       %div
         = link_to new_silent_auction_auction_message_path(@ending_soon) , {:class => 'btn btn-large'}  do
-          %i{:class => 'icon-info-sign'}
           -if @ending_soon.title.length < 23
             #{@ending_soon.title}
           -else
