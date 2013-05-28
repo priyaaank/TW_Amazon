@@ -3,6 +3,7 @@ class AuctionMessagesController < ApplicationController
   before_filter :authenticate_user!
 
   def new
+    @title = 'Auction Details'
     @silent_auction = SilentAuction.find(params[:silent_auction_id])
     @auction_message = AuctionMessage.new
     @auction_messages = AuctionMessage.find_all_by_silent_auction_id(@silent_auction.id)
