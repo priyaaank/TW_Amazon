@@ -69,6 +69,7 @@ When /^I view all expired auctions$/ do
 end
 
 When /^I close the auction$/ do
+  visit silent_auctions_path
   within("tr#silentAuction_#{get(:silent_auctions).id}") do
     click_button 'Manage'
     click_link 'close_auction'
@@ -77,6 +78,7 @@ When /^I close the auction$/ do
 end
 
 When /^I delete the auction$/ do
+  visit silent_auctions_path
   within("tr#silentAuction_#{get(:silent_auctions).id}") do
     click_button 'Manage'
     click_link 'Delete'
@@ -185,6 +187,7 @@ Then /^I am told that no closed auctions exist$/ do
 end
 
 Then /^I cannot close the auction$/ do
+  visit silent_auctions_path
   within("tr#silentAuction_#{get(:silent_auctions).id}") do
     page.should have_no_link("close_auction")
   end
@@ -235,6 +238,7 @@ Then /^I am able to view the message with text \"(.+)\"$/ do |message|
   page.should have_content message
 end
 When /^I choose the category "([^"]*)"$/ do |category_choice|
+  visit silent_auctions_path
   select(category_choice,:from =>'search_category')
   click_button "search_done"
 end

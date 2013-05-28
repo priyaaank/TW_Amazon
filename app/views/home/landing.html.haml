@@ -8,14 +8,20 @@
     -#%span{:class => 'ui-icon ui-icon-circle-plus'}
     Create New Auction
 
-%h1
-  %span Most Recent
-%ul{:class=> 'thumbnails', :id => 'mostRecentAuctions'}
-  - @running_auctions[0..4].each do |auction|
-    = render :partial => "most_recent", :locals => { :@running_auction => auction }
+%h1 Most Recent
+-if @running_auctions.blank?
+  %h4.well No Recent Auctions
+-else
+  %ul{:class=> 'thumbnails', :id => 'mostRecentAuctions'}
+    - @running_auctions[0..4].each do |auction|
+      = render :partial => "most_recent", :locals => { :@running_auction => auction }
+
 %hr
-%h1
-  %span Ending Soon
+%h1 Ending Soon
+-if @ending_soon.blank?
+  %h4.well No Recent Auctions
+-else
   %ul.thumbnails
     - @ending_soon[0..4].each do |auction|
       = render :partial => "ending_soon", :locals => { :@ending_soon => auction }
+

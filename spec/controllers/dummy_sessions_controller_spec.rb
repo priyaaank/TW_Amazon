@@ -27,11 +27,11 @@ describe DummySessionsController do
 
     describe 'when user already logged in' do
 
-      it 'should redirect to index page' do
+      it 'should redirect to landing page' do
         user = User.make!(:user)
         sign_in user
         get :new
-        response.should redirect_to (index_path)
+        response.should redirect_to (landing_path)
       end
     end
   end

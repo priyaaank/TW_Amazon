@@ -2,7 +2,7 @@
 %h1
   %span Closed Auctions
   - if current_user.admin?
-    = link_to 'Create NEW Auction/Sale', new_silent_auction_path, :class => 'btn btn-primary'
+    = link_to 'Create NEW Auction/Sale', new_silent_auction_path, :class => 'btn btn-success btn-large'
 
 - if @closed_auctions.blank?
   %h3= 'No auctions found'
