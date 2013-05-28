@@ -4,30 +4,18 @@
     Welcome
     %small
       #{@user.username}
+  = link_to new_silent_auction_path, {:class => 'btn btn-success btn-large'} do
+    %i{:class => 'icon-white icon-plus-sign'}
+    Create New Auction
+
 %h1
   %span Most Recent
 %ul{:class => 'thumbnails', :id => 'mostRecentAuctions'}
   - @running_auctions[0..4].each do |auction|
     = render :partial => "most_recent", :locals => { :@running_auction => auction }
+%hr
 %h1
   %span Ending Soon
   %ul{:class => 'thumbnails', :id => 'endingSoonAuctions'}
     - @ending_soon[0..4].each do |auction|
       = render :partial => "ending_soon", :locals => { :@ending_soon => auction }
-
--#  = link_to new_silent_auction_path, {:class => 'btn btn-success btn-large'} do
--#    %i{:class => 'icon-white icon-plus-sign'}
--#      %span
--#        Create New Auction
--#  = render :partial => "silent_auctions/category_search_filter", :locals => {:category =>@search_category }
--#  %hr
--#- if @running_auctions.blank?
--#  %h3= "No auctions found"
--#  .empty_collection
--#    %p.emptyMsg There are no running auctions.
--#- else
--#  %h3= "Displaying all #{pluralize(@running_auctions.count, "running auctions")}"
--#  %table{:class => 'table table-simpleBordered', :id => 'runningAuctions'}
--#    %tbody
--#      - @running_auctions.each do |auction|
--#        = render :partial => "silent_auctions/running_auction", :locals => { :auction => auction }
