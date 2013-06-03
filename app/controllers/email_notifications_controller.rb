@@ -3,7 +3,6 @@ class EmailNotificationsController < InheritedResources::Base
     @email_notification = EmailNotification.find_by_users_id(current_user.id)
     if(@email_notification == nil)
       @email_notification = EmailNotification.new
-      @email_notification.all_email_notification=false
     end
   end
   def create

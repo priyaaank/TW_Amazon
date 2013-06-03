@@ -127,11 +127,28 @@ class SilentAuction < ActiveRecord::Base
       current_time = Time.zone.now.in_time_zone(timezone) + 10.minutes
 
       # to send email notification to the item's owner 2 days before a sale ends
-      if current_time.hour == 0 && auction.end_date == (current_time.to_date + 2.days) && auction.item_type == 'Quick Sale'
+      if current_time.hour == 0 && auction.end_date == (current_time.to_date + 2.days)
         @silent_auction = auction
-        UserMailer.seller_notification_quick_sale_almost_ends(@silent_auction.title,@silent_auction.creator).deliver unless Rails.application.config.test_mode
+        if auction.item_type == 'Quick Sale'
+          UserMailer.seller_notification_quick_sale_almost_ends(@silent_auction.title,@silent_auction.creator).deliver unless Rails.application.config.test_mode
+        else
+          @bids=Bid.find_by_silent_auction_id(@silent_auction.id);
+          @bids.each do |bid|
+            if @all_recipients != "" then
+              @all_recipients = @all_recipients + ", "
+            end
+            @email_notification=EmailNotification.find_by_users_id(bid.user_id)
+            if bid.user_id !=@silent_auction.creator
+              if @email_notification != nil
+                if @email_notification.item_ending
+                  @all_recipients = @all_recipients + user.username + "@thoughtworks.com"
+                end
+              end
+            end
+          end
+          UserMailer.buyer_notification_auction_almost_ends(@silent_auction.title,@all_recipients).deliver
+        end
       end
-
       # to send email notification when the auction of an item STARTS
       if current_time.hour == 0 && auction.start_date == current_time.to_date
         @silent_auction = auction
@@ -143,30 +160,37 @@ class SilentAuction < ActiveRecord::Base
   def send_notification_email(auction)
     @winner_id = ""
     @winner_amount = ""
-    @winner = Bid.where("silent_auction_id = ? AND active = ?",auction.id,true)
-    @count = @winner.count
+    @winnerOrder = Bid.where("silent_auction_id = ? AND active = ?",auction.id,true)
+    @count = @winnerOrder.count
     @admins = User.where("admin = ? AND region_id = ?", true, auction.region)
     @alladmins = @admins.collect{|admin| admin.username + '@thoughtworks.com'}.join(',')
     if @count > 0
-      @winner = @winner.order("amount ASC").last!
+      @winner = @winnerOrder.order("amount ASC").last!
       @winner_id = User.find(@winner.user_id).username + "@thoughtworks.com"
       @winner_amount = region.currency + " " + number_with_delimiter(@winner.amount)
-      if User.find(@winner.user_id).email == nil
-        UserMailer.winner_notification(auction.title,@count,@winner_id,@winner_amount,auction.creator).deliver
-      elsif User.find(@winner.user_id).email == 'on'
-        UserMailer.winner_notification(auction.title,@count,@winner_id,@winner_amount,auction.creator).deliver
+      UserMailer.winner_notification(auction.title,@count,@winner_id,@winner_amount,auction.creator).deliver
+      UserMailer.administrator_notification_close(auction.title,@count,@winner_id,@winner_amount,@alladmins,auction.creator).deliver
+      # item not win
+      @winnerOrder.each do |bid|
+        if @all_recipients != "" then
+          @all_recipients = @all_recipients + ", "
+        end
+        if bid.user_id!=User.find(@winner.user_id)
+          @email_notification=EmailNotification.find_by_users_id(bid.user_id)
+          if @email_notification != nil
+            if @email_notification.item_not_win
+              @all_recipients = @all_recipients + user.username + "@thoughtworks.com"
+            end
+          end
+        end
       end
-      if User.find_by_username(auction.creator).email == nil
-        UserMailer.administrator_notification_close(auction.title,@count,@winner_id,@winner_amount,@alladmins,auction.creator).deliver
-      elsif User.find_by_username(auction.creator).email == 'on'
-        UserMailer.administrator_notification_close(auction.title,@count,@winner_id,@winner_amount,@alladmins,auction.creator).deliver
-      end
-
+      UserMailer.item_not_win(auction.title,@all_recipients).deliver
     else
-      if User.find_by_username(auction.creator).email == nil
-        UserMailer.administrator_notification_expired(auction.title,@alladmins,auction.creator).deliver
-      elsif User.find_by_username(auction.creator).email == 'on'
-        UserMailer.administrator_notification_expired(auction.title,@alladmins,auction.creator).deliver
+      @email_notification=EmailNotification.find_by_users_id(User.find_by_username(auction.creator).id)
+      if @email_notification != nil
+        if @email_notification.item_not_sell
+          UserMailer.administrator_notification_expired(auction.title,@alladmins,auction.creator).deliver
+        end
       end
     end
   end

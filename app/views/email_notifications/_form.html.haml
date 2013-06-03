@@ -1,17 +1,17 @@
 = simple_form_for @email_notification do |f|
-  %div{:id => "email-notify"}
+  %div{:id => "email-notify", :class => 'well form-horizontal'}
     = f.input :select_all, :label=> 'Select All: ', :as => :check_boxes, :collection => [["", "yes"]]
-    = f.input :item_ending, :as => :check_boxes, as: :boolean
-    = f.input :item_won, :as => :check_boxes, as: :boolean, :disabled => !@item_won || nil
-    = f.input :item_will_sell, :as => :check_boxes, as: :boolean
-    = f.input :item_not_sell, :as => :check_boxes, as: :boolean
-    = f.input :item_not_win, :as => :check_boxes, as: :boolean
-    = f.input :auction_messages_by_creator, :as => :check_boxes, as: :boolean
-    = f.input :auction_messages_by_other, :as => :check_boxes, as: :boolean
-    = f.input :creator_auction_messages, :as => :check_boxes, as: :boolean
-    = f.input :auction_starts, :as => :check_boxes, as: :boolean
-    = f.input :new_items, :as => :check_boxes, as: :boolean
+    = f.input :item_ending,:label => 'Email me when an item is ending',:as => :check_boxes, as: :boolean
+    = f.input :item_outbid,:label=>'Email me when I have been outbid on an item' , :as => :check_boxes, as: :boolean, :disabled => !@item_outbid || nil
+    = f.input :auction_starts, :label=>'Email me when an item auction starts' ,:as => :check_boxes, as: :boolean
+    = f.input :item_won, :label=>'Email me when I have won an auction' ,:as => :check_boxes, as: :boolean, :disabled => !@item_won || nil
+    = f.input :item_will_sell,:label=>'Email me if atleast one person has bid on my item' , :as => :check_boxes, as: :boolean
+    = f.input :item_not_sell, :label=>'Email me if no one has bid on my item' ,:as => :check_boxes, as: :boolean
+    = f.input :item_not_win,:label=>'Email me if I have not won an auction' , :as => :check_boxes, as: :boolean
+    = f.input :auction_messages_by_creator, :label=>'Email me when Seller of an item posts a message on the item I have bid on' ,:as => :check_boxes, as: :boolean
+    = f.input :auction_messages_by_other, :label=>'Email me when anyone posts a message on the item I have bid on' ,:as => :check_boxes, as: :boolean
+    = f.input :creator_auction_messages, :label=>'Email me when someone posts a message on my item' ,:as => :check_boxes, as: :boolean
+    = f.input :new_items, :label=>'Email me when a new item is added to the following category' ,:as => :check_boxes, as: :boolean
     = f.input :new_items_category, :as=>:select, :include_blank => "Select a Category", :collection => Category.all , :label_method => :category, :value_method => :id
-    = f.input :item_outbid, :as => :check_boxes, as: :boolean,  :disabled => !@item_outbid || nil
   .actions
   = f.submit 'Save', :class => 'btn btn-primary'
