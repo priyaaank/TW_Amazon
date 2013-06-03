@@ -124,7 +124,7 @@ class UserMailer < ActionMailer::Base
       end
       @email_notification=EmailNotification.find_by_users_id(user.id)
       if @email_notification != nil
-        if @email_notification.new_items && (@email_notification.new_items_category=="" || @email_notification.new_items_category==auction.category)
+        if @email_notification.new_items && (@email_notification.new_items_category == "" || @email_notification.new_items_category==auction.category)
           @all_recipients = @all_recipients + user.username + "@thoughtworks.com"
         end
       end
@@ -133,9 +133,10 @@ class UserMailer < ActionMailer::Base
     # send the email only when there is at least 1 recipient
     mail(:bcc => "#{@all_recipients}", :subject => "[TW Garage Sale] [SPAM] New auction for \"#{@title}\"", :from => 'GarageSale@no-reply.thoughtworks.com')
   end
-  def send_announcement_from_other_users_auction_message(auction,type)
+  def send_announcement_from_other_users_auction_message(auction)
     @title = auction.title
     @bids_email =  Bid.where("silent_auction_id = ?",auction.id)
+    @all_recipients = "twgs.twgs@gmail.com"
     if @bids_email != nil
       @bids_email.each do |bid|
         if @all_recipients != "" then
@@ -156,6 +157,7 @@ class UserMailer < ActionMailer::Base
   def send_announcement_from_creator_auction_message(auction)
     @title = auction.title
     @bids_email =  Bid.where("silent_auction_id = ?",auction.id)
+    @all_recipients = "twgs.twgs@gmail.com"
     if @bids_email != nil
         @bids_email.each do |bid|
         if @all_recipients != "" then
@@ -175,10 +177,13 @@ class UserMailer < ActionMailer::Base
   end
   def send_announcement_to_creator_auction_message(userId,username,title)
     @title = title
-    @email_notification=EmailNotification.find_by_users_id(userId)
+    @userId = userId
+    @username = username
+    @all_recipients =""
+    @email_notification=EmailNotification.find_by_users_id(@userId)
     if @email_notification != nil
         if @email_notification.creator_auction_messages
-          @all_recipients = username + "@thoughtworks.com"
+          @all_recipients = @username + "@thoughtworks.com"
         end
     end
     # send the email only when there is at least 1 recipient
