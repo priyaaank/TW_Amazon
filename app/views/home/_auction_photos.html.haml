@@ -7,12 +7,10 @@
     %div{:class=>'photo_area'}
       %a{:class => 'gallery', :rel => "photos_auction_#{auction.id}", :href => photos[0].image_url.to_s, :title => photos[0].caption}
         = image_tag photos[0].image_url(:thumb).to_s
-    %span.note 1 image
   - else
     %div{:class=>'albums'}
       %a{:class => 'gallery', :rel => "photos_auction_#{auction.id}", :href => photos[0].image_url.to_s, :title => photos[0].caption}
         = image_tag photos[0].image_url(:thumb).to_s
-    %span.note= "#{photos.count} images"
     %div{:style=>"visibility:hidden"}
       - photos.each_with_index do |photo, index|
         - unless index == 0
