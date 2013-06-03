@@ -17,7 +17,6 @@ class RemoveEmailNotificationsFromUser < ActiveRecord::Migration
      :auction_messages_by_other => true,
      :creator_auction_messages => true,
      :new_items => true,
-     :new_items_category => "0",
      :auction_starts => true)
     elsif user.email == nil || user.email == ''
       EmailNotification.create(:users_id => user.id, :item_ending => true,
@@ -28,7 +27,6 @@ class RemoveEmailNotificationsFromUser < ActiveRecord::Migration
       :auction_messages_by_other => true,
       :creator_auction_messages => true,
       :new_items => true,
-      :new_items_category => "0",
           :auction_starts => true)
      elsif user.email == 'off'
        EmailNotification.create(:users_id => user.id, :item_ending => false,
@@ -39,7 +37,6 @@ class RemoveEmailNotificationsFromUser < ActiveRecord::Migration
       :auction_messages_by_other => false,
       :creator_auction_messages => false,
       :new_items => false,
-      :new_items_category => '-1',
       :auction_starts => false)
      end
     end
@@ -49,11 +46,11 @@ class RemoveEmailNotificationsFromUser < ActiveRecord::Migration
   def down
     add_column :users, :email, :string , :null => true, :default => nil
       EmailNotification.all do |email_settings|
-        if email_settings.new_items_category == '0'
+        if email_settings.new_items
          user = User.find("id is #{email_settings.users_id}")
          user.email = "on"
           user.save
-        elsif email_settings.new_items_category == '-1'
+        else
           user = User.find("id is #{email_settings.users_id}")
           user.email = "off"
           user.save
