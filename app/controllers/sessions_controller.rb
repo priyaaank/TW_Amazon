@@ -5,7 +5,7 @@ class SessionsController < Devise::OmniauthCallbacksController
 
   def new
     if user_signed_in?
-      redirect_to index_path
+      redirect_to landing_path
     else
       if test_mode?
         # homepage with two login options (CAS or dummy) if app is still running in test mode
@@ -42,7 +42,7 @@ class SessionsController < Devise::OmniauthCallbacksController
     if current_user.region.blank?
       new_region_user_path(current_user)
     else
-      index_path
+      landing_path
     end
   end
 

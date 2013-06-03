@@ -100,14 +100,14 @@
 
 			// Properties for each animation type
 			// Opening fancyBox
-			openEffect: 'none', // 'elastic', 'fade' or 'none'
+			openEffect: 'elastic', // 'elastic', 'fade' or 'none'
 			openSpeed: 300,
 			openEasing: 'swing',
 			openOpacity: true,
 			openMethod: 'zoomIn',
 
 			// Closing fancyBox
-			closeEffect: 'none', // 'elastic', 'fade' or 'none'
+			closeEffect: 'elastic', // 'elastic', 'fade' or 'none'
 			closeSpeed: 300,
 			closeEasing: 'swing',
 			closeOpacity: true,

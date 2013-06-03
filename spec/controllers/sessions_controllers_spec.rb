@@ -14,7 +14,7 @@ describe SessionsController do
       user = User.make!(:user)
       sign_in user
       get :new
-      response.should redirect_to index_path
+      response.should redirect_to landing_path
     end
 
     it 'should redirect to root login page when in test mode' do
@@ -41,13 +41,13 @@ describe SessionsController do
       subject.current_user.should_not == nil
       subject.current_user.username.should eql 'cas_user'
       #response.should redirect_to index_path
-      response.should_not redirect_to index_path
+      response.should_not redirect_to landing_path
 
       subject.current_user.region = Region.make!(:aus)
       subject.current_user.save!
       get :cas
       session[:cas_login].should == true
-      response.should redirect_to index_path
+      response.should redirect_to landing_path
       #Expected response to be a redirect to <http://test.host/silent_auctions> but was a redirect to <http://test.host/users/1/new_region>
     end
   end

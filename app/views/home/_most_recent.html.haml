@@ -1,6 +1,7 @@
 %li{:class => "span4", :id => "silentAuction_#{@running_auction.id}"}
   %div{:class => "thumbnail"}
     = render :partial => 'auction_photos', :locals => {:auction => @running_auction}
+    %br
     %span.well "AU$ #{@running_auction.min_price}"
     %hr
     %div
