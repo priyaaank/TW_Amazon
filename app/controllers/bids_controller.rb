@@ -6,24 +6,24 @@ class BidsController < ApplicationController
     @bid = current_user.bids.build(params[:bid])
     respond_to do |format|
       if @bid.save
-        item_type = SilentAuction.find(@bid.silent_auction_id).item_type
-        title = SilentAuction.find(@bid.silent_auction_id).title
-        @bids_email =  Bid.where("silent_auction_id = ?",@bid.silent_auction_id)
+        @auction = SilentAuction.find(@bid.silent_auction_id)
+        @item_type = @auction.item_type
+        @title = @auction.title
+        @bids_email =  Bid.where("silent_auction_id = ?",@auction.id)
         if @bids_email.size>1
           @result = @bids_email.last(2)
-          @outBidder_id = User.find(@result[0].user_id).username
-          UserMailer.item_outbid(title,@outBidder_id).deliver
+          @outBidder = User.find(@result[0].user_id).username
+          UserMailer.item_outbid(@title,@outBidder).deliver
         else
-          @user_id = @bids_email.first.user_id
-          @email_notification=EmailNotification.find_by_users_id(@user_id)
+          @user=User.find_by_username(@auction.creator)
+          @email_notification=EmailNotification.find_by_users_id(@user.id)
           if @email_notification != nil
             if @email_notification.item_will_sell
-              @creator = User.find(@user_id).username
-              UserMailer.item_will_sell(title,@creator).deliver
+              UserMailer.item_will_sell(@title,@auction.creator).deliver
             end
           end
         end
-        if item_type == 'Silent Auction'
+        if @item_type == 'Silent Auction'
           format.html { redirect_back_with_success(silent_auctions_path,"") }
           format.js { render 'create'}
         else
@@ -32,7 +32,7 @@ class BidsController < ApplicationController
         end
       else
         err_msg = @bid.errors.full_messages[0]
-        if item_type == 'Silent Auction'
+        if @item_type == 'Silent Auction'
           format.html { redirect_back_with_error(silent_auctions_path,"Error! #{err_msg}") }
         else
           format.html { redirect_back_with_error(normal_auctions_silent_auctions_path,"Error! #{err_msg}") }
