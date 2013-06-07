@@ -4,7 +4,6 @@ ActiveAdmin.register User do
       f.inputs "User Details" do
         f.input :region_id, :as => :select, :collection => Region.all
         f.input :username
-        f.input :email
         f.input :encrypted_password
         f.input :admin
       end
