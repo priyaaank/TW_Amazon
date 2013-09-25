@@ -10,6 +10,16 @@ SilentAuction.blueprint do
   start_date { Time.zone.now.in_time_zone(Region.make!(:aus).timezone) + 10.minutes}
 end
 
+SilentAuction.blueprint(:silent_auction) do
+  title { Faker::Lorem.sentence }
+  description { Faker::Lorem.paragraph }
+  min_price { 1.00 }
+  end_date { 7.days.from_now }
+  region {Region.make!(:aus)}
+  category {Category.make!(:laptops)}
+  start_date { Time.zone.now.in_time_zone(Region.make!(:aus).timezone) + 10.minutes}
+end
+
 User.blueprint do
   username  { "user-#{sn}" }
   admin { false }

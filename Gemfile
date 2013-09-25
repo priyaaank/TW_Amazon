@@ -50,17 +50,17 @@ end
 group :development, :test do
   gem 'rspec-rails'
   gem 'timecop'
-  gem 'better_errors'
-  gem 'binding_of_caller'
 end
 
 group :development do
   gem 'sqlite3'
+  gem 'better_errors'
+  gem 'binding_of_caller'
 end
 
 group :test do
   gem 'database_cleaner'
-  gem 'cucumber-rails'
+  gem 'cucumber-rails', :require => false
   gem 'simplecov'
   gem 'capybara'
   gem 'awesome_print'

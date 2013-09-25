@@ -6,20 +6,15 @@ class HomeController < ApplicationController
     if user_signed_in?
       redirect_to landing_path
     else
-      if test_mode?
-        # provide homepage with two login options (CAS or test accounts)
-        @title = "Login"
-        respond_to do |format|
-          format.html # login.html.haml
-        end
+      unless Rails.env.production?
+        redirect_to new_user_session_path
       else
         redirect_to user_omniauth_authorize_path(:cas)
-        # redirect_to index_path
       end
     end
   end
-  def landing
 
+  def landing
     @title = "Running Silent Auctions"
     @search_category=""
     @running_auctions = SilentAuction.running(current_user.timezone).recent.includes(:bids).where("region_id = '#{current_user.region_id}'")

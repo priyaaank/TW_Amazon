@@ -1,8 +1,16 @@
+%div{:class => "jumbotron masthead"}
+  %h1 Garage Sale
+  %p
+    = "Beta application - version 0.3"
+
 %div{:style => "margin:0 auto; width:450px;"}
-  %h1{:style => "text-align:center"} Login with Test Account
+  %h2{:style => "text-align:center"} Login with Test Account
   = simple_form_for(@user, :as => "user", :url => user_session_path, :html => { :class => 'form-horizontal form-bordered' }) do |f|
     = f.input :username, :collection =>  @test_username, :prompt => "Select a test user", :label => "Username"
     = f.input :password, :required => true, :label => 'Password'
 
     .form-actions
       = f.button :submit, 'Login', :class => 'btn btn-primary'
+
+  %p.center
+    =link_to "Login with CAS Account", user_omniauth_authorize_path(:cas), :class => "btn btn-primary btn-large"

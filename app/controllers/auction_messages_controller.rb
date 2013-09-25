@@ -8,6 +8,7 @@ class AuctionMessagesController < ApplicationController
     @auction_message = AuctionMessage.new
     @auction_messages = AuctionMessage.find_all_by_silent_auction_id(@silent_auction.id)
   end
+
   def create
     @auction_message = AuctionMessage.new(params[:auction_message])
     @auction_message.creator = current_user.username

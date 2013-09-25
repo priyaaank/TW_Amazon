@@ -5,17 +5,6 @@ describe UsersController do
 
   describe "GET 'show'" do
 
-    describe "for non-signed-in users" do
-      it 'should redirect to login page' do
-        get :show
-        if Rails.application.config.test_mode
-          response.should redirect_to(root_path)
-        else
-          response.should redirect_to(user_omniauth_authorize_path(:cas))
-        end
-      end
-    end
-
     describe "for signed-in non-admin users" do
       before(:each) do
         @region = Region.make!(:aus)

@@ -6,14 +6,13 @@ describe BidsController do
   describe "POST 'create'" do
 
     before(:each) do
-      @region = Region.find_by_code('AUS')
-      @user = User.make!(:user, :region => @region)
+      @user = User.make!(:user, :region => Region.make!(:aus))
       sign_in @user
     end
 
     context "given a running auction" do
-      before (:each) do
-        @running_auction = SilentAuction.make!
+      before :each do
+        @running_auction = SilentAuction.make!(:silent_auction, :creator => @user.username)
       end
 
       it 'should create a new bid given valid details and user has not placed bid on the auction before' do
@@ -38,7 +37,6 @@ describe BidsController do
     end
 
     context "given a closed auction" do
-
       it 'should not create a new bid' do
         closed_auction = SilentAuction.make!(:open => false)
         lambda {
@@ -46,7 +44,6 @@ describe BidsController do
         }.should_not change(closed_auction.bids, :count)
       end
     end
-
   end
 
   describe "PUT 'withdraw'" do

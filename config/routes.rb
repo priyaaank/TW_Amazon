@@ -60,25 +60,24 @@ TWAmazon::Application.routes.draw do
     end
   end
 
-  if Rails.env.production?
-    root :to => 'home#login'
-    devise_for :users, :skip => [:sessions], :controllers => { :omniauth_callbacks => "sessions"}
-    devise_scope :user do
-      get '/login', :to => "sessions#new", :as => :new_user_session
-      get '/logout_cas', :to => 'sessions#destroy_cas', :as => :destroy_user_session
-      match "/cas/logout" => redirect('http://cas.thoughtworks.com/cas/logout'), :as => :cas_logout
-    end
-  else
-    root :to => redirect('/test-users/login')
-    # for dummy user accounts
+  root :to => 'home#login'
+  devise_for :users, :skip => [:sessions], :controllers => { :omniauth_callbacks => "sessions"}
+  devise_scope :user do
+    get '/login', :to => "sessions#new", :as => :new_user_session
+    get '/logout_cas', :to => 'sessions#destroy_cas', :as => :destroy_user_session
+    match "/cas/logout" => redirect('http://cas.thoughtworks.com/cas/logout'), :as => :cas_logout
+  end
+
+  #Routes to dummy session controller for dev and test environments
+  unless Rails.env.production?
     devise_for :users,
       :controllers => { :sessions => "dummy_sessions" },
-      :path_names => { :sign_in => 'login', :sign_out => 'logout'}
+      :path_names => { :sign_in => '/test_users/login', :sign_out => 'test-users/logout'},
+      :except => [:new_user_session, :destroy_user_session]
 
     devise_scope :user do
-      get '/test-users/login', :to => 'dummy_sessions#new', :as => :new_dummy_session
+      get '/test-users/login', :to => 'dummy_sessions#new', :as => :new_user_session
       get '/test-users/logout', :to => 'dummy_sessions#destroy', :as => :destroy_user_session
     end
   end
-
 end
