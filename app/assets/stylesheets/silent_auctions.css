@@ -418,3 +418,7 @@ legend.file_upload span {font-size:13px;}
 select.date {
 	width: 10em;
 }
+
+.fancybox-outer > a:hover{
+  background: none
+}
