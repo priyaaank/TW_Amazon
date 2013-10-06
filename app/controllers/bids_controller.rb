@@ -4,26 +4,12 @@ class BidsController < ApplicationController
 
   def create
     @bid = current_user.bids.build(params[:bid])
+    @auction = SilentAuction.find(@bid.silent_auction_id)
     respond_to do |format|
       if @bid.save
-        @auction = SilentAuction.find(@bid.silent_auction_id)
-        @item_type = @auction.item_type
-        @title = @auction.title
-        @bids_email =  Bid.where("silent_auction_id = ?",@auction.id)
-        if @bids_email.size>1
-          @result = @bids_email.last(2)
-          @outBidder = User.find(@result[0].user_id).username
-          UserMailer.item_outbid(@title,@outBidder).deliver
-        else
-          @user=User.find_by_username(@auction.creator)
-          @email_notification=EmailNotification.find_by_users_id(@user.id)
-          if @email_notification != nil
-            if @email_notification.item_will_sell
-              UserMailer.item_will_sell(@title,@auction.creator).deliver
-            end
-          end
-        end
-        if @item_type == 'Silent Auction'
+        send_outbid_email @auction if @auction.bids.size > 1 and @auction.item_type != 'Silent Auction'
+        send_item_will_sell_email if @auction.bids.size == 1
+        if @auction.item_type == 'Silent Auction'
           format.html { redirect_back_with_success(silent_auctions_path,"") }
           format.js { render 'create'}
         else
@@ -32,7 +18,7 @@ class BidsController < ApplicationController
         end
       else
         err_msg = @bid.errors.full_messages[0]
-        if @item_type == 'Silent Auction'
+        if @auction.item_type == 'Silent Auction'
           format.html { redirect_back_with_error(silent_auctions_path,"Error! #{err_msg}") }
         else
           format.html { redirect_back_with_error(normal_auctions_silent_auctions_path,"Error! #{err_msg}") }
@@ -48,17 +34,8 @@ class BidsController < ApplicationController
     @bid.amount = params[:bid]['amount']
     respond_to do |format|
       if @bid.save
-
-        @bids_email =  Bid.where("silent_auction_id = ?",params[:bid]['silent_auction_id'])
-        if @bids_email.size>1
-          @result = @bids_email.last(2)
-          @user_id=@result[0].user_id
-          if current_user.id!=@user_id
-            @outBidder_id = User.find(@user_id).username
-            UserMailer.item_outbid(@bid.title,@outBidder_id).deliver
-          end
-        end
-
+        @auction = SilentAuction.find(@bid.silent_auction_id)
+        send_outbid_email @auction if @auction.bids.size > 1 and @auction.item_type != 'Silent Auction' and current_user.id!=@auction.bids.last(2)[0].user_id
         format.html { redirect_back_with_success(normal_auctions_silent_auctions_path,"") }
         format.js { render 'update'}
       else
@@ -136,4 +113,18 @@ class BidsController < ApplicationController
       format.js { render 'delete_done' }
     end
   end
+
+  private
+  def send_outbid_email auction
+     bids = auction.bids.last(2)
+     outBidder = User.find(bids[0].user_id).username
+     UserMailer.item_outbid(auction.title, outBidder).deliver
+  end
+
+  def send_item_will_sell_email auction
+    user = User.find_by_username auction.creator
+    email_notification = EmailNotification.find_by_users_id user.id
+    UserMailer.item_will_sell(auction.title, auction.creator).deliver if email_notification and email_notification.item_will_sell
+  end
+
 end

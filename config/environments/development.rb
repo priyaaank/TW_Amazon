@@ -13,34 +13,20 @@ TWAmazon::Application.configure do
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = false
 
-  # Don't care if the mailer can't send
-  #config.action_mailer.default_url_options = { host: "twgs.herokuapp.com" }
-
-  config.action_mailer.raise_delivery_errors = true
+  # ActionMailer Config
+  config.action_mailer.default_url_options = { :host => "localhost:3000" }
+  config.action_mailer.delivery_method = :smtp
+  # change to true to allow email to be sent during development
   config.action_mailer.perform_deliveries = true
-  ActionMailer::Base.delivery_method = :test
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.default :charset => "utf-8"
 
-#  ActionMailer::Base.smtp_settings = {
-#    :address              => "smtp.mandrillapp.com",
-#    :port                 => "587",
-#    :domain               => "mandrillapp.com",
-#    :user_name            => "app4595588@heroku.com",
-#    :password             => "7b69fbd8-dbd6-4220-be9b-c1ea21a56848",
-#    :authentication       => "plain",
-#    :enable_starttls_auto => true
-#  }
-
-  # ActionMailer::Base.smtp_settings = {
-    # :address              => "smtp.gmail.com",
-    # :port                 => "587",
-    # :domain               => "gmail.com",
-    # :user_name            => "twgs.twgs@gmail.com",
-    # :password             => "twgs.twgs",
-    # :authentication       => "plain",
-    # :enable_starttls_auto => true
-  # }
-
-  #config.action_mailer.sendmail_settings = { :arguments => '-i' }
+  #Install MailCatcher by running "gem install mailcatcher" and run "mailcatcher".
+  #Access the mails by going to http://localhost:1080
+  config.action_mailer.smtp_settings = {
+    :address => "localhost",
+    :port => 1025
+  }
 
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log

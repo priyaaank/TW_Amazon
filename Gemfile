@@ -50,6 +50,7 @@ end
 group :development, :test do
   gem 'rspec-rails'
   gem 'timecop'
+  gem "debugger"
 end
 
 group :development do
