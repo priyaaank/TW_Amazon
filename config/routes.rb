@@ -17,8 +17,7 @@ TWAmazon::Application.routes.draw do
   match 'silent_auctions', :to => 'SilentAuctions#index', :as => :index, :via => :get
 
   # silent auctions paths
-  resources :silent_auctions, :only => [:index, :create, :new, :destroy, :edit, :update]
-  resources :silent_auctions do
+  resources :silent_auctions, :only => [:index, :create, :new, :destroy, :edit, :update] do
     member do
       put 'close'
       post 'confirm_delete'

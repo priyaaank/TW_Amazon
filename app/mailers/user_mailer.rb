@@ -32,12 +32,11 @@ class UserMailer < ActionMailer::Base
   def send_announcement_to_other_users(auction)
     @title = auction.title
 
-    @type = ''
+    @url = silent_auctions_url
     if auction.item_type == 'Quick Sale'
-      @type = '/sales'
-    else if auction.item_type == 'Normal Auction'
-      @type = '/normal_auctions'
-    end # end of else if
+      @url = sales_silent_auctions_url
+    elsif auction.item_type == 'Normal Auction'
+      @url = normal_auctions_silent_auctions_url
     end
 
     @start_date = auction.start_date.strftime("%d %B %Y")
@@ -152,7 +151,7 @@ class UserMailer < ActionMailer::Base
        end
     end
     # send the email only when there is at least 1 recipient
-    mail(:bcc => "#{@all_recipients}", :subject => "[TW Garage Sale] [SPAM] New auction messages for \"#{@title}\"", :from => 'GarageSale@no-reply.thoughtworks.com')   
+    mail(:bcc => "#{@all_recipients}", :subject => "[TW Garage Sale] [SPAM] New auction messages for \"#{@title}\"", :from => 'GarageSale@no-reply.thoughtworks.com')
   end
   def send_announcement_from_creator_auction_message(auction)
     @title = auction.title
@@ -173,7 +172,7 @@ class UserMailer < ActionMailer::Base
       end
     end
     # send the email only when there is at least 1 recipient
-    mail(:bcc => "#{@all_recipients}", :subject => "[TW Garage Sale] [SPAM] New auction messages for \"#{@title}\"", :from => 'GarageSale@no-reply.thoughtworks.com')   
+    mail(:bcc => "#{@all_recipients}", :subject => "[TW Garage Sale] [SPAM] New auction messages for \"#{@title}\"", :from => 'GarageSale@no-reply.thoughtworks.com')
   end
   def send_announcement_to_creator_auction_message(userId,username,title)
     @title = title
@@ -187,6 +186,6 @@ class UserMailer < ActionMailer::Base
         end
     end
     # send the email only when there is at least 1 recipient
-    mail(:bcc => "#{@all_recipients}", :subject => "[TW Garage Sale] [SPAM] New auction messages for \"#{@title}\"", :from => 'GarageSale@no-reply.thoughtworks.com')   
+    mail(:bcc => "#{@all_recipients}", :subject => "[TW Garage Sale] [SPAM] New auction messages for \"#{@title}\"", :from => 'GarageSale@no-reply.thoughtworks.com')
   end
 end
