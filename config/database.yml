@@ -24,5 +24,11 @@ production:
   pool: 5
   timeout: 5000
 
+staging:
+  adapter: postgresql
+  database: db/production.postgresql
+  pool: 5
+  timeout: 5000
+
 cucumber:
   <<: *test
