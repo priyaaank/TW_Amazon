@@ -8,7 +8,7 @@ class BidsController < ApplicationController
     respond_to do |format|
       if @bid.save
         send_outbid_email @auction if @auction.bids.size > 1 and @auction.item_type != 'Silent Auction'
-        send_item_will_sell_email if @auction.bids.size == 1
+        send_item_will_sell_email @auction if @auction.bids.size == 1
         if @auction.item_type == 'Silent Auction'
           format.html { redirect_back_with_success(silent_auctions_path,"") }
           format.js { render 'create'}
@@ -51,7 +51,7 @@ class BidsController < ApplicationController
     if @bid.user_id != current_user.id
       session[:return_to] ||= request.referer
       flash[:error] = "<h4 class='alert-heading'>Unauthorized Withdrawal!</h4>You cannot withdraw bids of other users"
-      redirect_back_or index_path
+      redirect_back_or silent_auctions_path
     else
       @auction = SilentAuction.find(@bid.silent_auction_id)
       respond_to do |format|

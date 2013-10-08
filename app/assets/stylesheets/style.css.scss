@@ -2,3 +2,7 @@ body {
   background: url(asset-path("bg.jpg",image)) repeat-x;
   padding-bottom:50px
 }
+
+.preformatted{
+   word-wrap: break-word;
+}

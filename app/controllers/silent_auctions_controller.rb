@@ -139,7 +139,7 @@ class SilentAuctionsController < ApplicationController
     @auction = SilentAuction.find(params[:id])
     title = @auction.title
     @auction.destroy
-    redirect_back_with_success(index_path, "Item <strong>#{title}</strong> has been successfully deleted.".html_safe)
+    redirect_back_with_success(silent_auctions_path, "Item <strong>#{title}</strong> has been successfully deleted.".html_safe)
   end
 
   # Edit Auction
@@ -149,9 +149,9 @@ class SilentAuctionsController < ApplicationController
     @silent_auction = SilentAuction.find(params[:id])
     @silent_auction.photos.build if @silent_auction.photos.empty?
     unless @silent_auction.open
-      redirect_back_with_error(index_path,"You cannot edit closed auctions")
+      redirect_back_with_error(silent_auctions_path,"You cannot edit closed auctions")
     else
-      redirect_back_with_error(index_path,"You cannot edit auctions that have active bids") if @silent_auction.has_active_bid
+      redirect_back_with_error(silent_auctions_path,"You cannot edit auctions that have active bids") if @silent_auction.has_active_bid
     end
   end
 

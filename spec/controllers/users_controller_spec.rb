@@ -21,7 +21,7 @@ describe UsersController do
         wrong_user = User.create(username: 'wrong-user', password: 'barfoo')
         get :show, :id => wrong_user.id
         flash[:error].should include("Unauthorized Access")
-        response.should redirect_to(index_path)
+        response.should redirect_to(silent_auctions_path)
       end
 
       describe 'listing auctions user has placed bid on' do

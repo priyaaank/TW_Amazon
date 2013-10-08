@@ -85,3 +85,7 @@ end
 EmailNotification.blueprint do
   # Attributes here
 end
+
+Faq.blueprint do
+  # Attributes here
+end

@@ -21,6 +21,7 @@ Testing emails in development/test environments:
 Adding Git link to Heroku
 --------------------------
 - git remote add production git@heroku.com:twgs.git
+- heroku config:set RACK_ENV=staging RAILS_ENV=staging --remote staging
 - git remote add staging git@heroku.com:twgs-staging.git
 
 Deploying to Heroku

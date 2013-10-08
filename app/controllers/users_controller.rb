@@ -54,7 +54,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     if current_user != @user
       flash[:error] = "<h4 class='alert-heading'>Unauthorized Access!</h4>Sorry, You don't have permission to view bids of other users".html_safe
-      redirect_back_or(index_path)
+      redirect_back_or(silent_auctions_path)
     end
   end
 

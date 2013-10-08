@@ -1,0 +1,14 @@
+%h1 Frequently asked questions
+
+%div
+  - Faq.all.each do |faq|
+    = link_to faq.question, "##{faq.id}"
+    %br/
+    %br/
+
+%h1
+- Faq.all.each do |faq|
+  %div.container.faq{:id => "#{faq.id}"}
+    %h3 Question: #{faq.question}
+    %p.emptyMsg.preformatted= faq.answer.html_safe
+    %br/

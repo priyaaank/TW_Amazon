@@ -1,9 +1,5 @@
 TWAmazon::Application.routes.draw do
-
-
   resources :email_notifications
-
-
   resources :categories
 
   match '/landing',    to: 'home#landing'
@@ -14,10 +10,10 @@ TWAmazon::Application.routes.draw do
 
 
   # define an index or home path to redirect if a user already login
-  match 'silent_auctions', :to => 'SilentAuctions#index', :as => :index, :via => :get
+ # match 'silent_auctions', :to => 'SilentAuctions#index', :as => :index, :via => :get
 
   # silent auctions paths
-  resources :silent_auctions, :only => [:index, :create, :new, :destroy, :edit, :update] do
+  resources :silent_auctions do
     member do
       put 'close'
       post 'confirm_delete'
@@ -36,8 +32,7 @@ TWAmazon::Application.routes.draw do
 
 
   # bid paths
-  resources :bids, :only => [:create, :new, :update]
-  resources :bids do
+  resources :bids, :only => [:create, :new, :update] do
     member do
       put 'withdraw'
       post 'update_amount'
@@ -45,11 +40,11 @@ TWAmazon::Application.routes.draw do
     end
   end
 
+  resources :faqs, :only  => [:index]
+
   # user paths
-  resources :users, :only => [:show]
-  resources :users do
+  resources :users, :only => [:show] do
     member do
-      get :faq_page
       get :notification
       get :list_my_items
       get :list_my_normal_auctions
