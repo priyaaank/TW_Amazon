@@ -25,6 +25,11 @@
       %td= "End Date"
       %td= simple_format("<strong>#{formatted_date(@silent_auction.end_date)}</strong>")
     %tr
+      %td= "Current highest bid"
+      %td
+        %strong= "#{current_user.currency} #{won_bid_for_auction(@silent_auction).amount}"
+
+    %hr
       - if current_user.username != @silent_auction.creator
         = render :partial => "bids/user_bid_view", :locals => { :auction => @silent_auction, :bid => bid }
       - else

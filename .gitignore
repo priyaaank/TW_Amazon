@@ -15,3 +15,4 @@ public/carrierwave
 .env
 Procfile
 .project
+.bundle/
