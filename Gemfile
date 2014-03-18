@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.11'
+gem 'rails', '~> 3.2'
 gem 'jquery-rails'
 gem 'jquery-migrate-rails'
 gem 'jquery-ui-themes'
@@ -14,8 +14,8 @@ gem 'activeadmin'
 
 #CAS OAUTH gems
 gem 'devise'
-gem 'omniauth-cas'
-
+gem 'omniauth'
+gem 'omniauth-saml'
 
 #form, display, pagination
 gem 'simple_form'

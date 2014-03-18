@@ -58,8 +58,6 @@ TWAmazon::Application.routes.draw do
   devise_for :users, :skip => [:sessions], :controllers => { :omniauth_callbacks => "sessions"}
   devise_scope :user do
     get '/login', :to => "sessions#new", :as => :new_user_session
-    get '/logout_cas', :to => 'sessions#destroy_cas', :as => :destroy_user_session
-    match "/cas/logout" => redirect('http://cas.thoughtworks.com/cas/logout'), :as => :cas_logout
   end
 
   #Routes to dummy session controller for dev and test environments

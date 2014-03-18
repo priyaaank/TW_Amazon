@@ -13,4 +13,4 @@
       = f.button :submit, 'Login', :class => 'btn btn-primary'
 
   %p.center
-    =link_to "Login with CAS Account", user_omniauth_authorize_path(:cas), :class => "btn btn-primary btn-large"
+    =link_to "Login with Okta", user_omniauth_authorize_path(:saml), :class => "btn btn-primary btn-large"
