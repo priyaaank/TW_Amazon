@@ -9,14 +9,14 @@ describe AuctionMessagesController do
       sign_in @user
     end
 
-    context "given a running auction" do
+    context 'given a running auction' do
       before (:each) do
         @running_auction = SilentAuction.make!
       end
 
-     it "should not have any messages when an empty message is added to an auction" do
+     it 'should not have any messages when an empty message is added to an auction' do
         lambda {
-          post :create, :auction_message => {:message => "", :silent_auction_id => @running_auction.id}
+          post :create, {auction_message: {message: ''}, silent_auction_id: @running_auction}
         }.should_not change(@running_auction.auction_messages, :count)
       end
     end

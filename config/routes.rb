@@ -8,11 +8,6 @@ TWAmazon::Application.routes.draw do
 
   devise_for :admin_users, ActiveAdmin::Devise.config
 
-
-  # define an index or home path to redirect if a user already login
- # match 'silent_auctions', :to => 'SilentAuctions#index', :as => :index, :via => :get
-
-  # silent auctions paths
   resources :silent_auctions do
     member do
       put 'close'
@@ -30,8 +25,6 @@ TWAmazon::Application.routes.draw do
     resources :photos, :only => [:index, :create, :destroy]
   end
 
-
-  # bid paths
   resources :bids, :only => [:create, :new, :update] do
     member do
       put 'withdraw'
@@ -42,7 +35,6 @@ TWAmazon::Application.routes.draw do
 
   resources :faqs, :only  => [:index]
 
-  # user paths
   resources :users, :only => [:show] do
     member do
       get :notification

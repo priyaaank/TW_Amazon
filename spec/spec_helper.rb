@@ -64,6 +64,6 @@ def redirect_to_login
   if Rails.application.config.test_mode
     response.should redirect_to(root_path)
   else
-    response.should redirect_to(user_omniauth_authorize_path(:cas))
+    response.should redirect_to(user_omniauth_authorize_path(:saml))
   end
 end

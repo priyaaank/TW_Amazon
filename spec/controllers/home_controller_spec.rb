@@ -10,7 +10,7 @@ describe HomeController do
     it 'should redirect to cas login in production mode' do
       Rails.stub(env: ActiveSupport::StringInquirer.new("production"))
       get 'login'
-      response.should redirect_to(user_omniauth_authorize_path(:cas))
+      response.should redirect_to(user_omniauth_authorize_path(:saml))
     end
 
     it 'should redirect to home page for a signed in user' do

@@ -9,7 +9,7 @@ class HomeController < ApplicationController
       unless Rails.env.production?
         redirect_to new_user_session_path
       else
-        redirect_to user_omniauth_authorize_path(:cas)
+        redirect_to user_omniauth_authorize_path(:saml)
       end
     end
   end

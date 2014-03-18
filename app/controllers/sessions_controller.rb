@@ -7,27 +7,18 @@ class SessionsController < Devise::OmniauthCallbacksController
     if user_signed_in?
       redirect_to landing_path
     elsif Rails.env.production?
-      redirect_to user_omniauth_authorize_path(:cas)
+      redirect_to user_omniauth_authorize_path(:saml)
     else
       redirect_to root_path
     end
   end
 
-  def cas
+  def saml
     @user = User.find_or_create_from_auth_hash(auth_hash, current_user)
     if @user.persisted?
-      session[:cas_login] = true # use session to differentiate login with cas or not
-      flash[:success] = I18n.t "devise.omniauth_callbacks.success", :kind => "Thoughtworks CAS"
+      session[:saml_login] = true # use session to differentiate login with cas or not
+      flash[:success] = I18n.t "devise.omniauth_callbacks.success", :kind => "Thoughtworks SAML"
       sign_in_and_redirect @user, :event => :authentication
-    end
-  end
-
-  def destroy_cas
-    if user_signed_in?
-      session[:cas_login] = nil
-      sign_out_and_redirect current_user
-    else
-      redirect_to root_path
     end
   end
 
