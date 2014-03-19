@@ -206,7 +206,15 @@ Devise.setup do |config|
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', :scope => 'user,public_repo'
-  config.omniauth :saml
+  okta = YAML.load_file("#{Rails.root}/config/okta.yml")
+  okta_settings = okta[Rails.env] || okta['staging']
+
+  config.omniauth :saml,
+                  issuer: okta_settings['auth']['issuer'],
+                  idp_sso_target_url: okta_settings['auth']['target_url'],
+                  idp_cert_fingerprint: okta_settings['auth']['fingerprint'],
+                  name_identifier_format: "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+                  idp_sso_target_url_runtime_params: {redirectUrl: :RelayState}
 
   config.secret_key = 'f53cceba249574e41dd61278b947011ef92510a8a9da813a31a532ab0f9e9e1be8719ad369d3b30dc5661a7deca603d6c23833eb3f59394c85189a398824c998'
 
