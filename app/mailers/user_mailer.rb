@@ -16,7 +16,7 @@ class UserMailer < ActionMailer::Base
     @bids_count = bids_count
     @winner_id = winner_id
     @winner_amount = winner_amount
-    @recipients = "#{@creator}@thoughtworks.com"
+    @recipients = @creator
     #@recipients = "twgs.twgs@gmail.com"
     mail(:bcc => "#{@recipients}", :subject => "[TW Garage Sale] [SPAM] Auction results for \"#{@title}\"", :from => 'GarageSale@no-reply.thoughtworks.com')
   end
@@ -24,7 +24,7 @@ class UserMailer < ActionMailer::Base
   def administrator_notification_expired(title,alladmins,creator)
     @creator = creator
     @title = title
-    @recipients = "#{@creator}@thoughtworks.com"
+    @recipients = @creator
     #@recipients = "twgs.twgs@gmail.com"
     mail(:bcc => "#{@recipients}", :subject => "[TW Garage Sale] [SPAM] Auction for \"#{@title}\" has expired", :from => 'GarageSale@no-reply.thoughtworks.com')
   end
@@ -50,7 +50,7 @@ class UserMailer < ActionMailer::Base
       @email_notification=EmailNotification.find_by_users_id(user.id)
       if @email_notification != nil
         if @email_notification.auction_starts
-          @all_recipients = @all_recipients + user.username + "@thoughtworks.com"
+          @all_recipients = @all_recipients + user.username
         end
       end
     end
@@ -62,7 +62,7 @@ class UserMailer < ActionMailer::Base
   def seller_notification_quick_sale_almost_ends(title,creator)
     @creator = creator
     @title = title
-    @recipients = "#{@creator}@thoughtworks.com"
+    @recipients = @creator
     #@recipients = "twgs.twgs@gmail.com"
     mail(:bcc => "#{@recipients}", :subject => "[TW Garage Sale] [SPAM] Your sale of item \"#{@title}\" is about to end", :from => 'GarageSale@no-reply.thoughtworks.com')
   end
@@ -70,35 +70,33 @@ class UserMailer < ActionMailer::Base
   def item_outbid(title,outBidder)
     @outBidder = outBidder
     @title = title
-    @recipients = "#{@outBidder}@thoughtworks.com"
-    #@recipients = "twgs.twgs@gmail.com"
+    @recipients = @outBidder
     mail(:bcc => "#{@recipients}", :subject => "[TW Garage Sale] [SPAM] Your bid for auction \"#{@title}\" has been outbid", :from => 'GarageSale@no-reply.thoughtworks.com')
   end
   def item_withdraw(title,highestBidder)
     @highestBidder = highestBidder
     @title = title
-    @recipients = "#{@highestBidder}@thoughtworks.com"
-    #@recipients = "twgs.twgs@gmail.com"
+    @recipients = @highestBidder
     mail(:bcc => "#{@recipients}", :subject => "[TW Garage Sale] [SPAM] Your bid for auction \"#{@title}\" is the highest bid for the auction", :from => 'GarageSale@no-reply.thoughtworks.com')
   end
   def item_not_win(title,recipients)
     @recipients = recipients
     @title = title
-    #@recipients = "#{@creator}@thoughtworks.com"
+    #@recipients = @creator
     #@recipients = "twgs.twgs@gmail.com"
     mail(:bcc => "#{@recipients}", :subject => "[TW Garage Sale] [SPAM] You didn't win bid of item \"#{@title}\" ", :from => 'GarageSale@no-reply.thoughtworks.com')
   end
   def item_will_sell(title,creator)
     @creator = creator
     @title = title
-    @recipients = "#{@creator}@thoughtworks.com"
+    @recipients = @creator
     #@recipients = "twgs.twgs@gmail.com"
     mail(:bcc => "#{@recipients}", :subject => "[TW Garage Sale] [SPAM] Congratulations Your item \"#{@title}\" will surely sell", :from => 'GarageSale@no-reply.thoughtworks.com')
   end
   def buyer_notification_auction_almost_ends(title,recipients)
     @recipients = recipients
     @title = title
-    #@recipients = "#{@creator}@thoughtworks.com"
+    #@recipients = @creator
     #@recipients = "twgs.twgs@gmail.com"
     mail(:bcc => "#{@recipients}", :subject => "[TW Garage Sale] [SPAM] Your chance to buy item \"#{@title}\" is about to end", :from => 'GarageSale@no-reply.thoughtworks.com')
   end
@@ -124,7 +122,7 @@ class UserMailer < ActionMailer::Base
       @email_notification=EmailNotification.find_by_users_id(user.id)
       if @email_notification != nil
         if @email_notification.new_items && (@email_notification.new_items_category == "" || @email_notification.new_items_category==auction.category)
-          @all_recipients = @all_recipients + user.username + "@thoughtworks.com"
+          @all_recipients = @all_recipients + user.username
         end
       end
     end
@@ -145,7 +143,7 @@ class UserMailer < ActionMailer::Base
         if @email_notification != nil
           if @email_notification.auction_messages_by_other
              @user=User.find_by_id(bid.user_id)
-             @all_recipients = @all_recipients + @user.username + "@thoughtworks.com"
+             @all_recipients = @all_recipients + @user.username
           end
         end
        end
@@ -166,7 +164,7 @@ class UserMailer < ActionMailer::Base
         if @email_notification != nil
           if @email_notification.auction_messages_by_creator
             @user=User.find_by_id(bid.user_id)
-            @all_recipients = @all_recipients + @user.username + "@thoughtworks.com"
+            @all_recipients = @all_recipients + @user.username
           end
         end
       end
@@ -182,7 +180,7 @@ class UserMailer < ActionMailer::Base
     @email_notification=EmailNotification.find_by_users_id(@userId)
     if @email_notification != nil
         if @email_notification.creator_auction_messages
-          @all_recipients = @username + "@thoughtworks.com"
+          @all_recipients = @username
         end
     end
     # send the email only when there is at least 1 recipient

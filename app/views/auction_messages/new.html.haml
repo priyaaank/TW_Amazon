@@ -8,7 +8,7 @@
       %td= render :partial => 'silent_auctions/auction_photos', :locals => {:auction => @silent_auction}
       %td
         = simple_format("<strong>#{@silent_auction.title}</strong>")
-        = simple_format("Contact: <span class='highlight'>#{@silent_auction.creator}@thoughtworks.com</span>", :class => 'itemWinner')
+        = simple_format("Contact: <span class='highlight'>#{@silent_auction.creator}</span>", :class => 'itemWinner')
     %tr
       %td= "Description"
       %td= simple_format("<strong>#{@silent_auction.description}</strong>")

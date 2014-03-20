@@ -141,7 +141,7 @@ class SilentAuction < ActiveRecord::Base
             if bid.user_id !=@silent_auction.creator
               if @email_notification != nil
                 if @email_notification.item_ending
-                  @all_recipients = @all_recipients + user.username + "@thoughtworks.com"
+                  @all_recipients = @all_recipients + user.username
                 end
               end
             end
@@ -163,10 +163,10 @@ class SilentAuction < ActiveRecord::Base
     @winnerOrder = Bid.where("silent_auction_id = ? AND active = ?",auction.id,true)
     @count = @winnerOrder.count
     @admins = User.where("admin = ? AND region_id = ?", true, auction.region)
-    @alladmins = @admins.collect{|admin| admin.username + '@thoughtworks.com'}.join(',')
+    @alladmins = @admins.collect{|admin| admin.username}.join(',')
     if @count > 0
       @winner = @winnerOrder.order("amount ASC").last!
-      @winner_id = User.find(@winner.user_id).username + "@thoughtworks.com"
+      @winner_id = User.find(@winner.user_id).username
       @winner_amount = region.currency + " " + number_with_delimiter(@winner.amount)
       UserMailer.winner_notification(auction.title,@count,@winner_id,@winner_amount,auction.creator).deliver
       UserMailer.administrator_notification_close(auction.title,@count,@winner_id,@winner_amount,@alladmins,auction.creator).deliver
@@ -179,7 +179,7 @@ class SilentAuction < ActiveRecord::Base
           @email_notification=EmailNotification.find_by_users_id(bid.user_id)
           if @email_notification != nil
             if @email_notification.item_not_win
-              @all_recipients = @all_recipients + user.username + "@thoughtworks.com"
+              @all_recipients = @all_recipients + user.username
             end
           end
         end
