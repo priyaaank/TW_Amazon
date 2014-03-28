@@ -172,9 +172,7 @@ class SilentAuction < ActiveRecord::Base
       UserMailer.administrator_notification_close(auction.title,@count,@winner_id,@winner_amount,@alladmins,auction.creator).deliver
       # item not win
       @winnerOrder.each do |bid|
-        if @all_recipients != "" then
-          @all_recipients = @all_recipients + ", "
-        end
+        @all_recipients = "#{@all_recipients}, " if @all_recipients
         if bid.user_id!=User.find(@winner.user_id)
           @email_notification=EmailNotification.find_by_users_id(bid.user_id)
           if @email_notification != nil

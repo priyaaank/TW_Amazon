@@ -3,7 +3,7 @@ When /^I'm logged in as a user$/ do
   @user.region = Region.find_by_code 'AUS'
   @user.save!
   visit destroy_user_session_path
-  visit new_dummy_session_path
+  visit new_user_session_path
   select 'test-user', :from => 'user[username]'
   fill_in 'user[password]', :with => @user.password
   click_button 'Login'
@@ -14,7 +14,7 @@ When /^I'm logged in as an admin$/ do
   @user.region = Region.find_by_code 'AUS'
   @user.save!
   visit destroy_user_session_path
-  visit new_dummy_session_path
+  visit new_user_session_path
   select 'test-admin', :from => 'user[username]'
   fill_in 'user[password]', :with => @user.password
   click_button 'Login'
