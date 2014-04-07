@@ -30,10 +30,6 @@ class SessionsController < Devise::OmniauthCallbacksController
     end
   end
 
-  def after_sign_out_path_for(resource_or_scope)
-    cas_logout_path
-  end
-
   protected
   def auth_hash
     request.env['omniauth.auth']
