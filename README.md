@@ -23,6 +23,9 @@ Installing Gems (via Bundler)
 To start the server:
 - rails s
 
+View the app locally:
+- http://localhost:3000
+
 Database
 - The local database is a SQLite database
 - Install a database tool e.g. - DbVisualizer
