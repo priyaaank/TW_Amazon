@@ -13,7 +13,6 @@ Ruby Version:
 Installing Ruby (via Homebrew & Chruby)
 - brew install chruby
 - brew install ruby-install
-- ruby-install ruby 1.9.3
 - ruby-install ruby 2.0
 
 Installing Gems (via Bundler)
