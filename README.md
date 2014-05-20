@@ -19,6 +19,9 @@ Installing Gems (via Bundler)
 - gem install bundler
 - bundle install
 
+If you have problems installing any of the gems in Bundler, you may be running the wrong version of Ruby.
+Try running `chruby 2` to switch to the more recent version.
+
 To start the server:
 - rails s
 
