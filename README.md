@@ -29,6 +29,13 @@ View the app locally:
 - http://localhost:3000
 
 Database
+- To get the database up and running locally, do the following:
+
+  rake db:setup
+  rake db:migrate
+  rake db:seed
+  rake db:migrate
+
 - The local database is a SQLite database
 - Install a database tool e.g. - DbVisualizer
 - Database URL - jdbc:sqlite:/Users/[username]/Development/TW_Amazon/db/development.sqlite3
