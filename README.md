@@ -19,6 +19,9 @@ Installing Gems (via Bundler)
 - gem install bundler
 - bundle install
 
+If you have problems installing any of the gems in Bundler, you may be running the wrong version of Ruby.
+Try running `chruby 2` to switch to the more recent version.
+
 To start the server:
 - rails s
 
@@ -26,6 +29,13 @@ View the app locally:
 - http://localhost:3000
 
 Database
+- To get the database up and running locally, do the following:
+
+ - rake db:setup
+ - rake db:migrate
+ - rake db:seed
+ - rake db:migrate
+
 - The local database is a SQLite database
 - Install a database tool e.g. - DbVisualizer
 - Database URL - jdbc:sqlite:/Users/[username]/Development/TW_Amazon/db/development.sqlite3
