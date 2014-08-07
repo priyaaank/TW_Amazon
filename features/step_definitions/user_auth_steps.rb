@@ -1,6 +1,7 @@
+require_relative '../../spec/spec_helper'
+
 def login (username, admin)
-  # TODO: fix this somewhere central
-  page.driver.browser.manage.window.resize_to(1024,768)
+  resize_window
   @user = User.create!(:username => username, :password => 'foobar', :admin => admin)
   @user.region = Region.find_by_code 'AUS'
   @user.save!
@@ -21,6 +22,7 @@ end
 When /^I logout from the system$/ do
   #TODO: fix the logout
   visit "/admin/logout"
+  #save_screenshot('logout.png', :full => true)
 end
 
 Then /^I can see my login status$/ do
@@ -35,4 +37,6 @@ end
 Then /^I will be logged out$/ do
   #TODO: fix the redirect
   current_path.should == "/test-users/login"
+  #save_screenshot('redirect.png', :full => true)
+
 end
