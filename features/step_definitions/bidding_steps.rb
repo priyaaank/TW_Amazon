@@ -67,7 +67,6 @@ Then /^my bid is marked as withdrawn$/ do
 end
 
 Then /^no more bids are allowed$/ do
-  step "I'm logged in as a user"
   visit silent_auctions_path
   page.should have_no_content("tr#silentAuction_#{get(:silent_auctions).id}")
   visit closed_silent_auctions_path
