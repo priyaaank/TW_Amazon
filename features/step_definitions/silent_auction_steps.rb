@@ -16,6 +16,12 @@ Given /^there are valid auctions as the following:$/ do |table|
   end
 end
 
+#TODO
+Then(/^I see the following auction has been closed automatically$/) do |table|
+  # table is a Cucumber::Ast::Table
+  # look at the closed auction section, verify that the details that were passed through in the table are closed
+end
+
 Given /^there are no valid running auctions$/ do
   @region = Region.find_by_code 'AUS'
   SilentAuction.running(@region.timezone).destroy_all
