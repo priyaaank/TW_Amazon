@@ -70,6 +70,13 @@ Region.blueprint(:ind) do
   maximum {100000}
 end
 
+Region.blueprint(:usa) do
+  code {'USA'}
+  currency {'USD'}
+  timezone {'EST'}
+  maximum {100000}
+end
+
 AdminUser.blueprint do
   # Attributes here
 end

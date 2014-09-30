@@ -11,6 +11,21 @@ def login (username, admin)
   click_button 'Login'
 end
 
+Given /^I'm logged in as a new user$/ do
+  resize_window
+  @user = User.create!(:username => 'test-user', :password => 'foobar', :admin => false)
+  @user.save!
+  Region.make!(:usa)
+  visit new_user_session_path
+  select 'test-user', :from => 'user[username]'
+  fill_in 'user[password]', :with => @user.password
+  click_button 'Login'
+end
+
+When /^I select my region$/ do
+  select 'USA', :from => 'user[region]'
+end
+
 When /^I'm logged in as a user$/ do
   login 'test-user', false
 end
@@ -38,5 +53,8 @@ Then /^I will be logged out$/ do
   #TODO: fix the redirect
   current_path.should == "/test-users/login"
   #save_screenshot('redirect.png', :full => true)
+end
 
+Then /^I can see my region$/ do
+  page.should have_content("USA")
 end
