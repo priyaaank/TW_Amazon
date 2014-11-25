@@ -1,25 +1,21 @@
 require_relative '../../spec/spec_helper'
 
-def login (username, admin)
-  resize_window
-  @user = User.create!(:username => username, :password => 'foobar', :admin => admin)
-  @user.region = Region.find_by_code 'AUS'
+def user_creation(username, password, role, region = nil)
+  @user = User.create!(:username => username, :password => password, :admin => role)
+  @user.region = Region.find_by_code 'AUS' unless region.nil?
   @user.save!
+end
+
+def login (username, password, role, region)
+  user_creation(username, password, role, region)
   visit new_user_session_path
   select username, :from => 'user[username]'
-  fill_in 'user[password]', :with => @user.password
+  fill_in 'user[password]', :with => password
   click_button 'Login'
 end
 
 Given /^I'm logged in as a new user$/ do
-  resize_window
-  @user = User.create!(:username => 'test-user', :password => 'foobar', :admin => false)
-  @user.save!
-  Region.make!(:usa)
-  visit new_user_session_path
-  select 'test-user', :from => 'user[username]'
-  fill_in 'user[password]', :with => @user.password
-  click_button 'Login'
+  login('test-user', 'foobar', false, nil)
 end
 
 When /^I select my region$/ do
@@ -27,11 +23,11 @@ When /^I select my region$/ do
 end
 
 When /^I'm logged in as a user$/ do
-  login 'test-user', false
+  login 'test-user', 'foobar', false, 'AUS'
 end
 
 When /^I'm logged in as an admin$/ do
-  login 'test-admin', true
+  login 'test-admin', 'foobar', true, 'AUS'
 end
 
 When /^I logout from the system$/ do
