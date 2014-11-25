@@ -28,14 +28,31 @@ To start the server:
 View the app locally:
 - http://localhost:3000
 
+To make chruby work, do:
+vim ~/.bash_profile
+Then add:   source /usr/local/share/chruby/chruby.sh
+	    source /usr/local/share/chruby/auto.sh
+			  
+
+Before doing “gem install bundler”,
+go to the project directory.
+otherwise the gem won’t be installed.
+
+
+When doing “gem install bundler”,
+if “gem install pg” goes wrong, try:
+
+/*The first thing you should do is ensure that the 'pg_config' tool that comes with Postgres is in your path. If it isn't, or the one that's first in your path isn't the one that was installed with the Postgres you want to build against, you can specify the path to it with the --with-pg-config option.
+
+For example, if you're using the Ruby binary that comes with OSX, and PostgreSQL 9.3 installed from MacPorts, do:*/
+
+gem install pg -- --with-pg-config=/Applications/Postgres.app/Contents/Versions/9.3/bin/pg_config
+
+
+
 Database
-- To get the database up and running locally, do the following:
-
- - rake db:setup
- - rake db:migrate
- - rake db:seed
- - rake db:migrate
-
+- rake db:migrate
+- rake db:seed
 - The local database is a SQLite database
 - Install a database tool e.g. - DbVisualizer
 - Database URL - jdbc:sqlite:/Users/[username]/Development/TW_Amazon/db/development.sqlite3
