@@ -10,7 +10,7 @@ def login (username, password, role, region)
   user_creation(username, password, role, region)
   visit new_user_session_path
   select username, :from => 'user[username]'
-  fill_in 'user[password]', :with => password
+  fill_in 'user_password', :with => password
   click_button 'Login'
 end
 
@@ -37,8 +37,7 @@ When /^I logout from the system$/ do
 end
 
 Then /^I can see my login status$/ do
-  page.should have_content("Logged in as:")
-  page.should have_content(@user.username)
+  page.should have_content("Logged in as: " + @user.username)
 end
 
 Then /^I can see my account is admin$/ do

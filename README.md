@@ -22,12 +22,6 @@ Installing Gems (via Bundler)
 If you have problems installing any of the gems in Bundler, you may be running the wrong version of Ruby.
 Try running `chruby 2` to switch to the more recent version.
 
-To start the server:
-- rails s
-
-View the app locally:
-- http://localhost:3000
-
 To make chruby work, do:
 vim ~/.bash_profile
 Then add:   source /usr/local/share/chruby/chruby.sh
@@ -48,7 +42,11 @@ For example, if you're using the Ruby binary that comes with OSX, and PostgreSQL
 
 gem install pg -- --with-pg-config=/Applications/Postgres.app/Contents/Versions/9.3/bin/pg_config
 
+To start the server:
+- rails s
 
+View the app locally:
+- http://localhost:3000
 
 Database
 - rake db:migrate
