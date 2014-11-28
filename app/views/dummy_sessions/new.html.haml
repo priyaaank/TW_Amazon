@@ -10,7 +10,7 @@
     = f.input :password, :required => true, :label => 'Password'
 
     .form-actions
-      = f.button :submit, 'Login', :class => 'btn btn-primary'
+      = f.button :submit, 'Login', :class => 'btn btn-primary', :id => 'login_button'
 
   %p.center
     =link_to "Login with Okta", user_omniauth_authorize_path(:saml), :class => "btn btn-primary btn-large"
