@@ -14,7 +14,7 @@ Feature: Delete Auction
 
   @javascript
   Scenario: Delete an auction
-    Given I have chosen to delete an auction
+    When I have chosen to delete an auction
     Then I am on the confirm deletion page
     And I should see the list of active bidders as following:
       | bidder|
@@ -22,20 +22,13 @@ Feature: Delete Auction
       | user_2|
       | user_3|
       | user_4|
-
-
-
-  @Ignore
-  @javascript
-  Scenario: Confirm auction deletion
-    Given I am on the confirm deletion page
     When I confirm deletion of the auction
     Then the auction should be deleted
     And I should go back to 'running_auctions' page
 
-  @Ignore
-  @javascript
-  Scenario: Cancel Delete auction
-    When I delete the auction
-    And choose to cancel deleting
-    Then I should go back to 'running_auctions' page
+
+#  @javascript
+ # Scenario: Cancel Delete auction
+ #   When I delete the auction
+ #   And choose to cancel deleting
+ #   Then I should go back to 'running_auctions' page
