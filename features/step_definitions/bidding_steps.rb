@@ -1,4 +1,4 @@
-Given /^there is a running auction as the following:$/ do |table|
+Given /^there is a running auction as follows:$/ do |table|
   table.hashes.each do | hash |
     hash["open"] = (hash["open"] == "yes") ? true : false
     hash['region'] ||= 'AUS'
@@ -7,7 +7,7 @@ Given /^there is a running auction as the following:$/ do |table|
   end
 end
 
-Given /^there are bids placed for the auction as following:$/ do |table|
+Given /^there are bids placed for the auction as follows:$/ do |table|
   table.hashes.each do | hash |
     User.make!(:user, :username => hash['user']).bids.create(:silent_auction_id => get(:silent_auctions).id, :amount => hash['bid amount'])
   end
@@ -67,7 +67,6 @@ Then /^my bid is marked as withdrawn$/ do
 end
 
 Then /^no more bids are allowed$/ do
-  step "I'm logged in as a user"
   visit silent_auctions_path
   page.should have_no_content("tr#silentAuction_#{get(:silent_auctions).id}")
   visit closed_silent_auctions_path

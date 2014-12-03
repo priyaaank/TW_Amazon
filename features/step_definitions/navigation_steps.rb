@@ -38,7 +38,7 @@ Then /^I should be on the 'listings' page$/ do
 end
 
 
-Then /^I should (?:be on|go back to) 'running_auctions' page$/ do
+And /^I should (?:be on|go back to) 'running_auctions' page$/ do
   current_path.should == silent_auctions_path
 end
 

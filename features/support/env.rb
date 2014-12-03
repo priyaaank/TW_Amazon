@@ -16,7 +16,7 @@ include ActionView::Helpers::NumberHelper
 # order to ease the transition to Capybara we set the default here. If you'd
 # prefer to use XPath just remove this line and adjust any selectors in your
 # steps to use the XPath syntax.
-Capybara.default_selector = :css
+Capybara.default_selector = :__id__
 Capybara.default_driver = :selenium
 
 
@@ -65,4 +65,4 @@ end
 # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
 Cucumber::Rails::Database.javascript_strategy = :truncation
 
-require File.dirname(__FILE__) + '/seeds'
+#require File.dirname(__FILE__) + '/seeds'

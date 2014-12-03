@@ -40,6 +40,10 @@ RSpec.configure do |config|
 
 end
 
+# Resize browser because it is responsive, and tests will fail
+def resize_window
+  page.driver.browser.manage.window.resize_to(1024,768)
+end
 
 def requires property
   valid_user.delete(property.to_sym)

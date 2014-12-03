@@ -29,5 +29,5 @@ Feature: Close auction to see winner
       | user_4 | 210.45 |
     And I'm logged in as an admin
     When I close the auction
-    Then I can see the winner is "user_3@thoughtworks.com"
+    Then I can see the winner is "user_3"
     And I can see the winning bid is "$ 550.0"

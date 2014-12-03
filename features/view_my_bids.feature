@@ -8,6 +8,7 @@ Feature: View my bids
       | Apple MacBook Air 11 | test description 2 | 400       | yes  |
       | imac                 | test description 3 | 100       | yes  |
       | mac mini             | test description 4 | 450       | yes  |
+    And I logout from the system
 
     @javascript
     Scenario: View my bids

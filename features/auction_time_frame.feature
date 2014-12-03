@@ -16,5 +16,5 @@ Feature: Time frame
     When I'm logged in as a user
     When I view all closed auctions
     Then I see the following auction has been closed automatically
-      | title        | description      | min_price |
-      | imac         | desktop computer | 1000      |
+      | title        | description      | min_price | open |
+      | imac         | desktop computer | 1000      | no   |

@@ -16,6 +16,12 @@ Given /^there are valid auctions as the following:$/ do |table|
   end
 end
 
+#TODO
+Then(/^I see the following auction has been closed automatically$/) do |table|
+  # table is a Cucumber::Ast::Table
+  # look at the closed auction section, verify that the details that were passed through in the table are closed
+end
+
 Given /^there are no valid running auctions$/ do
   @region = Region.find_by_code 'AUS'
   SilentAuction.running(@region.timezone).destroy_all
@@ -77,20 +83,11 @@ When /^I close the auction$/ do
   end
 end
 
-When /^I delete the auction$/ do
+
+Given /^I have chosen to delete an auction$/ do
   visit silent_auctions_path
-  within("tr#silentAuction_#{get(:silent_auctions).id}") do
     click_button 'Manage'
     click_link 'Delete'
-  end
-end
-
-When /^I choose to continue deleting$/ do
-  click_link "confirm_delete_auction_button"
-end
-
-When /^choose to cancel deleting$/ do
-  click_link "cancel_delete_auction"
 end
 
 When(/^I change the auction details as follows:$/) do |table|
@@ -167,6 +164,15 @@ Then /^I can see all closed auctions sorted by most recent first:$/ do |table|
   end
 end
 
+
+When /^I confirm deletion of the auction$/ do
+  click_link "confirm_delete_auction_button"
+end
+
+When /^choose to cancel deleting$/ do
+  click_link "cancel_delete_auction"
+end
+
 Then /^I can see all expired auctions sorted by most recent first:$/ do |table|
   @region = Region.find_by_code 'AUS'
   within_table('expiredAuctions') do
@@ -193,7 +199,7 @@ Then /^I cannot close the auction$/ do
   end
 end
 
-Then /^I should see the confirmation page$/ do
+Then /^I am on the confirm deletion page$/ do
   auction = get(:silent_auctions)
   current_path.should == confirm_delete_silent_auction_path(auction)
   page.should have_content("Are you sure you want to delete this auction?")
